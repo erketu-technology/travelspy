@@ -118,7 +118,6 @@ struct UploadView: View {
                     if error != nil {
                         print("SHARE POST \(String(describing: error?.localizedDescription))")
                     }
-                    print("isShowPostCreation FALSE")
                     isShowPostCreation = false
                 })
             }) {

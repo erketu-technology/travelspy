@@ -6,34 +6,19 @@
 //
 
 import SwiftUI
-//import CoreData
 import Firebase
-
-//import CloudKit
-
-//import YPImagePicker
 
 struct PostsView: View {
     @Environment(\.managedObjectContext) private var viewContext
-    
-    //    @State private var isShowPhotoLibrary = false
-    //    @State private var image = UIImage()
-    
-    //    @AppStorage("login") private var login = false
-    @AppStorage("isShowPostCreation") public var isShowPostCreation = false
-    
-    @State private var postItems: [Post] = []
-    @State var postsModel = PostsModel()
-    @State var profile: UserProfile?
-    
     @EnvironmentObject var sessionStore: SessionStore
-    let currentUser = Auth.auth().currentUser
+    @AppStorage("isShowPostCreation") public var isShowPostCreation = false
+        
+    @StateObject var postsModel = PostsModel()
+    @State var profile: UserProfile?
     
     init() {
         self.isShowPostCreation = false
-    }
-    
-    
+    }    
     //            HStack {
     //                Spacer()
     //                Text("Name")
@@ -60,7 +45,7 @@ struct PostsView: View {
         NavigationView {
             VStack {
                 VStack {
-                    if postItems.isEmpty {
+                    if postsModel.posts.isEmpty {
                         ScrollView {
                             VStack {
                                 LoadingPostView()
@@ -69,7 +54,7 @@ struct PostsView: View {
                             }
                         }
                     } else {
-                        List(postItems, id: \.id) { post in
+                        List(postsModel.posts, id: \.id) { post in
                             VStack (alignment: .leading) {
                                 if post.uid.isEmpty && postsModel.isFetching {
                                     LoadingPostView()
@@ -77,7 +62,7 @@ struct PostsView: View {
                                     PostRowView(post: post)
                                         .onAppear {
                                             if self.postsModel.isLastPost(post) {
-                                                self.loadPosts()
+                                                self.fetchPreviousPosts()
                                             }
                                         }
                                 }
@@ -89,7 +74,7 @@ struct PostsView: View {
                             .edgesIgnoringSafeArea(.horizontal)
                         }
                         .edgesIgnoringSafeArea(.top)
-                        .refreshable { refresh() }
+                        .refreshable { fetchNextPosts() }
                         .listStyle(GroupedListStyle())
                         //                .onAppear(perform: {
                         //                    UITableView.appearance().contentInset.top = -43
@@ -98,7 +83,10 @@ struct PostsView: View {
                 }
                 .onAppear {
                     URLCache.shared.memoryCapacity = 1024 * 1024 * 512
-                    refresh()
+                    fetchPosts()
+                }
+                .onDisappear {
+                    postsModel.detachListener()
                 }
                 
                 Spacer()
@@ -113,13 +101,13 @@ struct PostsView: View {
                     }
                 }
                 .fullScreenCover(isPresented: $isShowPostCreation, onDismiss: {
-                    print("REFRESH DATA")
+                    fetchNextPosts()
                 }, content: {
                     TSImagePicker()
                 })
             }
             .onAppear {
-//                fetchProfile()
+                fetchProfile()
             }
             .navigationTitle("Name")
             .navigationBarTitleDisplayMode(.inline)
@@ -150,17 +138,16 @@ struct PostsView: View {
         }
     }
     
-    private func refresh() {
-        postsModel.refreshAll { postItems in
-            self.postItems = postItems
-        }
+    private func fetchPosts() {
+        postsModel.fetchPosts()
     }
     
-    private func loadPosts() {
-        postsModel.fetch() { postItems in
-            self.postItems = postItems
-            
-        }
+    private func fetchNextPosts() {
+        postsModel.fetchNextPosts()
+    }
+    
+    private func fetchPreviousPosts() {
+        postsModel.fetchPreviousPosts()
     }
     
 }

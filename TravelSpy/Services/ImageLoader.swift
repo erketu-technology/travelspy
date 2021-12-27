@@ -29,7 +29,8 @@ class ImageLoader: ObservableObject {
         isLoading = true
         errorMessage = nil
         
-        let request = URLRequest(url: fetchURL, cachePolicy: .returnCacheDataElseLoad)
+        let request = URLRequest(url: fetchURL, cachePolicy: .returnCacheDataElseLoad,
+                                 timeoutInterval: 60 * 60 * 24 * 3) // 3 days
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             DispatchQueue.main.async {

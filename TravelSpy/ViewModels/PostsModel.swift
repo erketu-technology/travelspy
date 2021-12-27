@@ -24,7 +24,12 @@ struct ProgressBarValue {
 }
 
 struct LastItem {
-    var docuemnt: DocumentSnapshot?
+    var document: DocumentSnapshot?
+    var post: Post?
+}
+
+struct FirstItem {
+    var document: DocumentSnapshot?
     var post: Post?
 }
 
@@ -33,14 +38,54 @@ enum PostsModelError: Error {
 }
 
 class PostsModel: ObservableObject {
-    var progressBarValue = ProgressBarValue()
+    @Published var posts = [Post]()
+    @Published var isFetching = false
     
+    var progressBarValue = ProgressBarValue()
     let db = Firestore.firestore()
     let currentUser = Auth.auth().currentUser
     var totalCount = 0
-    var posts: [Post] = []
-    var lastCurrentPageDoc =  LastItem()
-    @Published var isFetching = false
+    var lastItem = LastItem()
+    var firstItem = FirstItem()
+    var listener: ListenerRegistration?
+    
+    func realTimeFetch() {
+        guard listener == nil else { return }
+        
+        listener = db.collection("posts").whereField("state", isEqualTo: "active")
+            .order(by: "createdAt", descending: true).addSnapshotListener { querySnapshot, error in
+                guard let documents = querySnapshot?.documents else {
+                    print("Error fetching documents: \(error!)")
+                    return
+                }
+                
+                documents.forEach { document in
+                    let data = document.data()
+                    
+                    let createdAtTimestamp = data["createdAt"] as! Timestamp
+                    let updatedAtTimestamp = data["updatedAt"] as! Timestamp
+                    
+                    let post = Post(
+                        id: document.documentID,
+                        content: data["content"] as! String,
+                        locationCity: data["locationCity"] as! String,
+                        locationCountry: data["locationCountry"] as! String,
+                        uid: data["uid"] as! String,
+                        createdAt: createdAtTimestamp.dateValue(),
+                        updatedAt: updatedAtTimestamp.dateValue(),
+                        images: data["images"] as! [Dictionary<String, String?>]
+                    )
+                    
+                    self.posts.append(post)
+                }
+            }
+    }
+    
+    func detachListener() {
+        if listener != nil {
+            listener!.remove()
+        }
+    }
     
     func addPost(content: String, locationItem: Location, selectedPhoto: Photo,
                  progressBlock: @escaping (ProgressBarValue) -> Void, onComplete: @escaping (Error?) -> ()) {
@@ -77,6 +122,9 @@ class PostsModel: ObservableObject {
                 
                 self.progressBarValue.postUpload = 1
                 progressBlock(self.progressBarValue)
+                
+                self.fetchNextPosts()
+                
                 onComplete(nil)
             })
         })
@@ -86,109 +134,128 @@ class PostsModel: ObservableObject {
         // delete
     }
     
-    func refreshAll(completion: @escaping ([Post]) -> ()) {
-        self.lastCurrentPageDoc = LastItem()
-        self.posts.removeAll()
+    func fetchPosts() {
+        guard !isFetching && posts.isEmpty else { return }
         
-        fetch { posts in
-            completion(posts)
-        }
-    }
-    
-    func fetch(completion: @escaping ([Post]) -> ()) {
-        guard !isFetching && (self.totalCount == 0 || self.totalCount > self.posts.count) else { return }
-        
-        isFetching = true
-        self.fetchTotalCount { totalCount, error in
-            guard error == nil else {
+        postsDB().limit(to: 3).getDocuments { snapshot, error in
+            if error != nil {
                 self.isFetching = false
-                print("Error when get total count: \(String(describing: error?.localizedDescription))")
+                print("###ERROR getPosts: \(String(describing: error?.localizedDescription))")
+            }
+            
+            guard let snapshot = snapshot else {
+                self.isFetching = false
                 return
             }
             
-            self.totalCount = totalCount!
-            
-            self.fetchPosts { snapshot, error in
-                if error != nil {
-                    self.isFetching = false
-                    print("###ERROR getPosts: \(String(describing: error?.localizedDescription))")
-                }
-                
-                guard let snapshot = snapshot else {
-                    self.isFetching = false
-                    return
-                }
-                
-                self.lastCurrentPageDoc.docuemnt = snapshot.documents.last
-                
-                if self.posts.last != nil && self.posts.last!.content.isEmpty {
-                    self.posts.removeLast()
-                }
-                snapshot.documents.forEach { document in
-                    let data = document.data()
-                    
-                    let createdAtTimestamp = data["createdAt"] as! Timestamp
-                    let updatedAtTimestamp = data["updatedAt"] as! Timestamp
-                    
-                    let post = Post(
-                        id: document.documentID,
-                        content: data["content"] as! String,
-                        locationCity: data["locationCity"] as! String,
-                        locationCountry: data["locationCountry"] as! String,
-                        uid: data["uid"] as! String,
-                        createdAt: createdAtTimestamp.dateValue(),
-                        updatedAt: updatedAtTimestamp.dateValue(),
-                        images: data["images"] as! [Dictionary<String, String?>]
-                    )
-                    
-                    self.posts.append(post)
-                }
-                
-                self.lastCurrentPageDoc.post = self.posts.last
-                self.isFetching = false
-                
-                let shimmerPost = Post(
-                    content: "", locationCity: "",
-                    locationCountry: "", uid: "",
-                    createdAt: Date(), updatedAt: Date(),
-                    images: []
-                )
-                self.posts.append(shimmerPost)
-                completion(self.posts)
+            snapshot.documents.forEach { document in
+                let post = self.createPostRecord(document: document)
+                self.posts.append(post)
             }
+            
+            self.isFetching = false
+            
+            self.firstItem.post = self.posts.first
+            self.firstItem.document = snapshot.documents.first
+            
+            self.lastItem.post = self.posts.last
+            self.lastItem.document = snapshot.documents.last
+        }
+    }
+    
+    func fetchNextPosts() {
+        guard !isFetching && posts.count > 0 && firstItem.document != nil else { return }
+        
+        isFetching = true
+        postsDB().end(beforeDocument: self.firstItem.document!).getDocuments { snapshot, error in
+            if error != nil {
+                self.isFetching = false
+                print("###ERROR getPosts: \(String(describing: error?.localizedDescription))")
+            }
+            
+            guard let snapshot = snapshot else {
+                self.isFetching = false
+                return
+            }
+            
+            if let doc = snapshot.documents.first {
+                self.firstItem.document = doc
+            }
+            
+            snapshot.documents.forEach { document in
+                let post = self.createPostRecord(document: document)
+                self.posts.insert(post, at: 0)
+            }
+            self.firstItem.post = self.posts.first
+            self.isFetching = false
+        }
+    }
+    
+    func fetchPreviousPosts() {
+        guard !isFetching && posts.count > 0 && lastItem.document != nil else { return }
+        
+        isFetching = true
+        postsDB().start(afterDocument: self.lastItem.document!).limit(to: 3).getDocuments { snapshot, error in
+            if error != nil {
+                self.isFetching = false
+                print("###ERROR getPosts: \(String(describing: error?.localizedDescription))")
+            }
+            
+            guard let snapshot = snapshot else {
+                self.isFetching = false
+                return
+            }
+            
+            if let doc = snapshot.documents.last {
+                self.lastItem.document = doc
+            }
+            
+            snapshot.documents.forEach { document in
+                let post = self.createPostRecord(document: document)
+                
+                self.lastItem.post = post
+                self.posts.append(post)
+            }
+            
+            self.isFetching = false
+            
+            let shimmerPost = Post(
+                content: "", locationCity: "",
+                locationCountry: "", uid: "",
+                createdAt: Date(), updatedAt: Date(),
+                images: []
+            )
+            self.posts.append(shimmerPost)
         }
     }
     
     func isLastPost(_ post: Post) -> Bool {
-        guard lastCurrentPageDoc.post != nil else { return true }
-        return lastCurrentPageDoc.post?.id == post.id
+        guard lastItem.post != nil else { return true }
+        return lastItem.post?.id == post.id
     }
     
-    private func fetchPosts(completion: @escaping (QuerySnapshot?, Error?) -> ()) {
-        var query = db.collection("posts").whereField("state", isEqualTo: "active")
-            .order(by: "createdAt", descending: true).limit(to: 3)
-        
-        if self.posts.count > 0 && lastCurrentPageDoc.docuemnt != nil {
-            query = query.start(afterDocument: lastCurrentPageDoc.docuemnt!)
-        }
-        
-        query.getDocuments { snapshot, error in
-            completion(snapshot, error)
-        }
+    private func postsDB() -> Query {
+        return db.collection("posts").whereField("state", isEqualTo: "active").order(by: "createdAt", descending: true)
     }
     
-    private func fetchTotalCount(completion: @escaping (Int?, Error?) -> ()) {
-        guard totalCount == 0 else {
-            completion(totalCount, nil)
-            return
-        }
+    private func createPostRecord(document: QueryDocumentSnapshot) -> Post {
+        let data = document.data()
         
-        db.collection("posts").whereField("state", isEqualTo: "active").getDocuments{ snapshot, error in
-            guard let snapshot = snapshot else { return }
-            
-            let count = snapshot.documents.count
-            completion(count, nil)
-        }
+        let createdAtTimestamp = data["createdAt"] as! Timestamp
+        let updatedAtTimestamp = data["updatedAt"] as! Timestamp
+        
+        let post = Post(
+            id: document.documentID,
+            content: data["content"] as! String,
+            locationCity: data["locationCity"] as! String,
+            locationCountry: data["locationCountry"] as! String,
+            uid: data["uid"] as! String,
+            createdAt: createdAtTimestamp.dateValue(),
+            updatedAt: updatedAtTimestamp.dateValue(),
+            images: data["images"] as! [Dictionary<String, String?>]
+        )
+        
+        return post
     }
     
     private func startUploading(image: Photo, updateProgressBlock: @escaping () -> (), completion: @escaping (UploadedUrls?, Error?) -> ()) {
