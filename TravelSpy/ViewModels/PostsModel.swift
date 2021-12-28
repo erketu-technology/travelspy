@@ -177,11 +177,11 @@ class PostsModel: ObservableObject {
         }
     }
     
-    func fetchPreviousPosts() {
+    func fetchPreviousPosts(limit: Int = 3) {
         guard !isFetching && posts.count > 0 && lastItem.document != nil else { return }
         
         isFetching = true
-        postsDB().start(afterDocument: self.lastItem.document!).limit(to: 3).getDocuments { snapshot, error in
+        postsDB().start(afterDocument: self.lastItem.document!).limit(to: limit).getDocuments { snapshot, error in
             if error != nil {
                 self.isFetching = false
                 print("###ERROR getPosts: \(String(describing: error?.localizedDescription))")
