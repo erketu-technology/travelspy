@@ -60,21 +60,7 @@ class PostsModel: ObservableObject {
                 }
                 
                 documents.forEach { document in
-                    let data = document.data()
-                    
-                    let createdAtTimestamp = data["createdAt"] as! Timestamp
-                    let updatedAtTimestamp = data["updatedAt"] as! Timestamp
-                    
-                    let post = Post(
-                        id: document.documentID,
-                        content: data["content"] as! String,
-                        locationCity: data["locationCity"] as! String,
-                        locationCountry: data["locationCountry"] as! String,
-                        uid: data["uid"] as! String,
-                        createdAt: createdAtTimestamp.dateValue(),
-                        updatedAt: updatedAtTimestamp.dateValue(),
-                        images: data["images"] as! [Dictionary<String, String?>]
-                    )
+                    let post = self.createPostRecord(document: document)
                     
                     self.posts.append(post)
                 }

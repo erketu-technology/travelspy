@@ -54,6 +54,7 @@
 		5A5DD376275E8BBE00CF8EBD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5DD375275E8BBE00CF8EBD /* LoginView.swift */; };
 		5A886243276FC81F00443A87 /* TSImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A886242276FC81F00443A87 /* TSImagePicker.swift */; };
 		5A88CC6F2778F84A00EBCF39 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */; };
+		5A97DE66277A7A9800064B0E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A44A68F276382C8004327E7 /* GoogleService-Info.plist */; };
 		5A98274E2774DAAB00F938F0 /* TruncableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98274D2774DAAB00F938F0 /* TruncableTextView.swift */; };
 		5A9827502774DB5A00F938F0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98274F2774DB5A00F938F0 /* Extensions.swift */; };
 		5A98275427751B1F00F938F0 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98275327751B1F00F938F0 /* DetailsView.swift */; };
@@ -66,7 +67,6 @@
 		5A99BC822758259F00D3D51D /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A99BC812758259F00D3D51D /* Location.swift */; };
 		5ABB574B2769542B00C867AA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABB574A2769542B00C867AA /* MainView.swift */; };
 		5AD82693275962D100EF141E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD82692275962D100EF141E /* Photo.swift */; };
-		5ADCBDAE2772502800739A3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A44A68F276382C8004327E7 /* GoogleService-Info.plist */; };
 		5ADCBDB1277250D700739A3D /* TravelSpy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C4F275048B90052D821 /* TravelSpy.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
@@ -461,7 +461,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5ADCBDAE2772502800739A3D /* GoogleService-Info.plist in Resources */,
+				5A97DE66277A7A9800064B0E /* GoogleService-Info.plist in Resources */,
 				5A2C7C4C275048B90052D821 /* Preview Assets.xcassets in Resources */,
 				5A2C7C49275048B90052D821 /* Assets.xcassets in Resources */,
 			);
