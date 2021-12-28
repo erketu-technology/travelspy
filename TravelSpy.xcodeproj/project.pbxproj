@@ -53,6 +53,8 @@
 		5A5DD372275E842600CF8EBD /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5DD371275E842600CF8EBD /* CloudKit.framework */; };
 		5A5DD376275E8BBE00CF8EBD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5DD375275E8BBE00CF8EBD /* LoginView.swift */; };
 		5A886243276FC81F00443A87 /* TSImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A886242276FC81F00443A87 /* TSImagePicker.swift */; };
+		5A88C18F277B620D00A2083B /* WaterfallGrid in Frameworks */ = {isa = PBXBuildFile; productRef = 5A88C18E277B620D00A2083B /* WaterfallGrid */; };
+		5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A88C190277B623A00A2083B /* PostsExploreView.swift */; };
 		5A88CC6F2778F84A00EBCF39 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */; };
 		5A97DE66277A7A9800064B0E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A44A68F276382C8004327E7 /* GoogleService-Info.plist */; };
 		5A98274E2774DAAB00F938F0 /* TruncableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98274D2774DAAB00F938F0 /* TruncableTextView.swift */; };
@@ -65,6 +67,8 @@
 		5A99BC7A2758164700D3D51D /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A99BC792758164700D3D51D /* SearchBarView.swift */; };
 		5A99BC7D275816C600D3D51D /* LocationSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A99BC7C275816C600D3D51D /* LocationSearchService.swift */; };
 		5A99BC822758259F00D3D51D /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A99BC812758259F00D3D51D /* Location.swift */; };
+		5AA57DCC277B7CDD00E90430 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA57DCB277B7CDD00E90430 /* ViewRouter.swift */; };
+		5AA57DD1277BB0DA00E90430 /* TabBarIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA57DD0277BB0DA00E90430 /* TabBarIconView.swift */; };
 		5ABB574B2769542B00C867AA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABB574A2769542B00C867AA /* MainView.swift */; };
 		5AD82693275962D100EF141E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD82692275962D100EF141E /* Photo.swift */; };
 		5ADCBDB1277250D700739A3D /* TravelSpy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C4F275048B90052D821 /* TravelSpy.xcdatamodeld */; };
@@ -113,6 +117,7 @@
 		5A5DD371275E842600CF8EBD /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		5A5DD375275E8BBE00CF8EBD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		5A886242276FC81F00443A87 /* TSImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSImagePicker.swift; sourceTree = "<group>"; };
+		5A88C190277B623A00A2083B /* PostsExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsExploreView.swift; sourceTree = "<group>"; };
 		5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
 		5A98274D2774DAAB00F938F0 /* TruncableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TruncableTextView.swift; sourceTree = "<group>"; };
 		5A98274F2774DB5A00F938F0 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
@@ -124,6 +129,8 @@
 		5A99BC792758164700D3D51D /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		5A99BC7C275816C600D3D51D /* LocationSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchService.swift; sourceTree = "<group>"; };
 		5A99BC812758259F00D3D51D /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		5AA57DCB277B7CDD00E90430 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
+		5AA57DD0277BB0DA00E90430 /* TabBarIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarIconView.swift; sourceTree = "<group>"; };
 		5ABB574A2769542B00C867AA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5AD82692275962D100EF141E /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -136,6 +143,7 @@
 				5A50BA582770FFF7007262B4 /* YPImagePicker in Frameworks */,
 				5A44A6AF2763843B004327E7 /* FirebaseFunctions in Frameworks */,
 				5A44A69B2763843B004327E7 /* FirebaseAppDistribution-Beta in Frameworks */,
+				5A88C18F277B620D00A2083B /* WaterfallGrid in Frameworks */,
 				5A44A6B52763843B004327E7 /* FirebaseInAppMessagingSwift-Beta in Frameworks */,
 				5A44A6BB2763843B004327E7 /* FirebaseMessaging in Frameworks */,
 				5A44A69F2763843B004327E7 /* FirebaseAuthCombine-Community in Frameworks */,
@@ -231,6 +239,7 @@
 				5A2C7C4F275048B90052D821 /* TravelSpy.xcdatamodeld */,
 				5A2C7C4A275048B90052D821 /* Preview Content */,
 				5A98274F2774DB5A00F938F0 /* Extensions.swift */,
+				5AA57DCB277B7CDD00E90430 /* ViewRouter.swift */,
 			);
 			path = TravelSpy;
 			sourceTree = "<group>";
@@ -263,6 +272,7 @@
 		5A485B6C275131DA00A44243 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5AA57DCF277BB0BF00E90430 /* tabs */,
 				5A07B8CA2773F12C000B56ED /* Post */,
 				5A2C7C46275048B80052D821 /* PostsView.swift */,
 				5A485B6F275145BF00A44243 /* CameraView.swift */,
@@ -272,6 +282,7 @@
 				5ABB574A2769542B00C867AA /* MainView.swift */,
 				5A98274D2774DAAB00F938F0 /* TruncableTextView.swift */,
 				5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */,
+				5A88C190277B623A00A2083B /* PostsExploreView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -304,6 +315,14 @@
 				5A44A6CC27650DFD004327E7 /* Post.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		5AA57DCF277BB0BF00E90430 /* tabs */ = {
+			isa = PBXGroup;
+			children = (
+				5AA57DD0277BB0DA00E90430 /* TabBarIconView.swift */,
+			);
+			path = tabs;
 			sourceTree = "<group>";
 		};
 		5AD826942759689B00EF141E /* ViewModels */ = {
@@ -367,6 +386,7 @@
 				5A44A6C42763843B004327E7 /* FirebaseStorageSwift-Beta */,
 				5A44A6D4276815AD004327E7 /* GoogleSignIn */,
 				5A50BA572770FFF7007262B4 /* YPImagePicker */,
+				5A88C18E277B620D00A2083B /* WaterfallGrid */,
 			);
 			productName = TravelSpy;
 			productReference = 5A2C7C41275048B80052D821 /* TravelSpy.app */;
@@ -444,6 +464,7 @@
 				5A44A6912763843B004327E7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5A44A6D3276815AD004327E7 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				5A50BA562770FFF7007262B4 /* XCRemoteSwiftPackageReference "YPImagePicker" */,
+				5A88C18D277B620D00A2083B /* XCRemoteSwiftPackageReference "WaterfallGrid" */,
 			);
 			productRefGroup = 5A2C7C42275048B80052D821 /* Products */;
 			projectDirPath = "";
@@ -492,9 +513,11 @@
 				5ADCBDB1277250D700739A3D /* TravelSpy.xcdatamodeld in Sources */,
 				5A44A6D027680EA6004327E7 /* UserProfileRepository.swift in Sources */,
 				5A88CC6F2778F84A00EBCF39 /* PreferencesView.swift in Sources */,
+				5AA57DD1277BB0DA00E90430 /* TabBarIconView.swift in Sources */,
 				5A99BC822758259F00D3D51D /* Location.swift in Sources */,
 				5A99BC7A2758164700D3D51D /* SearchBarView.swift in Sources */,
 				5A44A6CD27650DFD004327E7 /* Post.swift in Sources */,
+				5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */,
 				5A99BC782757F96C00D3D51D /* UploadView.swift in Sources */,
 				5A485B70275145BF00A44243 /* CameraView.swift in Sources */,
 				5A2C7C4E275048B90052D821 /* Persistence.swift in Sources */,
@@ -514,6 +537,7 @@
 				5A98274E2774DAAB00F938F0 /* TruncableTextView.swift in Sources */,
 				5A2C7C45275048B80052D821 /* TravelSpyApp.swift in Sources */,
 				5A13C065277895EE00667461 /* LoadingPostView.swift in Sources */,
+				5AA57DCC277B7CDD00E90430 /* ViewRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,6 +924,14 @@
 				kind = branch;
 			};
 		};
+		5A88C18D277B620D00A2083B /* XCRemoteSwiftPackageReference "WaterfallGrid" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/paololeonardi/WaterfallGrid.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1042,6 +1074,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5A50BA562770FFF7007262B4 /* XCRemoteSwiftPackageReference "YPImagePicker" */;
 			productName = YPImagePicker;
+		};
+		5A88C18E277B620D00A2083B /* WaterfallGrid */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5A88C18D277B620D00A2083B /* XCRemoteSwiftPackageReference "WaterfallGrid" */;
+			productName = WaterfallGrid;
 		};
 /* End XCSwiftPackageProductDependency section */
 

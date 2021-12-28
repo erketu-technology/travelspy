@@ -11,7 +11,8 @@ import CloudKit
 
 struct UploadView: View {
     @AppStorage("isShowPostCreation") public var isShowPostCreation = false
-    
+    @EnvironmentObject var viewRouter: ViewRouter
+    @EnvironmentObject var postsModel: PostsModel
     
     @State var selectedPhoto: Photo
     
@@ -118,6 +119,9 @@ struct UploadView: View {
                     if error != nil {
                         print("SHARE POST \(String(describing: error?.localizedDescription))")
                     }
+                    postsModel.fetchNextPosts()
+                    viewRouter.currentPage = .list
+                    
                     isShowPostCreation = false
                 })
             }) {

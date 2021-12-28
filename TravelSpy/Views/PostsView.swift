@@ -11,9 +11,10 @@ import Firebase
 struct PostsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var sessionStore: SessionStore
+    @EnvironmentObject var postsModel: PostsModel
+    
     @AppStorage("isShowPostCreation") public var isShowPostCreation = false
         
-    @StateObject var postsModel = PostsModel()
     @State var profile: UserProfile?
     
     init() {
@@ -88,35 +89,6 @@ struct PostsView: View {
                 .onDisappear {
                     postsModel.detachListener()
                 }
-                
-                VStack {
-                    Spacer()
-                    
-                    HStack {
-                        Button(action: {
-                            isShowPostCreation.toggle()
-                        }) {
-                            Image(systemName: "camera.metering.partial")
-                                .resizable()
-                                .foregroundColor(Color.white.opacity(0.9))
-                                .frame(width: 40, height: 30)
-                        }
-                    }
-                    .frame(width: 60, height: 60)
-                    .background(Color.black.opacity(0.4))
-                    .clipShape(
-                        Circle()
-                    )
-                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                    .shadow(radius: 10)
-                    .fullScreenCover(isPresented: $isShowPostCreation, onDismiss: {
-                        fetchNextPosts()
-                    }, content: {
-                        TSImagePicker()
-                    })
-                }
-                .padding(.bottom, 20)
-                .ignoresSafeArea()
             }
             .onAppear {
                 fetchProfile()

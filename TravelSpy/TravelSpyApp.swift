@@ -12,6 +12,8 @@ import Firebase
 struct TravelSpyApp: App {
     let persistenceController = PersistenceController.shared
     @StateObject var sessionStore = SessionStore()
+    @StateObject var viewRouter = ViewRouter()
+    @StateObject var postsModel = PostsModel()
     
     init() {
         FirebaseApp.configure()
@@ -22,6 +24,8 @@ struct TravelSpyApp: App {
             MainView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(sessionStore)
+                .environmentObject(viewRouter)
+                .environmentObject(postsModel)
         }
     }
 }

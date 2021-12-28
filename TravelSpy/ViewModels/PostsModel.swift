@@ -40,11 +40,11 @@ enum PostsModelError: Error {
 class PostsModel: ObservableObject {
     @Published var posts = [Post]()
     @Published var isFetching = false
+    @Published var totalCount = 0
     
     var progressBarValue = ProgressBarValue()
     let db = Firestore.firestore()
     let currentUser = Auth.auth().currentUser
-    var totalCount = 0
     var lastItem = LastItem()
     var firstItem = FirstItem()
     var listener: ListenerRegistration?
@@ -212,6 +212,17 @@ class PostsModel: ObservableObject {
                 images: []
             )
             self.posts.append(shimmerPost)
+        }
+    }
+    
+    func fetchTotalCount() {
+        guard totalCount == 0 else {
+            return
+        }
+        
+        db.collection("posts").whereField("state", isEqualTo: "active").getDocuments { snapshot, error in
+            guard let snapshot = snapshot else { return }
+            self.totalCount = snapshot.documents.count
         }
     }
     
