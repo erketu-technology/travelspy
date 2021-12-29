@@ -13,6 +13,7 @@ struct UserProfile: Codable {
     var uid: String
     var userName: String
     var gogoleUserId: String?
+    var email: String
 }
 
 class UserProfileRepository: ObservableObject {
@@ -34,5 +35,10 @@ class UserProfileRepository: ObservableObject {
             let profile = try? snapshot?.data(as: UserProfile.self)
             completion(profile, error)
         }
+    }
+    
+    func fetchProfile(userId: String) async -> UserProfile? {
+        let profile = try? await db.collection("users").document(userId).getDocument()
+        return try? profile?.data(as: UserProfile.self)
     }
 }

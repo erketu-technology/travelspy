@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import Firebase
+import MapKit
 
 struct DetailsView: View {
     var post: Post
@@ -15,6 +17,7 @@ struct DetailsView: View {
     @ObservedObject private var articleContent: ViewFrame = ViewFrame()
     @State private var titleRect: CGRect = .zero
     @State private var headerImageRect: CGRect = .zero
+    @State private var isShowMap = false
     
     func getScrollOffset(_ geometry: GeometryProxy) -> CGFloat {
         geometry.frame(in: .global).minY
@@ -89,93 +92,107 @@ struct DetailsView: View {
     //        return .infinity
     //    }
     
-    //    init(post: Post) {
-    //        self.post = post
-    //        print("asdasdas \(post)")
-    //    }
-    
     var body: some View {
-//        NavigationView {
-            ScrollView {
-                VStack {
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Image(systemName: "person")
-                                .resizable()
-                                .scaledToFill()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 60, height: 60)
-                                .clipShape(Circle())
-                                .shadow(radius: 4)
-                            
-                            VStack(alignment: .leading) {
-                                Text("Article Written By")
-                                    .foregroundColor(.gray)
-                                    .font(.system(size: 12))
-                                Text("Brandon Baars")
-                            }
-                        }
-                        
-                        Text(post.createdAt.formatted(.dateTime.year().month(.wide).day()))
-                            .font(.system(size: 12))
-                            .foregroundColor(.gray)
-                        
-                        Text(post.content)
-                            .lineLimit(nil)
-                    }
-                    .padding(.horizontal)
-//                    .padding(.top, 10.0)
-                }
-                .offset(y: imageHeight + 16)
-                .background(GeometryGetter(rect: $articleContent.frame))
-                
+        VStack {
+            if isShowMap {
                 GeometryReader { geometry in
-                    ZStack(alignment: .bottom) {
+                    ZStack {
+                        MapView(post: post)
+                            .ignoresSafeArea()
                         VStack {
-                            ImageLoadingView(url: post.imageUrl!)
-                                .scaledToFill()
-                                .frame(width: geometry.size.width, height: self.getHeightForHeaderImage(geometry))
-                                .blur(radius: self.getBlurRadiusForImage(geometry))
-                                .clipped()
-                                .background(GeometryGetter(rect: self.$headerImageRect))
+                            
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    print("Tapped")
+                                    isShowMap.toggle()
+                                }) {
+                                    Image(systemName: "xmark.circle")
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                        .foregroundColor(Color.white.opacity(0.95))
+                                        .padding()
+                                        .padding(.top, 30)
+                                        .padding(.trailing, 20)
+                                }
+                            }
+                            .frame(width: geometry.size.width, height: 50)
+                            .background(Color.primary.opacity(0.4))
                         }
-
                     }
-                    .clipped()
-                    .offset(x: 0, y: 50 + self.getOffsetForHeaderImage(geometry))
                 }
-                .frame(height: imageHeight)
-                .offset(x: 0, y: -(articleContent.startingRect?.maxY ?? UIScreen.main.bounds.height))
+            } else {
+                ScrollView {
+                    VStack {
+                        VStack(alignment: .leading, spacing: 10) {
+                            HStack {
+                                Image(systemName: "person")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 4)
+                                    .padding(.top, 10)
+                                
+                                VStack(alignment: .leading) {
+                                    Text("Article Written By")
+                                        .foregroundColor(.gray)
+                                        .font(.system(size: 12))
+                                    Text(post.user.userName)
+                                }
+                            }
+                            
+                            HStack {
+                                Text(post.createdAt.formatted(.dateTime.year().month(.wide).day()))
+                                    .font(.system(size: 12))
+                                    .foregroundColor(.gray)
+                                
+                                Spacer()
+                                Button(action: {
+                                    self.isShowMap.toggle()
+                                }, label: {
+                                    Text("\(post.countryAndCity)")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.gray)
+                                })
+                            }
+                            
+                            Text(post.content)
+                                .lineLimit(nil)
+                        }
+                        .padding(.horizontal)
+                    }
+                    .offset(y: imageHeight + 16)
+                    .background(GeometryGetter(rect: $articleContent.frame))
+                    
+                    GeometryReader { geometry in
+                        ZStack(alignment: .bottom) {
+                            VStack {
+                                ImageLoadingView(url: post.imageUrl!)
+                                    .scaledToFill()
+                                    .frame(width: geometry.size.width, height: self.getHeightForHeaderImage(geometry))
+                                    .blur(radius: self.getBlurRadiusForImage(geometry))
+                                    .clipped()
+                                    .background(GeometryGetter(rect: self.$headerImageRect))
+                            }
+                            
+                        }
+                        .clipped()
+                        .offset(x: 0, y: 50 + self.getOffsetForHeaderImage(geometry))
+                    }
+                    .frame(height: imageHeight)
+                    .offset(x: 0, y: -(articleContent.startingRect?.maxY ?? UIScreen.main.bounds.height))
+                }
             }
-//            .navigationBarItems(leading:
-//                Button {
-//                    print("BACK")
-//                } label: {
-//                    Text("X")
-//                }
-//
-//            )
-//            .edgesIgnoringSafeArea(.all)
-//        }
-        
-//        .navigationTitle("SwiftUI")
-//        .navigationBarTitleDisplayMode(.inline)
+        }
     }
 }
 
 struct DetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        DetailsView(post: Post(
-            content: loremIpsum,
-            locationCity: "",
-            locationCountry: "",
-            uid: "",
-            createdAt: Date(),
-            updatedAt: Date(),
-            images: [
-                ["croppedUrl": "https://firebasestorage.googleapis.com:443/v0/b/travelspy-57015.appspot.com/o/images%2FPhTFkKvrhQUfEK69wKke2eIHBkH2%2F7373EB9A-5D2A-480A-9640-E7AC8216BEFC.png?alt=media&token=994d8645-8b54-4144-b51e-39c0701d735f"]
-            ])
-        )
+        DetailsView(post: Post.template(content: loremIpsum))
     }
 }
 

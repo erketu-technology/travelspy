@@ -18,7 +18,6 @@ class SessionStore: NSObject, ObservableObject {
     }
     
     @Published var state: SignInState = Auth.auth().currentUser != nil ? .signedIn : .signedOut
-//    @Published var session: User?
     @Published var profile: UserProfile?
     
     private var profileRepository = UserProfileRepository()
@@ -44,7 +43,7 @@ class SessionStore: NSObject, ObservableObject {
 //                print("sendEmailVerification \(String(describing: error?.localizedDescription))")
 //            })
 //            signOut()
-            let userProfile = UserProfile(uid: user.uid, userName: userName)
+            let userProfile = UserProfile(uid: user.uid, userName: userName, email: email)
             
             self.profileRepository.createProfile(profile: userProfile) { (profile, error) in
                 if let error = error {
@@ -79,17 +78,6 @@ class SessionStore: NSObject, ObservableObject {
                 self.state = .signedIn
                 completion(profile, nil)
             }
-//            self.profileRepository.fetchProfile(userId: user.uid) { (profile, error) in
-//                if let error = error {
-//                    print("Error while fetching the user profile: \(error)")
-//                    completion(nil, error)
-//                    return
-//                }
-//
-//                self.profile = profile
-//                self.state = .signedIn
-//                completion(profile, nil)
-//            }
         }
     }
     
@@ -136,8 +124,7 @@ class SessionStore: NSObject, ObservableObject {
                 guard let firUser = authResult?.user else { return }
                 
                 let userName = user?.profile?.name ?? ""
-                
-                let userProfile = UserProfile(uid: firUser.uid, userName: userName)
+                let userProfile = UserProfile(uid: firUser.uid, userName: userName, email: firUser.email!)
                                 
                 self.profileRepository.createProfile(profile: userProfile) { (profile, error) in
                     if let error = error {
@@ -159,7 +146,6 @@ class SessionStore: NSObject, ObservableObject {
         
         do {
             try Auth.auth().signOut()
-//            self.session = nil
             self.profile = nil
             
             state = .signedOut

@@ -38,6 +38,7 @@ struct UploadView: View {
                     .scaledToFill()
                     .frame(width: 100, height: 100)
                     .cornerRadius(3.0)
+                    .padding(.leading, 10)
                 
                 ZStack {
                     if postContent.isEmpty {
@@ -86,6 +87,21 @@ struct UploadView: View {
                 showingLocationsSearch = true
             }
             .fullScreenCover(isPresented: $showingLocationsSearch, content: {
+                HStack {
+                    Button {
+                        showingLocationsSearch.toggle()
+                    } label: {
+                        Image(systemName: "arrow.backward")
+                            .resizable()
+                            .frame(width: 25, height: 20)
+                            .padding(.leading, 20)
+                            .onTapGesture {
+                                showingLocationsSearch.toggle()
+                            }
+                    }
+                    Spacer()
+                }
+                
                 SearchBar(text: $locationSearchService.searchQuery)
                 
                 List(locationSearchService.completions) { completion in
@@ -119,7 +135,9 @@ struct UploadView: View {
                     if error != nil {
                         print("SHARE POST \(String(describing: error?.localizedDescription))")
                     }
-                    postsModel.fetchNextPosts()
+                    Task.init {
+                        await postsModel.fetchNextPosts()
+                    }
                     viewRouter.currentPage = .list
                     
                     isShowPostCreation = false

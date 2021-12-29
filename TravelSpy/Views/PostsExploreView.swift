@@ -64,14 +64,27 @@ struct PostsExploreView: View {
                     ProgressView()
                         .frame(height: 40)
                         .onAppear {
-                            postsModel.fetchPreviousPosts(limit: 30)
+                            fetchPreviousPosts()
                         }
                 }
             }
         }
         .onAppear {
             postsModel.fetchTotalCount()
-            postsModel.fetchPosts()
+            fetchPosts()
+        }
+    }
+    
+    private func fetchPreviousPosts() {
+        Task {
+            await postsModel.fetchPreviousPosts(limit: 10)
+        }
+        
+    }
+    
+    private func fetchPosts() {
+        Task.init {
+            await postsModel.fetchPosts(limit: 30)
         }
     }
     

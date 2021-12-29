@@ -16,6 +16,8 @@
 		5A2C7C5B275048B90052D821 /* TravelSpyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C5A275048B90052D821 /* TravelSpyTests.swift */; };
 		5A2C7C65275048B90052D821 /* TravelSpyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C64275048B90052D821 /* TravelSpyUITests.swift */; };
 		5A2C7C67275048B90052D821 /* TravelSpyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C66275048B90052D821 /* TravelSpyUITestsLaunchTests.swift */; };
+		5A393C67277CFD7600D7E1E4 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A393C66277CFD7600D7E1E4 /* MapView.swift */; };
+		5A393C68277D1FD400D7E1E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A44A68F276382C8004327E7 /* GoogleService-Info.plist */; };
 		5A44A68E27637FAC004327E7 /* PostsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44A68D27637FAC004327E7 /* PostsModel.swift */; };
 		5A44A6932763843B004327E7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5A44A6922763843B004327E7 /* FirebaseAnalytics */; };
 		5A44A6952763843B004327E7 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 5A44A6942763843B004327E7 /* FirebaseAnalyticsSwift-Beta */; };
@@ -48,7 +50,6 @@
 		5A44A6D027680EA6004327E7 /* UserProfileRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44A6CF27680EA6004327E7 /* UserProfileRepository.swift */; };
 		5A44A6D227680EF5004327E7 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44A6D127680EF5004327E7 /* SessionStore.swift */; };
 		5A44A6D5276815AD004327E7 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 5A44A6D4276815AD004327E7 /* GoogleSignIn */; };
-		5A485B70275145BF00A44243 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A485B6F275145BF00A44243 /* CameraView.swift */; };
 		5A50BA582770FFF7007262B4 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 5A50BA572770FFF7007262B4 /* YPImagePicker */; };
 		5A5DD372275E842600CF8EBD /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5DD371275E842600CF8EBD /* CloudKit.framework */; };
 		5A5DD376275E8BBE00CF8EBD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5DD375275E8BBE00CF8EBD /* LoginView.swift */; };
@@ -56,7 +57,6 @@
 		5A88C18F277B620D00A2083B /* WaterfallGrid in Frameworks */ = {isa = PBXBuildFile; productRef = 5A88C18E277B620D00A2083B /* WaterfallGrid */; };
 		5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A88C190277B623A00A2083B /* PostsExploreView.swift */; };
 		5A88CC6F2778F84A00EBCF39 /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */; };
-		5A97DE66277A7A9800064B0E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A44A68F276382C8004327E7 /* GoogleService-Info.plist */; };
 		5A98274E2774DAAB00F938F0 /* TruncableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98274D2774DAAB00F938F0 /* TruncableTextView.swift */; };
 		5A9827502774DB5A00F938F0 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98274F2774DB5A00F938F0 /* Extensions.swift */; };
 		5A98275427751B1F00F938F0 /* DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98275327751B1F00F938F0 /* DetailsView.swift */; };
@@ -106,13 +106,13 @@
 		5A2C7C60275048B90052D821 /* TravelSpyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelSpyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2C7C64275048B90052D821 /* TravelSpyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelSpyUITests.swift; sourceTree = "<group>"; };
 		5A2C7C66275048B90052D821 /* TravelSpyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelSpyUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		5A393C66277CFD7600D7E1E4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		5A44A68D27637FAC004327E7 /* PostsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsModel.swift; sourceTree = "<group>"; };
 		5A44A68F276382C8004327E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A44A6C627639066004327E7 /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
 		5A44A6CC27650DFD004327E7 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5A44A6CF27680EA6004327E7 /* UserProfileRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileRepository.swift; sourceTree = "<group>"; };
 		5A44A6D127680EF5004327E7 /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
-		5A485B6F275145BF00A44243 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		5A5DD36F275E841400CF8EBD /* TravelSpy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TravelSpy.entitlements; sourceTree = "<group>"; };
 		5A5DD371275E842600CF8EBD /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		5A5DD375275E8BBE00CF8EBD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -275,7 +275,6 @@
 				5AA57DCF277BB0BF00E90430 /* tabs */,
 				5A07B8CA2773F12C000B56ED /* Post */,
 				5A2C7C46275048B80052D821 /* PostsView.swift */,
-				5A485B6F275145BF00A44243 /* CameraView.swift */,
 				5A99BC772757F96C00D3D51D /* UploadView.swift */,
 				5A99BC792758164700D3D51D /* SearchBarView.swift */,
 				5A5DD375275E8BBE00CF8EBD /* LoginView.swift */,
@@ -283,6 +282,7 @@
 				5A98274D2774DAAB00F938F0 /* TruncableTextView.swift */,
 				5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */,
 				5A88C190277B623A00A2083B /* PostsExploreView.swift */,
+				5A393C66277CFD7600D7E1E4 /* MapView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -482,7 +482,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A97DE66277A7A9800064B0E /* GoogleService-Info.plist in Resources */,
+				5A393C68277D1FD400D7E1E4 /* GoogleService-Info.plist in Resources */,
 				5A2C7C4C275048B90052D821 /* Preview Assets.xcassets in Resources */,
 				5A2C7C49275048B90052D821 /* Assets.xcassets in Resources */,
 			);
@@ -519,11 +519,11 @@
 				5A44A6CD27650DFD004327E7 /* Post.swift in Sources */,
 				5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */,
 				5A99BC782757F96C00D3D51D /* UploadView.swift in Sources */,
-				5A485B70275145BF00A44243 /* CameraView.swift in Sources */,
 				5A2C7C4E275048B90052D821 /* Persistence.swift in Sources */,
 				5A98275427751B1F00F938F0 /* DetailsView.swift in Sources */,
 				5A98275A27761C3200F938F0 /* ImageLoader.swift in Sources */,
 				5ABB574B2769542B00C867AA /* MainView.swift in Sources */,
+				5A393C67277CFD7600D7E1E4 /* MapView.swift in Sources */,
 				5A5DD376275E8BBE00CF8EBD /* LoginView.swift in Sources */,
 				5A98275827761C1500F938F0 /* ImageLoadingView.swift in Sources */,
 				5A44A6D227680EF5004327E7 /* SessionStore.swift in Sources */,

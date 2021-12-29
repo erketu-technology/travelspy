@@ -49,6 +49,8 @@ class PostsModel: ObservableObject {
     var firstItem = FirstItem()
     var listener: ListenerRegistration?
     
+    private var profileRepository = UserProfileRepository()
+    
     func realTimeFetch() {
         guard listener == nil else { return }
         
@@ -60,9 +62,12 @@ class PostsModel: ObservableObject {
                 }
                 
                 documents.forEach { document in
-                    let post = self.createPostRecord(document: document)
-                    
-                    self.posts.append(post)
+//                    Task {
+//                        let post = await self.createPostRecord(document: document)
+//                        if post != nil {
+//                            self.posts.append(post!)
+//                        }
+//                    }
                 }
             }
     }
@@ -109,8 +114,6 @@ class PostsModel: ObservableObject {
                 self.progressBarValue.postUpload = 1
                 progressBlock(self.progressBarValue)
                 
-                self.fetchNextPosts()
-                
                 onComplete(nil)
             })
         })
@@ -120,98 +123,89 @@ class PostsModel: ObservableObject {
         // delete
     }
     
-    func fetchPosts() {
+    @MainActor
+    func fetchPosts(limit: Int = 3) async {
         guard !isFetching && posts.isEmpty else { return }
         
-        postsDB().limit(to: 3).getDocuments { snapshot, error in
-            if error != nil {
-                self.isFetching = false
-                print("###ERROR getPosts: \(String(describing: error?.localizedDescription))")
-            }
-            
-            guard let snapshot = snapshot else {
-                self.isFetching = false
-                return
-            }
-            
-            snapshot.documents.forEach { document in
-                let post = self.createPostRecord(document: document)
-                self.posts.append(post)
-            }
-            
-            self.isFetching = false
-            
-            self.firstItem.post = self.posts.first
-            self.firstItem.document = snapshot.documents.first
-            
-            self.lastItem.post = self.posts.last
-            self.lastItem.document = snapshot.documents.last
+        let snapshot = try? await postsDB().limit(to: limit).getDocuments()
+        guard let snapshot = snapshot else {
+            isFetching = false
+            return
         }
+        
+        for document in snapshot.documents {
+            let post = await createPostRecord(document: document)
+            guard let post = post else { continue }
+            posts.append(post)
+        }
+        
+        isFetching = false
+        firstItem.post = posts.first
+        firstItem.document = snapshot.documents.first
+        
+        lastItem.post = posts.last
+        lastItem.document = snapshot.documents.last
     }
-    
-    func fetchNextPosts() {
+   
+    @MainActor
+    func fetchNextPosts() async {
         guard !isFetching && posts.count > 0 && firstItem.document != nil else { return }
         
         isFetching = true
-        postsDB().end(beforeDocument: self.firstItem.document!).getDocuments { snapshot, error in
-            if error != nil {
-                self.isFetching = false
-                print("###ERROR getPosts: \(String(describing: error?.localizedDescription))")
-            }
-            
-            guard let snapshot = snapshot else {
-                self.isFetching = false
-                return
-            }
-            
-            if let doc = snapshot.documents.first {
-                self.firstItem.document = doc
-            }
-            
-            snapshot.documents.forEach { document in
-                let post = self.createPostRecord(document: document)
-                self.posts.insert(post, at: 0)
-            }
-            self.firstItem.post = self.posts.first
-            self.isFetching = false
+        
+        let snapshot = try? await postsDB().end(beforeDocument: firstItem.document!).getDocuments()
+        guard let snapshot = snapshot else {
+            isFetching = false
+            return
         }
+        
+        if let doc = snapshot.documents.first {
+            firstItem.document = doc
+        }
+        
+        for document in snapshot.documents {
+            let post = await createPostRecord(document: document)
+            guard let post = post else { continue }
+            posts.insert(post, at: 0)
+        }
+        
+        firstItem.post = posts.first
+        isFetching = false
     }
     
-    func fetchPreviousPosts(limit: Int = 3) {
+    @MainActor
+    func fetchPreviousPosts(limit: Int = 3) async {
         guard !isFetching && posts.count > 0 && lastItem.document != nil else { return }
         
         isFetching = true
-        postsDB().start(afterDocument: self.lastItem.document!).limit(to: limit).getDocuments { snapshot, error in
-            if error != nil {
-                self.isFetching = false
-                print("###ERROR getPosts: \(String(describing: error?.localizedDescription))")
-            }
+        
+        let snapshot = try? await postsDB().start(afterDocument: lastItem.document!).limit(to: limit).getDocuments()
+        guard let snapshot = snapshot else {
+            isFetching = false
+            return
+        }
+        
+        if let doc = snapshot.documents.last {
+            lastItem.document = doc
+        }
+        
+        if (posts.last != nil) && posts.last!.uid.isEmpty {
+            posts.removeLast(1)
+        }
+        
+        for document in snapshot.documents {
+            let post = await createPostRecord(document: document)
+            guard let post = post else { continue }
             
-            guard let snapshot = snapshot else {
-                self.isFetching = false
-                return
-            }
-            
-            if let doc = snapshot.documents.last {
-                self.lastItem.document = doc
-            }
-            
-            snapshot.documents.forEach { document in
-                let post = self.createPostRecord(document: document)
-                
-                self.lastItem.post = post
-                self.posts.append(post)
-            }
-            
-            self.isFetching = false
-            
-            let shimmerPost = Post(
-                content: "", locationCity: "",
-                locationCountry: "", uid: "",
-                createdAt: Date(), updatedAt: Date(),
-                images: []
-            )
-            self.posts.append(shimmerPost)
+            lastItem.post = post
+            posts.append(post)
+        }
+        
+        isFetching = false
+        
+        if totalCount > posts.count {
+            let templatePost = Post.template()
+            posts.append(templatePost)
         }
     }
     
@@ -227,6 +221,7 @@ class PostsModel: ObservableObject {
     }
     
     func isLastPost(_ post: Post) -> Bool {
+        guard totalCount > posts.count else { return false }
         guard lastItem.post != nil else { return true }
         return lastItem.post?.id == post.id
     }
@@ -235,21 +230,27 @@ class PostsModel: ObservableObject {
         return db.collection("posts").whereField("state", isEqualTo: "active").order(by: "createdAt", descending: true)
     }
     
-    private func createPostRecord(document: QueryDocumentSnapshot) -> Post {
+    private func createPostRecord(document: QueryDocumentSnapshot) async -> Post? {
         let data = document.data()
-        
         let createdAtTimestamp = data["createdAt"] as! Timestamp
         let updatedAtTimestamp = data["updatedAt"] as! Timestamp
+        
+        let uid = data["uid"] as! String
+        let profile = await profileRepository.fetchProfile(userId: uid)
+        guard let profile = profile else { return nil }
+                
         
         let post = Post(
             id: document.documentID,
             content: data["content"] as! String,
             locationCity: data["locationCity"] as! String,
             locationCountry: data["locationCountry"] as! String,
-            uid: data["uid"] as! String,
+            placemark: data["location"] as! GeoPoint,
+            uid: uid,
             createdAt: createdAtTimestamp.dateValue(),
             updatedAt: updatedAtTimestamp.dateValue(),
-            images: data["images"] as! [Dictionary<String, String?>]
+            images: data["images"] as! [Dictionary<String, String?>],
+            user: profile
         )
         
         return post

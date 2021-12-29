@@ -57,7 +57,7 @@ struct PreferencesView: View {
 
 struct PreferencesView_Previews: PreviewProvider {
     static var previews: some View {
-        let profile = UserProfile(uid: "\(UUID())", userName: "userName")
+        let profile = UserProfile(uid: "\(UUID())", userName: "userName", email: "example@com")
         PreferencesView(profile: profile)
     }
 }

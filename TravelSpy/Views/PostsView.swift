@@ -14,12 +14,12 @@ struct PostsView: View {
     @EnvironmentObject var postsModel: PostsModel
     
     @AppStorage("isShowPostCreation") public var isShowPostCreation = false
-        
+    
     @State var profile: UserProfile?
     
     init() {
         self.isShowPostCreation = false
-    }    
+    }
     //            HStack {
     //                Spacer()
     //                Text("Name")
@@ -43,75 +43,73 @@ struct PostsView: View {
     //            }
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                VStack {
-                    if postsModel.posts.isEmpty {
-                        ScrollView {
-                            VStack {
-                                LoadingPostView()
-                                LoadingPostView()
-                                LoadingPostView()
-                            }
+        ZStack {
+            VStack {
+                if postsModel.posts.isEmpty {
+                    ScrollView {
+                        VStack {
+                            LoadingPostView()
+                            LoadingPostView()
+                            LoadingPostView()
                         }
-                    } else {
-                        List(postsModel.posts, id: \.id) { post in
-                            VStack (alignment: .leading) {
-                                if post.uid.isEmpty && postsModel.isFetching {
-                                    LoadingPostView()
-                                } else if !post.uid.isEmpty {
-                                    PostRowView(post: post)
-                                        .onAppear {
-                                            if self.postsModel.isLastPost(post) {
-                                                self.fetchPreviousPosts()
-                                            }
-                                        }
-                                }
-                            }
-                            .padding(.bottom, 24)
-                            .listRowInsets(EdgeInsets())
-                            .listRowBackground(Color.clear)
-                            .listRowSeparator(.hidden)
-                            .edgesIgnoringSafeArea(.horizontal)
-                        }
-                        .edgesIgnoringSafeArea(.top)
-                        .refreshable { fetchNextPosts() }
-                        .listStyle(GroupedListStyle())
-                        //                .onAppear(perform: {
-                        //                    UITableView.appearance().contentInset.top = -43
-                        //                })
                     }
-                }
-                .onAppear {
-                    URLCache.shared.memoryCapacity = 1024 * 1024 * 512
-                    fetchPosts()
-                }
-                .onDisappear {
-                    postsModel.detachListener()
+                } else {
+                    List(postsModel.posts, id: \.id) { post in
+                        VStack (alignment: .leading) {
+                            if post.uid.isEmpty && postsModel.isFetching {
+                                LoadingPostView()
+                            } else if !post.uid.isEmpty {
+                                PostRowView(post: post)
+                                    .onAppear {
+                                        if self.postsModel.isLastPost(post) {
+                                            self.fetchPreviousPosts()
+                                        }
+                                    }
+                            }
+                        }
+                        .padding(.bottom, 24)
+                        .listRowInsets(EdgeInsets())
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                        .edgesIgnoringSafeArea(.horizontal)
+                    }
+                    .edgesIgnoringSafeArea(.top)
+                    .refreshable { fetchNextPosts() }
+                    .listStyle(GroupedListStyle())
+                    //                .onAppear(perform: {
+                    //                    UITableView.appearance().contentInset.top = -43
+                    //                })
                 }
             }
             .onAppear {
-                fetchProfile()
+                URLCache.shared.memoryCapacity = 1024 * 1024 * 512
+                fetchPosts()
             }
-            .navigationTitle("Name")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(trailing: HStack {
-                let username: String = self.sessionStore.profile?.userName ?? " "
-                NavigationLink {
-                    PreferencesView(profile: sessionStore.profile)
-                } label: {
-                    Text(String(username.first!.uppercased()))
-                        .frame(width: 15, height: 15, alignment: .center)
-                        .padding()
-                        .overlay(
-                            Circle()
-                                .stroke(Color.gray, lineWidth: 1)
-                                .padding(5)
-                        )
-                        .foregroundColor(Color.primary)
-                }
-            })
+            .onDisappear {
+                postsModel.detachListener()
+            }
         }
+        .onAppear {
+            fetchProfile()
+        }
+        .navigationTitle("Name")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarItems(trailing: HStack {
+            let username: String = self.sessionStore.profile?.userName ?? " "
+            NavigationLink {
+                PreferencesView(profile: sessionStore.profile)
+            } label: {
+                Text(String(username.first!.uppercased()))
+                    .frame(width: 15, height: 15, alignment: .center)
+                    .padding()
+                    .overlay(
+                        Circle()
+                            .stroke(Color.gray, lineWidth: 1)
+                            .padding(5)
+                    )
+                    .foregroundColor(Color.primary)
+            }
+        })
     }
     
     private func fetchProfile() {
@@ -123,15 +121,22 @@ struct PostsView: View {
     }
     
     private func fetchPosts() {
-        postsModel.fetchPosts()
+        postsModel.fetchTotalCount()
+        Task.init {
+            await postsModel.fetchPosts()
+        }
     }
     
     private func fetchNextPosts() {
-        postsModel.fetchNextPosts()
+        Task.init {
+            await postsModel.fetchNextPosts()
+        }
     }
     
     private func fetchPreviousPosts() {
-        postsModel.fetchPreviousPosts()
+        Task.init {
+            await postsModel.fetchPreviousPosts()
+        }
     }
     
 }
