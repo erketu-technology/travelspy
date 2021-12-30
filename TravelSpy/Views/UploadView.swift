@@ -15,7 +15,6 @@ struct UploadView: View {
     @EnvironmentObject var postsModel: PostsModel
     
     @State var selectedPhoto: Photo
-    
     @State private var postContent: String = ""
     @State private var placeholderText: String = "Add content. (min 100 characters)"
     @State private var showingLocationsSearch = false
@@ -135,7 +134,7 @@ struct UploadView: View {
                     if error != nil {
                         print("SHARE POST \(String(describing: error?.localizedDescription))")
                     }
-                    Task.init {
+                    Task {
                         await postsModel.fetchNextPosts()
                     }
                     viewRouter.currentPage = .list

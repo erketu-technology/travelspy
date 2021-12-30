@@ -14,100 +14,177 @@ import GoogleSignIn
 
 struct LoginView: View {
     @AppStorage("login") private var login = false
-    let publicDatabase = CKContainer(identifier: "iCloud.com.erketutech.travelspy").publicCloudDatabase
+    @EnvironmentObject var sessionStore: SessionStore
     
     @State var userName: String = ""
     @State var email: String = ""
     @State var password: String = ""
-    @State var confirmPassword: String = ""
-    
     @State var showSignUpForm = false
-//    @State var isShowConfirmEmail = false
-    
-//    @State var showDetails = false
     @State var isLoading = false
+    @State var showAlert = false
+    @State var errorMsg = ""
+    //    @State var confirmPassword: String = ""
+    //    @State var isShowConfirmEmail = false
     
-    @EnvironmentObject var sessionStore: SessionStore
-//    @State var profile: UserProfile?
+    fileprivate func LoginTextField(_ placeholder: String, text: Binding<String>) -> some View {
+        return TextField(placeholder, text: text)
+            .padding()
+            .textContentType(.emailAddress)
+            .autocapitalization(.none)
+            .background(Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0))
+            .cornerRadius(12.0)
+            .padding(.bottom, 10)
+    }
     
-//    let userID = UserDefaults.standard.object(forKey: "userID") as? String
+    fileprivate func LoginSecureField(_ placeholder: String, text: Binding<String>) -> some View {
+        return SecureField(placeholder, text: text)
+            .padding()
+            .autocapitalization(.none)
+            .background(Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0))
+            .cornerRadius(12.0)
+    }
+    
+    var disableSignUpForm: Bool {
+        return userName.isEmpty || email.isEmpty || password.isEmpty
+    }
+    
+    var disableSignInForm: Bool {
+        return email.isEmpty || password.isEmpty
+    }
     
     var body: some View {
-        VStack {
-            if showSignUpForm {
-                Form {
-                    Section {
-                        TextField("username", text: $userName)
-                            .textContentType(.username)
-                            .autocapitalization(.none)
-                    }
-                    Section {
-                        TextField("Email", text: $email)
-                            .textContentType(.emailAddress)
-                            .autocapitalization(.none)
-                        SecureField("Password", text: $password)
-                            .autocapitalization(.none)
-//                        SecureField("Confirm password", text: $confirmPassword)
-//                            .autocapitalization(.none)
-                    }
-                    Button(action: { self.signUp() }) {
-                        Text("Sign up")
-                    }
-                }
-            } else {
+        NavigationView {
+            ZStack {
                 VStack {
-                    Image(systemName: "person")
-                    
-//                    if isShowConfirmEmail {
-//                        Text("Please confirm your email")
-//                    }
-                    
-                    Form {
-                        TextField("Email", text: $email)
+                    Image("mapLogoView")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .foregroundColor(Color.clear)
+                        .background(Color.clear)
+                    Spacer()
+                }
+                .padding()
+                .padding(.top, 40)
+                
+                VStack {
+                    Spacer()
+                    if showSignUpForm {
+                        TSTextField("username", text: $userName)
+                            .textContentType(.username)
+                            .padding(.bottom, 15)
+                        TSTextField("email", text: $email)
                             .textContentType(.emailAddress)
-                            .autocapitalization(.none)
-                        SecureField("Password", text: $password)
-                            .autocapitalization(.none)
+                        TSSecureField("password", text: $password)
+                            .textContentType(.password)
+                            .padding(.bottom, 15)
+                        
+                        Button(action: { self.signUp() }) {
+                            Text("Sign up")
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    disableSignUpForm ? Color.gray : Color(red: 0.331, green: 0.184, blue: 0.457)
+                                )
+                                .cornerRadius(12)
+                        }
+                        .disabled(disableSignUpForm)
+                    } else {
+                        TSTextField("email", text: $email)
+                            .textContentType(.emailAddress)
+                        TSSecureField("password", text: $password)
+                            .textContentType(.password)
+                        
+                        HStack {
+                            Spacer()
+                            NavigationLink {
+                                ResetPasswordView()
+                            } label: {
+                                Text("forgot password")
+                            }
+                        }
+                        .padding(.bottom, 20)
+                        
+                        
                         Button(action: { self.signIn() }) {
                             Text("Sign in")
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(
+                                    disableSignInForm ? Color.gray : Color(red: 0.331, green: 0.184, blue: 0.457)
+                                )
+                                .cornerRadius(12)
+                            
                         }
+                        .disabled(disableSignInForm)
                     }
+                    HStack {
+                        VStack {
+                            Divider()
+                                .background(Color.secondary)
+                        }
+                        .padding(20)
+                        
+                        Text("or")
+                            .foregroundColor(Color.secondary)
+                        VStack {
+                            Divider()
+                                .background(Color.secondary)
+                        }
+                        .padding(20)
+                    }
+                    
+                    Button(self.showSignUpForm ? "Sign up with Google" : "Sign in with Google") {
+                        self.googleSignIn()
+                    }
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemIndigo))
+                    .cornerRadius(12)
+                    .padding(.horizontal, 10)
+                    
+                    Button(action: { self.showSignUpForm.toggle() }) {
+                        Text(self.showSignUpForm ? "Have an account? Sign in instead." : "No account yet? Click here to sign up instead.")
+                    }
+                    .padding()
                 }
+                .alert(isPresented: $showAlert, content: {
+                    Alert(
+                        title: Text("Error"),
+                        message: Text(errorMsg),
+                        dismissButton: .default(Text("Okay"))
+                    )
+                })
             }
-            Button("Sign in with Google") {
-                self.googleSignIn()
-            }
-            .foregroundColor(.white)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .background(Color(.systemIndigo))
-            .cornerRadius(12)
-            .padding()
-            Button(action: { self.showSignUpForm.toggle() }) {
-                Text(self.showSignUpForm ? "Have an account? Sign in instead." : "No account yet? Click here to sign up instead.")
-            }
+            .padding(.horizontal, 10)
+            .disabled(isLoading)
+            .overlay(ProgressView()
+                        .padding(.all, 50)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .shadow(radius: 10)
+                        .opacity(isLoading ? 1 : 0))
+            
+            .navigationTitle("")
+            .navigationBarHidden(true)
         }
-        .disabled(isLoading)
-        .overlay(ProgressView()
-                    .padding(.all, 50)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .shadow(radius: 10)
-                    .opacity(isLoading ? 1 : 0))
     }
     
     func signUp() {
+        isLoading = true
         sessionStore.signUp(email: self.email, password: self.password, userName: self.userName) { (profile, error) in
             isLoading = false
             
             if let error = error {
-                print("Error when signing up: \(error)")
+                print("Error when sign up: \(error)")
+                errorMsg = error.localizedDescription
+                showAlert.toggle()
+
                 return
             }
-//            self.profile = profile
-//            self.showDetails.toggle()
-            
-//            self.isShowConfirmEmail = true
+            //            self.isShowConfirmEmail = true
             self.showSignUpForm = false
         }
     }
@@ -118,11 +195,12 @@ struct LoginView: View {
             isLoading = false
             
             if let error = error {
-                print("Error when signing up: \(error)")
+                print("Error when sign in: \(error)")
+                errorMsg = "Incorrect email or password"
+                showAlert.toggle()
+
                 return
             }
-//            self.profile = profile
-//            self.showDetails.toggle()
         }
     }
     

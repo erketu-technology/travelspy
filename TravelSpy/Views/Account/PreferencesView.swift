@@ -15,7 +15,6 @@ struct PreferencesView: View {
     private let userName: String
     
     init(profile: UserProfile?) {
-//        _userName = State(wrappedValue: profile?.userName ?? "")
         userName = profile?.userName ?? ""
     }
     
@@ -23,11 +22,10 @@ struct PreferencesView: View {
         VStack {
             List {
                 Section("Security") {
-                    Button {
-                        print("Password")
+                    NavigationLink {
+                        ChangePasswordView()
                     } label: {
                         Text("Password")
-                            .foregroundColor(Color.primary)
                     }
                 }
                 

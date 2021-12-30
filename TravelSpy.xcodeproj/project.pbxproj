@@ -18,6 +18,10 @@
 		5A2C7C67275048B90052D821 /* TravelSpyUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C66275048B90052D821 /* TravelSpyUITestsLaunchTests.swift */; };
 		5A393C67277CFD7600D7E1E4 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A393C66277CFD7600D7E1E4 /* MapView.swift */; };
 		5A393C68277D1FD400D7E1E4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A44A68F276382C8004327E7 /* GoogleService-Info.plist */; };
+		5A393C6C277D22EC00D7E1E4 /* ChangePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A393C6B277D22EC00D7E1E4 /* ChangePasswordView.swift */; };
+		5A3D1395277E63F8004F70C0 /* ResetPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3D1394277E63F8004F70C0 /* ResetPasswordView.swift */; };
+		5A3D1399277E6527004F70C0 /* TSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3D1398277E6527004F70C0 /* TSTextField.swift */; };
+		5A3D139B277E688E004F70C0 /* TSSecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3D139A277E688E004F70C0 /* TSSecureField.swift */; };
 		5A44A68E27637FAC004327E7 /* PostsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44A68D27637FAC004327E7 /* PostsModel.swift */; };
 		5A44A6932763843B004327E7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5A44A6922763843B004327E7 /* FirebaseAnalytics */; };
 		5A44A6952763843B004327E7 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 5A44A6942763843B004327E7 /* FirebaseAnalyticsSwift-Beta */; };
@@ -107,6 +111,10 @@
 		5A2C7C64275048B90052D821 /* TravelSpyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelSpyUITests.swift; sourceTree = "<group>"; };
 		5A2C7C66275048B90052D821 /* TravelSpyUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelSpyUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		5A393C66277CFD7600D7E1E4 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		5A393C6B277D22EC00D7E1E4 /* ChangePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordView.swift; sourceTree = "<group>"; };
+		5A3D1394277E63F8004F70C0 /* ResetPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordView.swift; sourceTree = "<group>"; };
+		5A3D1398277E6527004F70C0 /* TSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSTextField.swift; sourceTree = "<group>"; };
+		5A3D139A277E688E004F70C0 /* TSSecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSSecureField.swift; sourceTree = "<group>"; };
 		5A44A68D27637FAC004327E7 /* PostsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsModel.swift; sourceTree = "<group>"; };
 		5A44A68F276382C8004327E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A44A6C627639066004327E7 /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -225,6 +233,7 @@
 		5A2C7C43275048B80052D821 /* TravelSpy */ = {
 			isa = PBXGroup;
 			children = (
+				5A3D1397277E650F004F70C0 /* Utils */,
 				5A5DD36F275E841400CF8EBD /* TravelSpy.entitlements */,
 				5AD82697275968FF00EF141E /* Controllers */,
 				5A99BC802758259000D3D51D /* Models */,
@@ -269,10 +278,29 @@
 			path = TravelSpyUITests;
 			sourceTree = "<group>";
 		};
+		5A393C69277D22C800D7E1E4 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */,
+				5A393C6B277D22EC00D7E1E4 /* ChangePasswordView.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		5A3D1397277E650F004F70C0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5A3D1398277E6527004F70C0 /* TSTextField.swift */,
+				5A3D139A277E688E004F70C0 /* TSSecureField.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		5A485B6C275131DA00A44243 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5AA57DCF277BB0BF00E90430 /* tabs */,
+				5A393C69277D22C800D7E1E4 /* Account */,
+				5AA57DCF277BB0BF00E90430 /* Tabs */,
 				5A07B8CA2773F12C000B56ED /* Post */,
 				5A2C7C46275048B80052D821 /* PostsView.swift */,
 				5A99BC772757F96C00D3D51D /* UploadView.swift */,
@@ -280,9 +308,9 @@
 				5A5DD375275E8BBE00CF8EBD /* LoginView.swift */,
 				5ABB574A2769542B00C867AA /* MainView.swift */,
 				5A98274D2774DAAB00F938F0 /* TruncableTextView.swift */,
-				5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */,
 				5A88C190277B623A00A2083B /* PostsExploreView.swift */,
 				5A393C66277CFD7600D7E1E4 /* MapView.swift */,
+				5A3D1394277E63F8004F70C0 /* ResetPasswordView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -317,12 +345,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		5AA57DCF277BB0BF00E90430 /* tabs */ = {
+		5AA57DCF277BB0BF00E90430 /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
 				5AA57DD0277BB0DA00E90430 /* TabBarIconView.swift */,
 			);
-			path = tabs;
+			path = Tabs;
 			sourceTree = "<group>";
 		};
 		5AD826942759689B00EF141E /* ViewModels */ = {
@@ -509,6 +537,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A3D1395277E63F8004F70C0 /* ResetPasswordView.swift in Sources */,
 				5A9827502774DB5A00F938F0 /* Extensions.swift in Sources */,
 				5ADCBDB1277250D700739A3D /* TravelSpy.xcdatamodeld in Sources */,
 				5A44A6D027680EA6004327E7 /* UserProfileRepository.swift in Sources */,
@@ -516,6 +545,7 @@
 				5AA57DD1277BB0DA00E90430 /* TabBarIconView.swift in Sources */,
 				5A99BC822758259F00D3D51D /* Location.swift in Sources */,
 				5A99BC7A2758164700D3D51D /* SearchBarView.swift in Sources */,
+				5A393C6C277D22EC00D7E1E4 /* ChangePasswordView.swift in Sources */,
 				5A44A6CD27650DFD004327E7 /* Post.swift in Sources */,
 				5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */,
 				5A99BC782757F96C00D3D51D /* UploadView.swift in Sources */,
@@ -530,11 +560,13 @@
 				5A44A68E27637FAC004327E7 /* PostsModel.swift in Sources */,
 				5A44A6C727639066004327E7 /* Coordinate.swift in Sources */,
 				5A99BC7D275816C600D3D51D /* LocationSearchService.swift in Sources */,
+				5A3D139B277E688E004F70C0 /* TSSecureField.swift in Sources */,
 				5AD82693275962D100EF141E /* Photo.swift in Sources */,
 				5A886243276FC81F00443A87 /* TSImagePicker.swift in Sources */,
 				5A2C7C47275048B80052D821 /* PostsView.swift in Sources */,
 				5A98275627761ACD00F938F0 /* PostRowView.swift in Sources */,
 				5A98274E2774DAAB00F938F0 /* TruncableTextView.swift in Sources */,
+				5A3D1399277E6527004F70C0 /* TSTextField.swift in Sources */,
 				5A2C7C45275048B80052D821 /* TravelSpyApp.swift in Sources */,
 				5A13C065277895EE00667461 /* LoadingPostView.swift in Sources */,
 				5AA57DCC277B7CDD00E90430 /* ViewRouter.swift in Sources */,

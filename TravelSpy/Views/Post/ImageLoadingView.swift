@@ -21,10 +21,6 @@ struct ImageLoadingView: View {
             if imageLoader.image != nil {
                 Image(uiImage: imageLoader.image!)
                     .resizable()
-//                    .scaledToFill()
-//                    .frame(height: imageSize)
-//                    .frame(maxWidth: .infinity)
-//                    .clipped()
             } else if imageLoader.errorMessage != nil {
                 Text(imageLoader.errorMessage!)
             } else {

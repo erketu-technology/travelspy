@@ -10,8 +10,11 @@ import Combine
 import Firebase
 import GoogleSignIn
 
+enum SessionError: String, Error {
+    case userNotFound = "user is not found"
+}
+
 class SessionStore: NSObject, ObservableObject {
-    
     enum SignInState {
         case signedIn
         case signedOut
@@ -21,12 +24,6 @@ class SessionStore: NSObject, ObservableObject {
     @Published var profile: UserProfile?
     
     private var profileRepository = UserProfileRepository()
-    
-//    override init() {
-//        super.init()
-//        print("AUTHHHH INIT")
-//        self.fetchProfile()
-//    }
     
     func signUp(email: String, password: String, userName: String, completion: @escaping (_ profile: UserProfile?, _ error: Error?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
@@ -39,10 +36,10 @@ class SessionStore: NSObject, ObservableObject {
             guard let user = result?.user else { return }
             print("User \(user.uid) signed up.")
             
-//            Auth.auth().currentUser?.sendEmailVerification(completion: { error in
-//                print("sendEmailVerification \(String(describing: error?.localizedDescription))")
-//            })
-//            signOut()
+            //            Auth.auth().currentUser?.sendEmailVerification(completion: { error in
+            //                print("sendEmailVerification \(String(describing: error?.localizedDescription))")
+            //            })
+            //            signOut()
             let userProfile = UserProfile(uid: user.uid, userName: userName, email: email)
             
             self.profileRepository.createProfile(profile: userProfile) { (profile, error) in
@@ -69,11 +66,11 @@ class SessionStore: NSObject, ObservableObject {
             guard let user = result?.user else { return }
             
             print("User \(user.uid) signed in.")
-//            if !user.isEmailVerified {
-//                completion(nil, error)
-//                return
-//            }
-                   
+            //            if !user.isEmailVerified {
+            //                completion(nil, error)
+            //                return
+            //            }
+            
             self.fetchProfile() { profile, error in
                 self.state = .signedIn
                 completion(profile, nil)
@@ -125,7 +122,7 @@ class SessionStore: NSObject, ObservableObject {
                 
                 let userName = user?.profile?.name ?? ""
                 let userProfile = UserProfile(uid: firUser.uid, userName: userName, email: firUser.email!)
-                                
+
                 self.profileRepository.createProfile(profile: userProfile) { (profile, error) in
                     if let error = error {
                         print("Error while fetching the user profile: \(error)")
@@ -141,6 +138,7 @@ class SessionStore: NSObject, ObservableObject {
         }
     }
     
+    @MainActor
     func signOut() {
         GIDSignIn.sharedInstance.signOut()
         
@@ -152,6 +150,36 @@ class SessionStore: NSObject, ObservableObject {
         }
         catch let signOutError as NSError {
             print("Error signing out: \(signOutError)")
+        }
+    }
+    
+    func changePassword(currentPassword: String, newPassword: String, completion: @escaping (Error?) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            completion(SessionError.userNotFound)
+            return
+        }
+        
+        guard let email = user.email else {
+            completion(SessionError.userNotFound)
+            return
+        }
+        
+        let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
+        user.reauthenticate(with: credential, completion: { (result, error) in
+            if let error = error {
+                completion(error)
+            }
+            else {
+                user.updatePassword(to: newPassword, completion: { (error) in
+                    completion(error)
+                })
+            }
+        })
+    }
+    
+    func resetPassword(email: String, completion: @escaping (Error?) -> Void) {
+        Auth.auth().sendPasswordReset(withEmail: email) { error in
+            completion(error)
         }
     }
 }
