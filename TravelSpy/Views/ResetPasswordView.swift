@@ -23,35 +23,30 @@ struct ResetPasswordView: View {
     
     var body: some View {
         VStack {
-            Form {
-                Section("Enter email") {
-                    TSTextField("email", text: $email)
-                }
-                
-                Button(action: { self.resetPassword() }) {
-                    Text("Submit")
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            disableForm ? Color.gray : Color(red: 0.331, green: 0.184, blue: 0.457)
-                        )
-                        .cornerRadius(12)
-                }
-                .disabled(disableForm)
+            TSTextField("Email", text: $email)
+            
+            Button(action: { self.resetPassword() }) {
+                Text("Submit")
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        disableForm ? Color.gray : Color(red: 0.331, green: 0.184, blue: 0.457)
+                    )
+                    .cornerRadius(12)
             }
-            .onAppear {
-                UITableView.appearance().backgroundColor = .clear
-            } .onDisappear {
-                UITableView.appearance().backgroundColor = .systemGroupedBackground
-            }
-            .overlay(ProgressView()
-                        .padding(.all, 50)
-                        .background(Color.white)
-                        .cornerRadius(10)
-                        .shadow(radius: 10)
-                        .opacity(isLoading ? 1 : 0))
+            .disabled(disableForm)
+            
+            Spacer()
         }
+        .overlay(ProgressView()
+                    .padding(.all, 50)
+                    .background(Color.white)
+                    .cornerRadius(10)
+                    .shadow(radius: 10)
+                    .opacity(isLoading ? 1 : 0))
+        .padding()
+        .padding(.top, 30)
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("Reset password")
         .alert(isPresented: $showAlert, content: {

@@ -69,6 +69,8 @@ struct PostsExploreView: View {
                 }
             }
         }
+        .navigationBarHidden(true)
+        .navigationBarTitle("")
         .onAppear {
             postsModel.fetchTotalCount()
             fetchPosts()

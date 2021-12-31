@@ -21,6 +21,14 @@ struct PreferencesView: View {
     var body: some View {
         VStack {
             List {
+                Section("Account") {
+                    NavigationLink {
+                        ChangeUsernameView()
+                    } label: {
+                        Text("Username")
+                    }
+                }
+                
                 Section("Security") {
                     NavigationLink {
                         ChangePasswordView()
@@ -29,7 +37,7 @@ struct PreferencesView: View {
                     }
                 }
                 
-                Section("Account") {
+                Section {
                     Button {
                         showingLogOutAlert = true
                     } label: {
@@ -40,7 +48,7 @@ struct PreferencesView: View {
                         Alert(
                             title: Text("Are you sure you want to log out?"),
                             primaryButton: .destructive(Text("Log Out")) {
-                                sessionStore.signOut()
+                                self.signOut()
                             },
                             secondaryButton: .cancel()
                         )
@@ -50,6 +58,11 @@ struct PreferencesView: View {
             }
         }
         .navigationTitle(userName)
+    }
+    
+    func signOut() {
+        sessionStore.signOut()
+        sessionStore.state = .signedOut
     }
 }
 

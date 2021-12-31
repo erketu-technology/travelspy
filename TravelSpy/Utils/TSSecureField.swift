@@ -17,11 +17,11 @@ struct TSSecureField: View {
     }
     
     var body: some View {
-        SecureField(placeholder, text: text)
-            .padding()
-            .autocapitalization(.none)
-            .background(Color(red: 239.0/255.0, green: 243.0/255.0, blue: 244.0/255.0))
-            .cornerRadius(12.0)
+        VStack {
+            SecureField(placeholder, text: text)
+            Divider()
+        }
+        .padding(.bottom, 7)
     }
 }
 

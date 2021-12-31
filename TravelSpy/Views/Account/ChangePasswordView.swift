@@ -19,6 +19,9 @@ struct ChangePasswordView: View {
     
     var body: some View {
         VStack {
+            TSSecureField("current password", text: $currentPassword)
+            Spacer()
+                        
             Section {
                 SecureField("current password", text: $currentPassword)
             }

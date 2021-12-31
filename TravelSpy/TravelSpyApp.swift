@@ -8,6 +8,8 @@
 import SwiftUI
 import Firebase
 
+// Apperance: light ony # in Info.plist
+
 @main
 struct TravelSpyApp: App {
     let persistenceController = PersistenceController.shared

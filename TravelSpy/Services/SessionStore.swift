@@ -144,9 +144,7 @@ class SessionStore: NSObject, ObservableObject {
         
         do {
             try Auth.auth().signOut()
-            self.profile = nil
-            
-            state = .signedOut
+            self.profile = nil            
         }
         catch let signOutError as NSError {
             print("Error signing out: \(signOutError)")

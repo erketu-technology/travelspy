@@ -67,88 +67,95 @@ struct LoginView: View {
                 .padding(.top, 40)
                 
                 VStack {
+                    
                     Spacer()
-                    if showSignUpForm {
-                        TSTextField("username", text: $userName)
-                            .textContentType(.username)
-                            .padding(.bottom, 15)
-                        TSTextField("email", text: $email)
-                            .textContentType(.emailAddress)
-                        TSSecureField("password", text: $password)
-                            .textContentType(.password)
-                            .padding(.bottom, 15)
-                        
-                        Button(action: { self.signUp() }) {
-                            Text("Sign up")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    disableSignUpForm ? Color.gray : Color(red: 0.331, green: 0.184, blue: 0.457)
-                                )
-                                .cornerRadius(12)
-                        }
-                        .disabled(disableSignUpForm)
-                    } else {
-                        TSTextField("email", text: $email)
-                            .textContentType(.emailAddress)
-                        TSSecureField("password", text: $password)
-                            .textContentType(.password)
-                        
-                        HStack {
-                            Spacer()
-                            NavigationLink {
-                                ResetPasswordView()
-                            } label: {
-                                Text("forgot password")
-                            }
-                        }
-                        .padding(.bottom, 20)
-                        
-                        
-                        Button(action: { self.signIn() }) {
-                            Text("Sign in")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(
-                                    disableSignInForm ? Color.gray : Color(red: 0.331, green: 0.184, blue: 0.457)
-                                )
-                                .cornerRadius(12)
+                    VStack {
+                        if showSignUpForm {
+                            TSTextField("Username", text: $userName)
+                                .textContentType(.username)
+                                .padding(.bottom, 15)
+                                .padding(.top, 10)
+                            TSTextField("Email", text: $email)
+                                .textContentType(.emailAddress)
+                            TSSecureField("Password", text: $password)
+                                .textContentType(.password)
+                                .padding(.bottom, 15)
                             
+                            Button(action: { self.signUp() }) {
+                                Text("Sign up")
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        disableSignUpForm ? Color.gray : Color(red: 0.331, green: 0.184, blue: 0.457)
+                                    )
+                                    .cornerRadius(12)
+                            }
+                            .disabled(disableSignUpForm)
+                        } else {
+                            TSTextField("Email", text: $email)
+                                .textContentType(.emailAddress)
+                                .padding(.top, 10)
+                            TSSecureField("Password", text: $password)
+                                .textContentType(.password)
+                            
+                            HStack {
+                                Spacer()
+                                NavigationLink {
+                                    ResetPasswordView()
+                                } label: {
+                                    Text("forgot password")
+                                }
+                            }
+                            .padding(.bottom, 20)
+                            
+                            
+                            Button(action: { self.signIn() }) {
+                                Text("Sign in")
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        disableSignInForm ? Color.gray : Color(red: 0.331, green: 0.184, blue: 0.457)
+                                    )
+                                    .cornerRadius(12)
+                                
+                            }
+                            .disabled(disableSignInForm)
                         }
-                        .disabled(disableSignInForm)
-                    }
-                    HStack {
-                        VStack {
-                            Divider()
-                                .background(Color.secondary)
+                        HStack {
+                            VStack {
+                                Divider()
+                                    .background(Color.secondary)
+                            }
+                            .padding(20)
+                            
+                            Text("or")
+                                .foregroundColor(Color.secondary)
+                            VStack {
+                                Divider()
+                                    .background(Color.secondary)
+                            }
+                            .padding(20)
                         }
-                        .padding(20)
                         
-                        Text("or")
-                            .foregroundColor(Color.secondary)
-                        VStack {
-                            Divider()
-                                .background(Color.secondary)
+                        Button(self.showSignUpForm ? "Sign up with Google" : "Sign in with Google") {
+                            self.googleSignIn()
                         }
-                        .padding(20)
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color(.systemIndigo))
+                        .cornerRadius(12)
+                        .padding(.horizontal, 10)
+                        
+                        Button(action: { self.showSignUpForm.toggle() }) {
+                            Text(self.showSignUpForm ? "Have an account? Sign in instead." : "No account yet? Click here to sign up instead.")
+                        }
+                        .padding()
                     }
-                    
-                    Button(self.showSignUpForm ? "Sign up with Google" : "Sign in with Google") {
-                        self.googleSignIn()
-                    }
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color(.systemIndigo))
-                    .cornerRadius(12)
-                    .padding(.horizontal, 10)
-                    
-                    Button(action: { self.showSignUpForm.toggle() }) {
-                        Text(self.showSignUpForm ? "Have an account? Sign in instead." : "No account yet? Click here to sign up instead.")
-                    }
-                    .padding()
+                    .background(Color.white.opacity(0.7))
+                    .shadow(color: Color.white, radius: 7)
                 }
                 .alert(isPresented: $showAlert, content: {
                     Alert(
@@ -181,7 +188,7 @@ struct LoginView: View {
                 print("Error when sign up: \(error)")
                 errorMsg = error.localizedDescription
                 showAlert.toggle()
-
+                
                 return
             }
             //            self.isShowConfirmEmail = true
@@ -198,7 +205,7 @@ struct LoginView: View {
                 print("Error when sign in: \(error)")
                 errorMsg = "Incorrect email or password"
                 showAlert.toggle()
-
+                
                 return
             }
         }
