@@ -18,58 +18,51 @@ struct ChangePasswordView: View {
     @State var errorMessage = ""
     
     var body: some View {
-        VStack {
-            TSSecureField("current password", text: $currentPassword)
-            Spacer()
-                        
-            Section {
-                SecureField("current password", text: $currentPassword)
-            }
-            Divider()
+        ActivityIndicator(isShowing: $isLoading) {
+            VStack {
+                Section {
+                    TSSecureField("current password", text: $currentPassword)
+                }
                 .padding(.bottom, 20)
-            Section {
-                SecureField("new password", text: $newPassword)
-                Divider()
-                SecureField("confirm password", text: $confirmPassword)
-                Divider()
+                
+                Section {
+                    TSSecureField("new password", text: $newPassword)
+                    TSSecureField("confirm password", text: $confirmPassword)
+                }
+                
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                        .foregroundColor(Color.red)
+                        .font(.system(size: 13))
+                }
+                
+                Spacer()
             }
-            
-            Text(errorMessage)
-                .foregroundColor(Color.red)
-                .font(.system(size: 13))
-            
-            Spacer()
-        }
-        .padding()
-        .disabled(isLoading)
-        .overlay(ProgressView()
-                    .padding(.all, 50)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .shadow(radius: 10)
-                    .opacity(isLoading ? 1 : 0))
-        .navigationTitle("Change password")
-        .navigationBarItems(
-            trailing: (
-                Button(action: {
-                    changePassword()
-                }, label: {
-                    Text("Save")
-                })
-                    .disabled(
-                        currentPassword.isEmpty ||
-                        newPassword.isEmpty ||
-                        newPassword != confirmPassword
-                    )
-            )
+            .padding()
+            .padding(.top, 30)
+            .navigationTitle("Change password")
+            .navigationBarItems(
+                trailing: (
+                    Button(action: {
+                        changePassword()
+                    }, label: {
+                        Text("Save")
+                    })
+                        .disabled(
+                            currentPassword.isEmpty ||
+                            newPassword.isEmpty ||
+                            newPassword != confirmPassword
+                        )
+                )
         )
+        }
     }
     
     private func changePassword() {
         isLoading = true
         errorMessage = ""
         sessionStore.changePassword(currentPassword: currentPassword, newPassword: newPassword) { error in
-            
+
             isLoading = false
             if error != nil {
                 errorMessage = error!.localizedDescription

@@ -144,7 +144,7 @@ class SessionStore: NSObject, ObservableObject {
         
         do {
             try Auth.auth().signOut()
-            self.profile = nil            
+            self.profile = nil
         }
         catch let signOutError as NSError {
             print("Error signing out: \(signOutError)")
@@ -152,16 +152,11 @@ class SessionStore: NSObject, ObservableObject {
     }
     
     func changePassword(currentPassword: String, newPassword: String, completion: @escaping (Error?) -> Void) {
-        guard let user = Auth.auth().currentUser else {
+        guard let user = Auth.auth().currentUser, let email = user.email else {
             completion(SessionError.userNotFound)
             return
         }
-        
-        guard let email = user.email else {
-            completion(SessionError.userNotFound)
-            return
-        }
-        
+
         let credential = EmailAuthProvider.credential(withEmail: email, password: currentPassword)
         user.reauthenticate(with: credential, completion: { (result, error) in
             if let error = error {

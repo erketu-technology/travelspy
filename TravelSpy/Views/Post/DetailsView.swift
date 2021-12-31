@@ -105,7 +105,6 @@ struct DetailsView: View {
                             HStack {
                                 Spacer()
                                 Button(action: {
-                                    print("Tapped")
                                     isShowMap.toggle()
                                 }) {
                                     Image(systemName: "xmark.circle")

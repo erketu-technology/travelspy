@@ -23,6 +23,7 @@
 		5A3D1399277E6527004F70C0 /* TSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3D1398277E6527004F70C0 /* TSTextField.swift */; };
 		5A3D139B277E688E004F70C0 /* TSSecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3D139A277E688E004F70C0 /* TSSecureField.swift */; };
 		5A3D139D277E77B3004F70C0 /* ChangeUsernameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3D139C277E77B3004F70C0 /* ChangeUsernameView.swift */; };
+		5A3D139F277E93BE004F70C0 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3D139E277E93BE004F70C0 /* ActivityIndicator.swift */; };
 		5A44A68E27637FAC004327E7 /* PostsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44A68D27637FAC004327E7 /* PostsModel.swift */; };
 		5A44A6932763843B004327E7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 5A44A6922763843B004327E7 /* FirebaseAnalytics */; };
 		5A44A6952763843B004327E7 /* FirebaseAnalyticsSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 5A44A6942763843B004327E7 /* FirebaseAnalyticsSwift-Beta */; };
@@ -117,6 +118,7 @@
 		5A3D1398277E6527004F70C0 /* TSTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSTextField.swift; sourceTree = "<group>"; };
 		5A3D139A277E688E004F70C0 /* TSSecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSSecureField.swift; sourceTree = "<group>"; };
 		5A3D139C277E77B3004F70C0 /* ChangeUsernameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeUsernameView.swift; sourceTree = "<group>"; };
+		5A3D139E277E93BE004F70C0 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		5A44A68D27637FAC004327E7 /* PostsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsModel.swift; sourceTree = "<group>"; };
 		5A44A68F276382C8004327E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A44A6C627639066004327E7 /* Coordinate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 			children = (
 				5A3D1398277E6527004F70C0 /* TSTextField.swift */,
 				5A3D139A277E688E004F70C0 /* TSSecureField.swift */,
+				5A3D139E277E93BE004F70C0 /* ActivityIndicator.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				5A393C6C277D22EC00D7E1E4 /* ChangePasswordView.swift in Sources */,
 				5A44A6CD27650DFD004327E7 /* Post.swift in Sources */,
 				5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */,
+				5A3D139F277E93BE004F70C0 /* ActivityIndicator.swift in Sources */,
 				5A99BC782757F96C00D3D51D /* UploadView.swift in Sources */,
 				5A3D139D277E77B3004F70C0 /* ChangeUsernameView.swift in Sources */,
 				5A2C7C4E275048B90052D821 /* Persistence.swift in Sources */,
