@@ -23,7 +23,7 @@ struct PreferencesView: View {
             List {
                 Section("Account") {
                     NavigationLink {
-                        ChangeUsernameView()
+                        ChangeUsernameView(userName: userName)
                     } label: {
                         Text("Username")
                     }

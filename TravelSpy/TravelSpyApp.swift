@@ -16,6 +16,7 @@ struct TravelSpyApp: App {
     @StateObject var sessionStore = SessionStore()
     @StateObject var viewRouter = ViewRouter()
     @StateObject var postsModel = PostsModel()
+    @StateObject var viewAlertModel = AlertViewModel()
     
     init() {
         FirebaseApp.configure()
@@ -28,6 +29,10 @@ struct TravelSpyApp: App {
                 .environmentObject(sessionStore)
                 .environmentObject(viewRouter)
                 .environmentObject(postsModel)
+                .environmentObject(viewAlertModel)
+                .toast(isPresenting: $viewAlertModel.show, duration: 0.0, tapToDismiss: true) {
+                    viewAlertModel.alertToast
+                }
         }
     }
 }

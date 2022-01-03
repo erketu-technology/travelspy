@@ -41,4 +41,10 @@ class UserProfileRepository: ObservableObject {
         let profile = try? await db.collection("users").document(userId).getDocument()
         return try? profile?.data(as: UserProfile.self)
     }
+    
+    func updateProfile(userId: String, userName: String, completion: @escaping (_ error: Error?) -> Void) {
+        db.collection("users").document(userId).setData(["userName": userName], merge: true) { error in
+            completion(error)
+        }
+    }
 }

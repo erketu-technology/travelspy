@@ -119,21 +119,30 @@ class SessionStore: NSObject, ObservableObject {
             let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: authentication.accessToken)
             Auth.auth().signIn(with: credential) { authResult, error in
                 guard let firUser = authResult?.user else { return }
-                
-                let userName = user?.profile?.name ?? ""
-                let userProfile = UserProfile(uid: firUser.uid, userName: userName, email: firUser.email!)
 
-                self.profileRepository.createProfile(profile: userProfile) { (profile, error) in
-                    if let error = error {
-                        print("Error while fetching the user profile: \(error)")
-                        completion(nil, error)
+                self.fetchProfile() { profile, error in
+                    guard profile == nil else {
+                        self.profile = profile
+                        self.state = .signedIn
+                        
+                        completion(profile, nil)
                         return
                     }
-                    self.profile = profile
-                    self.state = .signedIn
-                    completion(profile, nil)
+                    
+                    let userName = user?.profile?.name ?? ""
+                    let userProfile = UserProfile(uid: firUser.uid, userName: userName, email: firUser.email!)
+                    
+                    self.profileRepository.createProfile(profile: userProfile) { (profile, error) in
+                        if let error = error {
+                            print("Error while fetching the user profile: \(error)")
+                            completion(nil, error)
+                            return
+                        }
+                        self.profile = profile
+                        self.state = .signedIn
+                        completion(profile, nil)
+                    }
                 }
-                
             }
         }
     }
@@ -173,6 +182,20 @@ class SessionStore: NSObject, ObservableObject {
     func resetPassword(email: String, completion: @escaping (Error?) -> Void) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             completion(error)
+        }
+    }
+    
+    func changeUsername(userName: String, completion: @escaping (Error?) -> Void) {
+        guard let user = Auth.auth().currentUser else { return }
+        
+        profileRepository.updateProfile(userId: user.uid, userName: userName) { error in
+            if error != nil {
+                print("### changeUsername: \(error!.localizedDescription)")
+                completion(error)
+            } else {
+                self.profile?.userName = userName
+                completion(nil)
+            }
         }
     }
 }
