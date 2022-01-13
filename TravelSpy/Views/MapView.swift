@@ -8,22 +8,24 @@
 import Foundation
 import SwiftUI
 import MapKit
+import Firebase
+import FirebaseFirestoreSwift
 
 struct MapView: UIViewRepresentable {
-    let post: Post
+    let location: Location
     
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         
         let region = MKCoordinateRegion(
-            center: CLLocationCoordinate2D(latitude: post.placemark.latitude, longitude: post.placemark.longitude),
+            center: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude),
             span: MKCoordinateSpan(latitudeDelta: 0.8, longitudeDelta: 0.8)
         )
         mapView.region = region
         
         let annotation = MKPointAnnotation()
-        annotation.coordinate = CLLocationCoordinate2D(latitude: post.placemark.latitude, longitude: post.placemark.longitude)
+        annotation.coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
         mapView.addAnnotation(annotation)
         
         return mapView
@@ -32,17 +34,17 @@ struct MapView: UIViewRepresentable {
     func updateUIView(_ view: MKMapView, context: Context) {}
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(parent: self, post: post)
+        Coordinator(parent: self, location: location)
     }
     
     class Coordinator: NSObject, MKMapViewDelegate {
         
         var parent: MapView
-        var post: Post
+        var location: Location
         
-        init(parent: MapView, post: Post) {
+        init(parent: MapView, location: Location) {
             self.parent = parent
-            self.post = post
+            self.location = location
         }
     }
     

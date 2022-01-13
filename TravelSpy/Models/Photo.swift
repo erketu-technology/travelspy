@@ -16,7 +16,7 @@ struct Photo: Identifiable {
     var cropped = UIImage()
     var asset: PHAsset?
     
-    func getLocation(completion: @escaping (_ location: Location) -> Void) {
+    func getLocation() async -> Location? {
         let latitude = asset?.location?.coordinate.latitude ?? 0.0
         let longitude = asset?.location?.coordinate.longitude ?? 0.0
         
@@ -24,16 +24,12 @@ struct Photo: Identifiable {
                 
         
         let location = CLLocation(latitude: latitude, longitude: longitude)
-        geoCoder.reverseGeocodeLocation(location) { placemarks, error in
-            // Place details
-            guard let placeMark = placemarks?.first else { return }
-                        
-            let country = placeMark.country ?? ""
-            let city = placeMark.locality ?? ""
-            
-            let location = Location(city: city, country: country, latitude: latitude, longitude: longitude)
-                        
-            completion(location)
-        }
+        let placemarks = try? await geoCoder.reverseGeocodeLocation(location)
+        guard let placeMark = placemarks?.first else { return nil }
+
+        let country = placeMark.country ?? ""
+        let city = placeMark.locality ?? ""
+
+        return Location(city: city, country: country, latitude: latitude, longitude: longitude)
     }
 }

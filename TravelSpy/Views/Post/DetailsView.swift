@@ -95,32 +95,7 @@ struct DetailsView: View {
     var body: some View {
         VStack {
             if isShowMap {
-                GeometryReader { geometry in
-                    ZStack {
-                        MapView(post: post)
-                            .ignoresSafeArea()
-                        VStack {
-                            
-                            Spacer()
-                            HStack {
-                                Spacer()
-                                Button(action: {
-                                    isShowMap.toggle()
-                                }) {
-                                    Image(systemName: "xmark.circle")
-                                        .resizable()
-                                        .frame(width: 40, height: 40)
-                                        .foregroundColor(Color.white.opacity(0.95))
-                                        .padding()
-                                        .padding(.top, 30)
-                                        .padding(.trailing, 20)
-                                }
-                            }
-                            .frame(width: geometry.size.width, height: 50)
-                            .background(Color.primary.opacity(0.4))
-                        }
-                    }
-                }
+                PostMapView(post: post, isShowMap: $isShowMap)
             } else {
                 ScrollView {
                     VStack {

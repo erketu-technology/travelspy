@@ -98,7 +98,7 @@ class PostsModel: ObservableObject {
                 "images": [
                     ["croppedUrl": uploadedUrls.croppedUrl]
                 ],
-                "location": GeoPoint(latitude: locationItem.latitude!, longitude: locationItem.longitude!),
+                "location": GeoPoint(latitude: locationItem.latitude, longitude: locationItem.longitude),
                 "locationCity": locationItem.city,
                 "locationCountry": locationItem.country,
                 "createdAt": Date(),
@@ -121,6 +121,28 @@ class PostsModel: ObservableObject {
     
     func deletePost(post: Post) {
         // delete
+    }
+    
+    @MainActor
+    func fetchPostsFor(location: Location) async {
+//        guard !isFetching && posts.isEmpty else { return }
+
+        let snapshot = try? await postsDB().whereField("locationCity", isEqualTo: location.city)
+            .whereField("locationCountry", isEqualTo: location.country)
+            .limit(to: 10).getDocuments()
+        
+        guard let snapshot = snapshot else {
+//            isFetching = false
+            return
+        }
+        
+        for document in snapshot.documents {
+            let post = await createPostRecord(document: document)
+            guard let post = post else { continue }
+            posts.append(post)
+        }
+        
+        isFetching = false
     }
     
     @MainActor
@@ -239,20 +261,21 @@ class PostsModel: ObservableObject {
         let profile = await profileRepository.fetchProfile(userId: uid)
         guard let profile = profile else { return nil }
                 
+        let geoPoint = data["location"] as! GeoPoint
+        let location = Location(city: data["locationCity"] as! String,
+                                country: data["locationCountry"] as! String,
+                                latitude: geoPoint.latitude,
+                                longitude: geoPoint.longitude)
         
-        let post = Post(
-            id: document.documentID,
-            content: data["content"] as! String,
-            locationCity: data["locationCity"] as! String,
-            locationCountry: data["locationCountry"] as! String,
-            placemark: data["location"] as! GeoPoint,
-            uid: uid,
-            createdAt: createdAtTimestamp.dateValue(),
-            updatedAt: updatedAtTimestamp.dateValue(),
-            images: data["images"] as! [Dictionary<String, String?>],
-            user: profile
-        )
-        
+        let post = Post(id: document.documentID,
+                        uid: uid,
+                        content: data["content"] as! String,
+                        location: location,
+                        createdAt: createdAtTimestamp.dateValue(),
+                        updatedAt: updatedAtTimestamp.dateValue(),
+                        images: data["images"] as! [Dictionary<String, String?>],
+                        user: profile
+        )        
         return post
     }
     

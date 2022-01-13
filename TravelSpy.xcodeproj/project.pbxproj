@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A0A22D6278E405B004C002E /* MapPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0A22D5278E405B004C002E /* MapPageView.swift */; };
 		5A13C065277895EE00667461 /* LoadingPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A13C064277895EE00667461 /* LoadingPostView.swift */; };
 		5A2C7C45275048B80052D821 /* TravelSpyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C44275048B80052D821 /* TravelSpyApp.swift */; };
 		5A2C7C47275048B80052D821 /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C46275048B80052D821 /* PostsView.swift */; };
@@ -61,6 +62,7 @@
 		5A50BA582770FFF7007262B4 /* YPImagePicker in Frameworks */ = {isa = PBXBuildFile; productRef = 5A50BA572770FFF7007262B4 /* YPImagePicker */; };
 		5A5DD372275E842600CF8EBD /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5DD371275E842600CF8EBD /* CloudKit.framework */; };
 		5A5DD376275E8BBE00CF8EBD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5DD375275E8BBE00CF8EBD /* LoginView.swift */; };
+		5A7FBFEA278E3B5600FAB548 /* PostMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7FBFE9278E3B5600FAB548 /* PostMapView.swift */; };
 		5A886243276FC81F00443A87 /* TSImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A886242276FC81F00443A87 /* TSImagePicker.swift */; };
 		5A88C18F277B620D00A2083B /* WaterfallGrid in Frameworks */ = {isa = PBXBuildFile; productRef = 5A88C18E277B620D00A2083B /* WaterfallGrid */; };
 		5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A88C190277B623A00A2083B /* PostsExploreView.swift */; };
@@ -100,6 +102,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5A0A22D5278E405B004C002E /* MapPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPageView.swift; sourceTree = "<group>"; };
 		5A13C064277895EE00667461 /* LoadingPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPostView.swift; sourceTree = "<group>"; };
 		5A1D58BA2750D7820008AF4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		5A2C7C41275048B80052D821 /* TravelSpy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelSpy.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +134,7 @@
 		5A5DD36F275E841400CF8EBD /* TravelSpy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TravelSpy.entitlements; sourceTree = "<group>"; };
 		5A5DD371275E842600CF8EBD /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		5A5DD375275E8BBE00CF8EBD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		5A7FBFE9278E3B5600FAB548 /* PostMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMapView.swift; sourceTree = "<group>"; };
 		5A886242276FC81F00443A87 /* TSImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSImagePicker.swift; sourceTree = "<group>"; };
 		5A88C190277B623A00A2083B /* PostsExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsExploreView.swift; sourceTree = "<group>"; };
 		5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -321,6 +325,8 @@
 				5A88C190277B623A00A2083B /* PostsExploreView.swift */,
 				5A393C66277CFD7600D7E1E4 /* MapView.swift */,
 				5A3D1394277E63F8004F70C0 /* ResetPasswordView.swift */,
+				5A7FBFE9278E3B5600FAB548 /* PostMapView.swift */,
+				5A0A22D5278E405B004C002E /* MapPageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -558,6 +564,7 @@
 				5A88CC6F2778F84A00EBCF39 /* PreferencesView.swift in Sources */,
 				5AA57DD1277BB0DA00E90430 /* TabBarIconView.swift in Sources */,
 				5A99BC822758259F00D3D51D /* Location.swift in Sources */,
+				5A0A22D6278E405B004C002E /* MapPageView.swift in Sources */,
 				5A99BC7A2758164700D3D51D /* SearchBarView.swift in Sources */,
 				5A393C6C277D22EC00D7E1E4 /* ChangePasswordView.swift in Sources */,
 				5A44A6CD27650DFD004327E7 /* Post.swift in Sources */,
@@ -583,6 +590,7 @@
 				5A98275627761ACD00F938F0 /* PostRowView.swift in Sources */,
 				5A98274E2774DAAB00F938F0 /* TruncableTextView.swift in Sources */,
 				5A3D1399277E6527004F70C0 /* TSTextField.swift in Sources */,
+				5A7FBFEA278E3B5600FAB548 /* PostMapView.swift in Sources */,
 				5A2C7C45275048B80052D821 /* TravelSpyApp.swift in Sources */,
 				5A13C065277895EE00667461 /* LoadingPostView.swift in Sources */,
 				5AA57DCC277B7CDD00E90430 /* ViewRouter.swift in Sources */,
@@ -760,7 +768,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -796,7 +804,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

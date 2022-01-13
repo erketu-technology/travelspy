@@ -10,10 +10,6 @@ import SwiftUI
 import Firebase
 import FirebaseFirestoreSwift
 
-
-// If we don't use cache need to use `:Codable` +
-// fix document.data(as: Post.self) in PostsModel
-
 struct Post: Identifiable {
     enum PostState {
         case active
@@ -21,11 +17,9 @@ struct Post: Identifiable {
     }
     
     @DocumentID var id: String?
-    var content: String
-    var locationCity: String
-    var locationCountry: String
-    var placemark: GeoPoint
     var uid: String
+    var content: String
+    var location: Location
     var createdAt: Date
     var updatedAt: Date
     var images: [
@@ -38,16 +32,14 @@ struct Post: Identifiable {
     var user: UserProfile
     
     var countryAndCity: String {
-        return [locationCountry, locationCity].filter({ !$0.isEmpty }).joined(separator: ", ")
+        return location.countryAndCity
     }
     
     static func template(content: String = "content") -> Post {
         return self.init(
-            content: content,
-            locationCity: "London",
-            locationCountry: "United Kingdom",
-            placemark: GeoPoint(latitude: 51.5072, longitude: 0.1276),
             uid: "",
+            content: content,
+            location: Location.template(),
             createdAt: Date(),
             updatedAt: Date(),
             images: [

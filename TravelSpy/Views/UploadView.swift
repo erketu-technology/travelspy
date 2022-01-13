@@ -18,7 +18,7 @@ struct UploadView: View {
     @State private var postContent: String = ""
     @State private var placeholderText: String = "Add content. (min 100 characters)"
     @State private var showingLocationsSearch = false
-    @State private var locationItem: Location = Location()
+    @State private var locationItem: Location?
     
     @ObservedObject var locationSearchService = LocationSearchService()
     @State private var progressValue: Double = 0.0
@@ -71,7 +71,7 @@ struct UploadView: View {
             
             Divider()
             Group {
-                Text(locationItem.countryAndCity)
+                Text(locationItem?.countryAndCity ?? "")
                     .padding(.leading)
                 Text("tap to choose location")
                     .italic()
@@ -123,8 +123,10 @@ struct UploadView: View {
             
             Button(action: {
                 isUploading = true
+                guard let location = locationItem else { return }
+                
                 PostsModel().addPost(content: postContent,
-                                     locationItem: locationItem,
+                                     locationItem: location,
                                      selectedPhoto: selectedPhoto,
                                      progressBlock: { progress in
                     self.progressValue = progress.croppedImageUpload + progress.originalImageUpload + progress.postUpload
@@ -164,12 +166,12 @@ struct UploadView: View {
     
     var canUpload: Bool {
         let postLength = postContent.trimmingCharacters(in: .whitespacesAndNewlines).count
-        return !postContent.isEmpty && postLength >= MIN_POST_CONTENT_SIZE && !locationItem.countryAndCity.isEmpty
+        return !postContent.isEmpty && postLength >= MIN_POST_CONTENT_SIZE && locationItem != nil && !locationItem!.countryAndCity.isEmpty
     }
     
     func getLocation() {
-        selectedPhoto.getLocation { location in
-            locationItem = location
+        Task {
+            self.locationItem = await selectedPhoto.getLocation()
         }
     }
 }
@@ -180,7 +182,6 @@ struct UploadView_Previews: PreviewProvider {
         let image = UIImage(systemName: "wind.snow")
         let selectedPhoto = Photo(original: image!, cropped: image!)
         UploadView(selectedPhoto: selectedPhoto)
-        
     }
 }
 #endif

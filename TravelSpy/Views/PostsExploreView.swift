@@ -29,10 +29,10 @@ struct PostsExploreView: View {
                             
                             HStack() {
                                 VStack(alignment: .leading) {
-                                    Text(post.locationCountry)
+                                    Text(post.location.country)
                                         .font(.system(size: 9))
                                         .foregroundColor(.primary)
-                                    Text(post.locationCity)
+                                    Text(post.location.city)
                                         .font(.system(size: 9))
                                         .foregroundColor(.secondary)
                                 }
