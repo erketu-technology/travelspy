@@ -20,7 +20,7 @@ class AlertViewModel: ObservableObject {
     @Published var show = false
     @Published var alertToast = AlertToast(type: .regular, title: "") {
         didSet {
-            show.toggle()
+            show = true
         }
     }
     

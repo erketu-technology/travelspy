@@ -12,6 +12,10 @@ import WaterfallGrid
 
 
 struct MapPageView: View {
+    @EnvironmentObject var sessionStore: SessionStore
+    @EnvironmentObject var viewAlertModel: AlertViewModel
+    @EnvironmentObject var userPostsModel: UserPostsModel
+    
     @StateObject var postsModel = PostsModel()
     
     @State private var showDetailedView = false
@@ -71,6 +75,26 @@ struct MapPageView: View {
             fetchPosts()
         }
         .navigationTitle(location.countryAndCity)
+        .navigationBarItems(trailing: Button(action: {
+            followLocation()
+        }) {
+            Image(systemName: isFollowLocation() ? "mappin.circle" : "mappin.slash.circle")
+        })
+    }
+
+    private func isFollowLocation() -> Bool {
+        return sessionStore.profile!.locationsFollowing.contains(location.key)
+    }
+
+    private func followLocation() {
+        Task {
+            let action: SessionStore.LocationAction = isFollowLocation() ? .unfollow : .follow
+            await sessionStore.followLocation(location, action: action)
+            userPostsModel.removeAll()
+
+            let actionMessage = isFollowLocation() ? "follow" : "unfollow"
+            self.viewAlertModel.setAlert(status: .success, title: "You have \(actionMessage) the location.")
+        }
     }
     
     private func openDetailedView(post: Post) {

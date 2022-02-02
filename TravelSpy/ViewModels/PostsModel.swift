@@ -41,6 +41,9 @@ class PostsModel: ObservableObject {
     @Published var posts = [Post]()
     @Published var isFetching = false
     @Published var totalCount = 0
+
+    // Hack
+    @Published var needUpdate = false
     
     var progressBarValue = ProgressBarValue()
     let db = Firestore.firestore()
@@ -62,12 +65,12 @@ class PostsModel: ObservableObject {
                 }
                 
                 documents.forEach { document in
-//                    Task {
-//                        let post = await self.createPostRecord(document: document)
-//                        if post != nil {
-//                            self.posts.append(post!)
-//                        }
-//                    }
+                    //                    Task {
+                    //                        let post = await self.createPostRecord(document: document)
+                    //                        if post != nil {
+                    //                            self.posts.append(post!)
+                    //                        }
+                    //                    }
                 }
             }
     }
@@ -103,7 +106,8 @@ class PostsModel: ObservableObject {
                 "locationCountry": locationItem.country,
                 "createdAt": Date(),
                 "updatedAt": Date(),
-                "state": "active"
+                "state": "active",
+                "followersKey": [currentUser.uid, "\(locationItem.country)#\(locationItem.city)"]
             ], completion: { error in
                 print("NO ERRORS")
                 if error != nil {
@@ -125,14 +129,14 @@ class PostsModel: ObservableObject {
     
     @MainActor
     func fetchPostsFor(location: Location) async {
-//        guard !isFetching && posts.isEmpty else { return }
+        //        guard !isFetching && posts.isEmpty else { return }
 
         let snapshot = try? await postsDB().whereField("locationCity", isEqualTo: location.city)
             .whereField("locationCountry", isEqualTo: location.country)
             .limit(to: 10).getDocuments()
         
         guard let snapshot = snapshot else {
-//            isFetching = false
+            //            isFetching = false
             return
         }
         
@@ -148,13 +152,13 @@ class PostsModel: ObservableObject {
     @MainActor
     func fetchPosts(limit: Int = 3) async {
         guard !isFetching && posts.isEmpty else { return }
-        
+        isFetching = true
         let snapshot = try? await postsDB().limit(to: limit).getDocuments()
         guard let snapshot = snapshot else {
             isFetching = false
             return
         }
-        
+
         for document in snapshot.documents {
             let post = await createPostRecord(document: document)
             guard let post = post else { continue }
@@ -168,7 +172,7 @@ class PostsModel: ObservableObject {
         lastItem.post = posts.last
         lastItem.document = snapshot.documents.last
     }
-   
+
     @MainActor
     func fetchNextPosts() async {
         guard !isFetching && posts.count > 0 && firstItem.document != nil else { return }
@@ -230,13 +234,14 @@ class PostsModel: ObservableObject {
             posts.append(templatePost)
         }
     }
-    
+
+    @MainActor
     func fetchTotalCount() {
         guard totalCount == 0 else {
             return
         }
-        
-        db.collection("posts").whereField("state", isEqualTo: "active").getDocuments { snapshot, error in
+
+        postsDB().getDocuments { snapshot, error in
             guard let snapshot = snapshot else { return }
             self.totalCount = snapshot.documents.count
         }
@@ -247,8 +252,12 @@ class PostsModel: ObservableObject {
         guard lastItem.post != nil else { return true }
         return lastItem.post?.id == post.id
     }
+
+    func removeAll() {
+        posts.removeAll()
+    }
     
-    private func postsDB() -> Query {
+    func postsDB() -> Query {
         return db.collection("posts").whereField("state", isEqualTo: "active").order(by: "createdAt", descending: true)
     }
     
@@ -260,13 +269,13 @@ class PostsModel: ObservableObject {
         let uid = data["uid"] as! String
         let profile = await profileRepository.fetchProfile(userId: uid)
         guard let profile = profile else { return nil }
-                
+
         let geoPoint = data["location"] as! GeoPoint
         let location = Location(city: data["locationCity"] as! String,
                                 country: data["locationCountry"] as! String,
                                 latitude: geoPoint.latitude,
                                 longitude: geoPoint.longitude)
-        
+
         let post = Post(id: document.documentID,
                         uid: uid,
                         content: data["content"] as! String,
@@ -274,8 +283,10 @@ class PostsModel: ObservableObject {
                         createdAt: createdAtTimestamp.dateValue(),
                         updatedAt: updatedAtTimestamp.dateValue(),
                         images: data["images"] as! [Dictionary<String, String?>],
-                        user: profile
-        )        
+                        user: profile,
+                        followersKey: data["followersKey"] as! Array<String>
+        )
+
         return post
     }
     

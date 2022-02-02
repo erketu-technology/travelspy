@@ -19,11 +19,18 @@ class SessionStore: NSObject, ObservableObject {
         case signedIn
         case signedOut
     }
+
+    enum LocationAction {
+        case follow
+        case unfollow
+    }
     
     @Published var state: SignInState = Auth.auth().currentUser != nil ? .signedIn : .signedOut
     @Published var profile: UserProfile?
-    
+
     private var profileRepository = UserProfileRepository()
+
+    static let shared = SessionStore()
     
     func signUp(email: String, password: String, userName: String, completion: @escaping (_ profile: UserProfile?, _ error: Error?) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
@@ -41,7 +48,7 @@ class SessionStore: NSObject, ObservableObject {
             //            })
             //            signOut()
             let userProfile = UserProfile(uid: user.uid, userName: userName, email: email)
-            
+
             self.profileRepository.createProfile(profile: userProfile) { (profile, error) in
                 if let error = error {
                     print("Error while fetching the user profile: \(error)")
@@ -197,5 +204,20 @@ class SessionStore: NSObject, ObservableObject {
                 completion(nil)
             }
         }
+    }
+
+    func followLocation(_ location: Location, action: LocationAction) async {
+        guard var userProfile = profile else { return }
+
+        if action == .follow {
+            userProfile.locationsFollowing.appendIfNotContains(location.key)
+        } else {
+            if let index = userProfile.locationsFollowing.firstIndex(of: location.key) {
+                userProfile.locationsFollowing.remove(at: index)
+            }
+        }
+        await profileRepository.updateProfile(profile: userProfile)
+        profile = userProfile
+        print("### update profiile")
     }
 }

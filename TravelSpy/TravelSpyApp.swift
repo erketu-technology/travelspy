@@ -13,8 +13,9 @@ import Firebase
 @main
 struct TravelSpyApp: App {
     let persistenceController = PersistenceController.shared
-    @StateObject var sessionStore = SessionStore()
+    @StateObject var sessionStore = SessionStore.shared
     @StateObject var viewRouter = ViewRouter()
+    @StateObject var userPostsModel = UserPostsModel()
     @StateObject var postsModel = PostsModel()
     @StateObject var viewAlertModel = AlertViewModel()
     
@@ -29,6 +30,7 @@ struct TravelSpyApp: App {
                 .environmentObject(sessionStore)
                 .environmentObject(viewRouter)
                 .environmentObject(postsModel)
+                .environmentObject(userPostsModel)
                 .environmentObject(viewAlertModel)
                 .toast(isPresenting: $viewAlertModel.show, duration: 0.0, tapToDismiss: true) {
                     viewAlertModel.alertToast

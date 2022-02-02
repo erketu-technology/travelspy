@@ -17,6 +17,9 @@ struct Location: Identifiable {
     var countryAndCity: String {
         return [country, city].filter({ !$0.isEmpty }).joined(separator: ", ")
     }
+    var key: String {
+        return [country, city].joined(separator: "#")
+    }
     
     static func template() -> Location {
         return self.init(

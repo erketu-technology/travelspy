@@ -9,13 +9,6 @@ import Foundation
 import Firebase
 import FirebaseFirestoreSwift
 
-struct UserProfile: Codable {
-    var uid: String
-    var userName: String
-    var gogoleUserId: String?
-    var email: String
-}
-
 class UserProfileRepository: ObservableObject {
     private var db = Firestore.firestore()
     
@@ -46,5 +39,9 @@ class UserProfileRepository: ObservableObject {
         db.collection("users").document(userId).setData(["userName": userName], merge: true) { error in
             completion(error)
         }
+    }
+
+    func updateProfile(profile: UserProfile) async {
+        try? await db.collection("users").document(profile.uid).setData(from: profile)
     }
 }

@@ -30,6 +30,7 @@ struct Post: Identifiable {
         return self.images.first?["croppedUrl"] ?? nil
     }
     var user: UserProfile
+    var followersKey: [String] = []
     
     var countryAndCity: String {
         return location.countryAndCity
@@ -43,7 +44,7 @@ struct Post: Identifiable {
             createdAt: Date(),
             updatedAt: Date(),
             images: [
-                ["croppedUrl": "https://firebasestorage.googleapis.com:443/v0/b/travelspy-57015.appspot.com/o/images%2FPhTFkKvrhQUfEK69wKke2eIHBkH2%2F7373EB9A-5D2A-480A-9640-E7AC8216BEFC.png?alt=media&token=994d8645-8b54-4144-b51e-39c0701d735f"]
+                ["croppedUrl": "https://firebasestorage.googleapis.com/v0/b/travelspy-57015.appspot.com/o/images%2Fed7nGsphhBby45pDzO4Sa3X3Odt1%2FD3BEB946-5B24-4A11-9A77-0527D7666D9B.png?alt=media&token=dd374220-33f8-4508-a0df-3c700c7a2fa5"]
             ],
             user: UserProfile(uid: "123", userName: "username", email: "example@com")
         )

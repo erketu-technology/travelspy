@@ -9,12 +9,17 @@ import SwiftUI
 import MapKit
 
 struct PostRowView: View {
+    @EnvironmentObject var userPostsModel: UserPostsModel
+
     var post: Post
     
     @State var isTruncated = false
     @State private var showDetailedView = false
     @State private var detailedForPost: Post?
+
     @State var isLinkActive = false
+    @State var isUserLinkActive = false
+
     @State private var locationImage: UIImage? = nil
     
     var body: some View {
@@ -46,9 +51,12 @@ struct PostRowView: View {
                         generateSnapshot(width: 300, height: 300)
                     }
                     NavigationLink(destination: MapPageView(location: post.location), isActive: $isLinkActive) {}
+                    .opacity(0.0)
+                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .buttonStyle(BorderlessButtonStyle())
+
             HStack {
                 if post.imageUrl != nil {
                     ImageLoadingView(url: post.imageUrl!)
@@ -58,7 +66,36 @@ struct PostRowView: View {
                         .clipped()
                 }
             }.clipped()
+
             VStack (alignment: .leading, spacing: 4) {
+                Button(action: {
+                    self.isUserLinkActive = true
+                }) {
+                    ZStack {
+                        HStack {
+                            Image(systemName: "person")
+                                .resizable()
+                                .scaledToFill()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 15, height: 15)
+                                .clipShape(Circle())
+                                .shadow(radius: 4)
+                                .foregroundColor(Color.black)
+                            Text(post.user.userName)
+                                .foregroundColor(Color.black)
+                                .font(.caption)
+                                .bold()
+                            Spacer()
+                        }
+                        .padding(.vertical, 3)
+
+                        NavigationLink(destination: UserView(profile: post.user), isActive: $isUserLinkActive) {}
+                        .opacity(0.0)
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
+                .buttonStyle(BorderlessButtonStyle())
+
                 TruncableTextView(
                     text: Text(post.content),
                     lineLimit: 4
@@ -88,9 +125,20 @@ struct PostRowView: View {
                         //                        .fullScreenCover(item: $detailedForPost) { item in
                         //                            DetailsView(post: item)
                         //                        }
-                        .sheet(item: $detailedForPost) { item in
+                        .sheet(item: $detailedForPost, onDismiss: {
+                            Task.init {
+                                if userPostsModel.needUpdate {
+                                    userPostsModel.needUpdate = false
+                                    userPostsModel.removeAll()
+                                }
+                                await userPostsModel.fetchPosts()
+                            }
+                        }, content: { item in
                             DetailsView(post: item)
-                        }
+                        })
+                        //                        .sheet(item: $detailedForPost) { item in
+                        //                            DetailsView(post: item)
+                        //                        }
                     }
                 }
             }
@@ -137,7 +185,17 @@ struct PostRowView: View {
 
 struct PostRowView_Previews: PreviewProvider {
     static var previews: some View {
-        let post = Post.template()
+        let post = Post.template(content: loremIpsumTemplate)
         PostRowView(post: post)
     }
 }
+
+let loremIpsumTemplate = """
+Lorem ipsum dolor sit amet consectetur adipiscing elit donec, gravida commodo hac non mattis augue duis vitae inceptos, laoreet taciti at vehicula cum arcu dictum. Cras netus vivamus sociis pulvinar est erat, quisque imperdiet velit a justo maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.
+Sagittis vivamus sem morbi nam mattis phasellus vehicula facilisis suscipit posuere metus, iaculis vestibulum viverra nisl ullamcorper lectus curabitur himenaeos dictumst malesuada tempor, cras maecenas enim est eu turpis hac sociosqu tellus magnis. Sociosqu varius feugiat volutpat justo fames magna malesuada, viverra neque nibh parturient eu nascetur, cursus sollicitudin placerat lobortis nunc imperdiet. Leo lectus euismod morbi placerat pretium aliquet ultricies metus, augue turpis vulputa
+te dictumst mattis egestas laoreet, cubilia habitant magnis lacinia vivamus etiam aenean.
+Sagittis vivamus sem morbi nam mattis phasellus vehicula facilisis suscipit posuere metus, iaculis vestibulum viverra nisl ullamcorper lectus curabitur himenaeos dictumst malesuada tempor, cras maecenas enim est eu turpis hac sociosqu tellus magnis. Sociosqu varius feugiat volutpat justo fames magna malesuada, viverra neque nibh parturient eu nascetur, cursus sollicitudin placerat lobortis nunc imperdiet. Leo lectus euismod morbi placerat pretium aliquet ultricies metus, augue turpis vulputa
+te dictumst mattis egestas laoreet, cubilia habitant magnis lacinia vivamus etiam aenean.
+Sagittis vivamus sem morbi nam mattis phasellus vehicula facilisis suscipit posuere metus, iaculis vestibulum viverra nisl ullamcorper lectus curabitur himenaeos dictumst malesuada tempor, cras maecenas enim est eu turpis hac sociosqu tellus magnis. Sociosqu varius feugiat volutpat justo fames magna malesuada, viverra neque nibh parturient eu nascetur, cursus sollicitudin placerat lobortis nunc imperdiet. Leo lectus euismod morbi placerat pretium aliquet ultricies metus, augue turpis vulputa
+te dictumst mattis egestas laoreet, cubilia habitant magnis lacinia vivamus etiam aenean.
+"""

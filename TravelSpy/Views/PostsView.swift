@@ -11,11 +11,13 @@ import Firebase
 struct PostsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var sessionStore: SessionStore
-    @EnvironmentObject var postsModel: PostsModel
+    @EnvironmentObject var userPostsModel: UserPostsModel
     
     @AppStorage("isShowPostCreation") public var isShowPostCreation = false
     
     @State var profile: UserProfile?
+    @State private var firstTime: Bool = true
+    @State private var didAppearTimeInterval: TimeInterval = 0
     
     init() {
         self.isShowPostCreation = false
@@ -45,7 +47,7 @@ struct PostsView: View {
     var body: some View {
         ZStack {
             VStack {
-                if postsModel.posts.isEmpty {
+                if userPostsModel.posts.isEmpty {
                     ScrollView {
                         VStack {
                             LoadingPostView()
@@ -54,14 +56,14 @@ struct PostsView: View {
                         }
                     }
                 } else {
-                    List(postsModel.posts, id: \.id) { post in
+                    List(userPostsModel.posts, id: \.id) { post in
                         VStack (alignment: .leading) {
-                            if post.uid.isEmpty && postsModel.isFetching {
+                            if post.uid.isEmpty && userPostsModel.isFetching {
                                 LoadingPostView()
                             } else if !post.uid.isEmpty {
                                 PostRowView(post: post)
                                     .onAppear {
-                                        if self.postsModel.isLastPost(post) {
+                                        if self.userPostsModel.isLastPost(post) {
                                             self.fetchPreviousPosts()
                                         }
                                     }
@@ -73,7 +75,7 @@ struct PostsView: View {
                         .listRowSeparator(.hidden)
                         .edgesIgnoringSafeArea(.horizontal)
                     }
-                    .edgesIgnoringSafeArea(.top)
+//                    .edgesIgnoringSafeArea(.top)
                     .refreshable { fetchNextPosts() }
                     .listStyle(GroupedListStyle())
                     //                .onAppear(perform: {
@@ -83,17 +85,17 @@ struct PostsView: View {
             }
             .onAppear {
                 URLCache.shared.memoryCapacity = 1024 * 1024 * 512
-                fetchPosts()
             }
             .onDisappear {
-                postsModel.detachListener()
+                userPostsModel.detachListener()
             }
         }
         .onAppear {
-            fetchProfile()
+            self.fetchData()
         }
         .navigationTitle("Name")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarItems(trailing: HStack {
             let username: String = self.sessionStore.profile?.userName ?? " "
             NavigationLink {
@@ -108,34 +110,35 @@ struct PostsView: View {
                             .padding(5)
                     )
                     .foregroundColor(Color.primary)
-            }
+            }            
         })
     }
     
-    private func fetchProfile() {
-        sessionStore.fetchProfile { _, error in
+    private func fetchData() {
+        if !userPostsModel.posts.isEmpty { return }
+
+        sessionStore.fetchProfile { profile, error in
             if error != nil {
                 print("###Error: fetchProfile \(String(describing: error?.localizedDescription))")
             }
-        }
-    }
-    
-    private func fetchPosts() {
-        postsModel.fetchTotalCount()
-        Task.init {
-            await postsModel.fetchPosts()
+
+            guard profile != nil else { return }
+            userPostsModel.fetchTotalCount()
+            Task.init {
+                await userPostsModel.fetchPosts()
+            }
         }
     }
     
     private func fetchNextPosts() {
         Task.init {
-            await postsModel.fetchNextPosts()
+            await userPostsModel.fetchNextPosts()
         }
     }
     
     private func fetchPreviousPosts() {
         Task.init {
-            await postsModel.fetchPreviousPosts()
+            await userPostsModel.fetchPreviousPosts()
         }
     }
     
