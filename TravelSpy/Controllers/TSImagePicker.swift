@@ -11,12 +11,21 @@ import YPImagePicker
 
 struct TSImagePicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
+
+    enum TSImageType {
+        case post
+        case account
+    }
+
+    var imageType: TSImageType = .post
     
     class Coordinator: YPImagePickerDelegate {
         var parent: TSImagePicker
+        var imageType: TSImageType = .post
         
-        init(_ parent: TSImagePicker) {
+        init(_ parent: TSImagePicker, imageType: TSImageType) {
             self.parent = parent
+            self.imageType = imageType
         }
         
         func imagePickerHasNoItemsInLibrary(_ picker: YPImagePicker) {
@@ -30,7 +39,7 @@ struct TSImagePicker: UIViewControllerRepresentable {
     }
     
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, imageType: imageType)
     }
     
     func makeUIViewController(context: Context) -> YPImagePicker {
@@ -71,13 +80,19 @@ struct TSImagePicker: UIViewControllerRepresentable {
                 selectedPhoto.cropped = photo.modifiedImage ?? photo.image
                 selectedPhoto.asset = photo.asset
             }
-            
-            let uploadVC = UIHostingController(rootView: UploadView(selectedPhoto: selectedPhoto))
+
+            var nextVC: UIHostingController<AnyView>
+
+            if imageType == .post {
+                nextVC = UIHostingController(rootView: AnyView(UploadView(selectedPhoto: selectedPhoto)))
+            } else {
+                nextVC = UIHostingController(rootView: AnyView(AccountImageUpload(selectedPhoto: selectedPhoto)))
+            }
             
             if cancelled {
-                picker.dismiss(animated: true, completion: nil)
+                presentationMode.wrappedValue.dismiss()
             } else {
-                picker.pushViewController(uploadVC, animated: false)
+                picker.pushViewController(nextVC, animated: false)
             }
         }
 

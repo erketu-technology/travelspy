@@ -65,7 +65,8 @@
 		5A5DD372275E842600CF8EBD /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A5DD371275E842600CF8EBD /* CloudKit.framework */; };
 		5A5DD376275E8BBE00CF8EBD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5DD375275E8BBE00CF8EBD /* LoginView.swift */; };
 		5A6359A52792FAA000F52B2B /* UserPostsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6359A42792FAA000F52B2B /* UserPostsModel.swift */; };
-		5A7FBFEA278E3B5600FAB548 /* PostMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7FBFE9278E3B5600FAB548 /* PostMapView.swift */; };
+		5A7C88EA27AC72F6000857D5 /* AccountImageUpload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7C88E927AC72F6000857D5 /* AccountImageUpload.swift */; };
+		5A7C88EC27AC77A6000857D5 /* FBUploadMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A7C88EB27AC77A6000857D5 /* FBUploadMedia.swift */; };
 		5A886243276FC81F00443A87 /* TSImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A886242276FC81F00443A87 /* TSImagePicker.swift */; };
 		5A88C18F277B620D00A2083B /* WaterfallGrid in Frameworks */ = {isa = PBXBuildFile; productRef = 5A88C18E277B620D00A2083B /* WaterfallGrid */; };
 		5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A88C190277B623A00A2083B /* PostsExploreView.swift */; };
@@ -85,6 +86,7 @@
 		5ABB574B2769542B00C867AA /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABB574A2769542B00C867AA /* MainView.swift */; };
 		5AD82693275962D100EF141E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD82692275962D100EF141E /* Photo.swift */; };
 		5ADCBDB1277250D700739A3D /* TravelSpy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C4F275048B90052D821 /* TravelSpy.xcdatamodeld */; };
+		5ADDEC3827AB465500A4C0B4 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADDEC3727AB465500A4C0B4 /* AccountView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -140,7 +142,8 @@
 		5A5DD371275E842600CF8EBD /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		5A5DD375275E8BBE00CF8EBD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		5A6359A42792FAA000F52B2B /* UserPostsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostsModel.swift; sourceTree = "<group>"; };
-		5A7FBFE9278E3B5600FAB548 /* PostMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostMapView.swift; sourceTree = "<group>"; };
+		5A7C88E927AC72F6000857D5 /* AccountImageUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountImageUpload.swift; sourceTree = "<group>"; };
+		5A7C88EB27AC77A6000857D5 /* FBUploadMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUploadMedia.swift; sourceTree = "<group>"; };
 		5A886242276FC81F00443A87 /* TSImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSImagePicker.swift; sourceTree = "<group>"; };
 		5A88C190277B623A00A2083B /* PostsExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsExploreView.swift; sourceTree = "<group>"; };
 		5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -158,6 +161,7 @@
 		5AA57DD0277BB0DA00E90430 /* TabBarIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarIconView.swift; sourceTree = "<group>"; };
 		5ABB574A2769542B00C867AA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5AD82692275962D100EF141E /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		5ADDEC3727AB465500A4C0B4 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +306,8 @@
 				5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */,
 				5A393C6B277D22EC00D7E1E4 /* ChangePasswordView.swift */,
 				5A3D139C277E77B3004F70C0 /* ChangeUsernameView.swift */,
+				5ADDEC3727AB465500A4C0B4 /* AccountView.swift */,
+				5A7C88E927AC72F6000857D5 /* AccountImageUpload.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -312,6 +318,7 @@
 				5A3D1398277E6527004F70C0 /* TSTextField.swift */,
 				5A3D139A277E688E004F70C0 /* TSSecureField.swift */,
 				5A3D139E277E93BE004F70C0 /* ActivityIndicator.swift */,
+				5A7C88EB27AC77A6000857D5 /* FBUploadMedia.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -331,7 +338,6 @@
 				5A88C190277B623A00A2083B /* PostsExploreView.swift */,
 				5A393C66277CFD7600D7E1E4 /* MapView.swift */,
 				5A3D1394277E63F8004F70C0 /* ResetPasswordView.swift */,
-				5A7FBFE9278E3B5600FAB548 /* PostMapView.swift */,
 				5A0A22D5278E405B004C002E /* MapPageView.swift */,
 				5A35410327A0A92F00F73646 /* UserView.swift */,
 			);
@@ -583,6 +589,7 @@
 				5A3D139D277E77B3004F70C0 /* ChangeUsernameView.swift in Sources */,
 				5A2C7C4E275048B90052D821 /* Persistence.swift in Sources */,
 				5A98275427751B1F00F938F0 /* DetailsView.swift in Sources */,
+				5ADDEC3827AB465500A4C0B4 /* AccountView.swift in Sources */,
 				5A98275A27761C3200F938F0 /* ImageLoader.swift in Sources */,
 				5A35410A27A0B5BC00F73646 /* UserProfile.swift in Sources */,
 				5ABB574B2769542B00C867AA /* MainView.swift in Sources */,
@@ -591,9 +598,11 @@
 				5A98275827761C1500F938F0 /* ImageLoadingView.swift in Sources */,
 				5A44A6D227680EF5004327E7 /* SessionStore.swift in Sources */,
 				5A44A68E27637FAC004327E7 /* PostsModel.swift in Sources */,
+				5A7C88EA27AC72F6000857D5 /* AccountImageUpload.swift in Sources */,
 				5A44A6C727639066004327E7 /* Coordinate.swift in Sources */,
 				5A99BC7D275816C600D3D51D /* LocationSearchService.swift in Sources */,
 				5A35410427A0A92F00F73646 /* UserView.swift in Sources */,
+				5A7C88EC27AC77A6000857D5 /* FBUploadMedia.swift in Sources */,
 				5A3D139B277E688E004F70C0 /* TSSecureField.swift in Sources */,
 				5AD82693275962D100EF141E /* Photo.swift in Sources */,
 				5A886243276FC81F00443A87 /* TSImagePicker.swift in Sources */,
@@ -601,7 +610,6 @@
 				5A98275627761ACD00F938F0 /* PostRowView.swift in Sources */,
 				5A98274E2774DAAB00F938F0 /* TruncableTextView.swift in Sources */,
 				5A3D1399277E6527004F70C0 /* TSTextField.swift in Sources */,
-				5A7FBFEA278E3B5600FAB548 /* PostMapView.swift in Sources */,
 				5A6359A52792FAA000F52B2B /* UserPostsModel.swift in Sources */,
 				5A2C7C45275048B80052D821 /* TravelSpyApp.swift in Sources */,
 				5A13C065277895EE00667461 /* LoadingPostView.swift in Sources */,

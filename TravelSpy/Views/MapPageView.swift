@@ -28,7 +28,7 @@ struct MapPageView: View {
         ScrollView(showsIndicators: true) {
             VStack {
                 MapView(location: location)
-                    .frame(height: 200)
+                    .frame(height: 300)
                 
                 LazyVStack {
                     WaterfallGrid(postsModel.posts) { post in
@@ -78,7 +78,7 @@ struct MapPageView: View {
         .navigationBarItems(trailing: Button(action: {
             followLocation()
         }) {
-            Image(systemName: isFollowLocation() ? "mappin.circle" : "mappin.slash.circle")
+            Text(isFollowLocation() ? "Unfollow" : "Follow")
         })
     }
 
@@ -88,7 +88,7 @@ struct MapPageView: View {
 
     private func followLocation() {
         Task {
-            let action: SessionStore.LocationAction = isFollowLocation() ? .unfollow : .follow
+            let action: SessionStore.FollowAction = isFollowLocation() ? .unfollow : .follow
             await sessionStore.followLocation(location, action: action)
             userPostsModel.removeAll()
 

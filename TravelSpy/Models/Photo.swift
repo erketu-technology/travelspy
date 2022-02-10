@@ -32,4 +32,10 @@ struct Photo: Identifiable {
 
         return Location(city: city, country: country, latitude: latitude, longitude: longitude)
     }
+
+    static func template() -> Photo {
+        return self.init(
+            cropped: UIImage(systemName: "person")!
+        )
+    }
 }

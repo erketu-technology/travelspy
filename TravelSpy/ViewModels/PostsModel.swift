@@ -81,7 +81,7 @@ class PostsModel: ObservableObject {
         }
     }
     
-    func addPost(content: String, locationItem: Location, selectedPhoto: Photo,
+    func addPost(content: String, locationItem: Location, locationTitle: String, selectedPhoto: Photo,
                  progressBlock: @escaping (ProgressBarValue) -> Void, onComplete: @escaping (Error?) -> ()) {
         
         guard let currentUser = Auth.auth().currentUser else { return onComplete(PostsModelError.notUserFound) }
@@ -94,7 +94,7 @@ class PostsModel: ObservableObject {
                 onComplete(error)
                 return
             }
-            
+
             self.db.collection("posts").addDocument(data: [
                 "content": content,
                 "uid": currentUser.uid,
@@ -102,6 +102,7 @@ class PostsModel: ObservableObject {
                     ["croppedUrl": uploadedUrls.croppedUrl]
                 ],
                 "location": GeoPoint(latitude: locationItem.latitude, longitude: locationItem.longitude),
+                "locationTitle": locationTitle,
                 "locationCity": locationItem.city,
                 "locationCountry": locationItem.country,
                 "createdAt": Date(),
@@ -164,7 +165,7 @@ class PostsModel: ObservableObject {
             guard let post = post else { continue }
             posts.append(post)
         }
-        
+
         isFetching = false
         firstItem.post = posts.first
         firstItem.document = snapshot.documents.first
@@ -263,6 +264,7 @@ class PostsModel: ObservableObject {
     
     private func createPostRecord(document: QueryDocumentSnapshot) async -> Post? {
         let data = document.data()
+
         let createdAtTimestamp = data["createdAt"] as! Timestamp
         let updatedAtTimestamp = data["updatedAt"] as! Timestamp
         
@@ -274,7 +276,8 @@ class PostsModel: ObservableObject {
         let location = Location(city: data["locationCity"] as! String,
                                 country: data["locationCountry"] as! String,
                                 latitude: geoPoint.latitude,
-                                longitude: geoPoint.longitude)
+                                longitude: geoPoint.longitude,
+                                title: data["locationTitle"] as? String)
 
         let post = Post(id: document.documentID,
                         uid: uid,

@@ -18,6 +18,8 @@ struct UploadView: View {
     @State private var postContent: String = ""
     @State private var placeholderText: String = "Add content. (min 100 characters)"
     @State private var showingLocationsSearch = false
+
+    @State private var locationTitle: String = ""
     @State private var locationItem: Location?
     
     @ObservedObject var locationSearchService = LocationSearchService()
@@ -38,7 +40,7 @@ struct UploadView: View {
                     .frame(width: 100, height: 100)
                     .cornerRadius(3.0)
                     .padding(.leading, 10)
-                
+
                 ZStack {
                     if postContent.isEmpty {
                         TextEditor(text: $placeholderText)
@@ -68,8 +70,12 @@ struct UploadView: View {
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-            
+
             Divider()
+            TSTextField("Location title (optional)", text: $locationTitle)
+                .padding(.leading)
+                .padding(.top, 10)
+
             Group {
                 Text(locationItem?.countryAndCity ?? "")
                     .padding(.leading)
@@ -127,6 +133,7 @@ struct UploadView: View {
                 
                 PostsModel().addPost(content: postContent,
                                      locationItem: location,
+                                     locationTitle: locationTitle,
                                      selectedPhoto: selectedPhoto,
                                      progressBlock: { progress in
                     self.progressValue = progress.croppedImageUpload + progress.originalImageUpload + progress.postUpload

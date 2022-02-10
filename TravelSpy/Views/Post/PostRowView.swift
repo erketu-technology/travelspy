@@ -7,17 +7,20 @@
 
 import SwiftUI
 import MapKit
+import Firebase
+import FirebaseFirestoreSwift
+import FirebaseStorage
 
 struct PostRowView: View {
     @EnvironmentObject var userPostsModel: UserPostsModel
+    @EnvironmentObject var sessionStore: SessionStore
 
+    let currentUser = Auth.auth().currentUser
     var post: Post
     
     @State var isTruncated = false
-    @State private var showDetailedView = false
-    @State private var detailedForPost: Post?
-
     @State var isLinkActive = false
+    @State var isPostActive = false
     @State var isUserLinkActive = false
 
     @State private var locationImage: UIImage? = nil
@@ -65,7 +68,8 @@ struct PostRowView: View {
                         .scaledToFill()
                         .clipped()
                 }
-            }.clipped()
+            }
+            .clipped()
 
             VStack (alignment: .leading, spacing: 4) {
                 Button(action: {
@@ -73,23 +77,27 @@ struct PostRowView: View {
                 }) {
                     ZStack {
                         HStack {
-                            Image(systemName: "person")
-                                .resizable()
+                            ImageLoadingView(url: post.user.avatar)
                                 .scaledToFill()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 15, height: 15)
                                 .clipShape(Circle())
                                 .shadow(radius: 4)
-                                .foregroundColor(Color.black)
+                                .foregroundColor(Color.black)//
                             Text(post.user.userName)
                                 .foregroundColor(Color.black)
                                 .font(.caption)
                                 .bold()
                             Spacer()
+
+                            Text(post.createdAt.timeAgoSinceDate())
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                                .clipped()
                         }
                         .padding(.vertical, 3)
 
-                        NavigationLink(destination: UserView(profile: post.user), isActive: $isUserLinkActive) {}
+                        NavigationLink(destination: selectUserView(), isActive: $isUserLinkActive) {}
                         .opacity(0.0)
                         .buttonStyle(PlainButtonStyle())
                     }
@@ -107,13 +115,9 @@ struct PostRowView: View {
                 .onTapGesture {
                     openDetailedView(post: post)
                 }
-                
+
                 HStack {
-                    Text(post.createdAt.timeAgoSinceDate())
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                        .clipped()
-                    
+                    Spacer()
                     if isTruncated {
                         Spacer()
                         Button("read more") {
@@ -122,35 +126,27 @@ struct PostRowView: View {
                         .clipped()
                         .font(.caption)
                         .buttonStyle(BorderlessButtonStyle())
-                        //                        .fullScreenCover(item: $detailedForPost) { item in
-                        //                            DetailsView(post: item)
-                        //                        }
-                        .sheet(item: $detailedForPost, onDismiss: {
-                            Task.init {
-                                if userPostsModel.needUpdate {
-                                    userPostsModel.needUpdate = false
-                                    userPostsModel.removeAll()
-                                }
-                                await userPostsModel.fetchPosts()
-                            }
-                        }, content: { item in
-                            DetailsView(post: item)
-                        })
-                        //                        .sheet(item: $detailedForPost) { item in
-                        //                            DetailsView(post: item)
-                        //                        }
+                        .foregroundColor(.blue)
                     }
                 }
+                NavigationLink(destination: DetailsView(post: post), isActive: $isPostActive) {}
+                .opacity(0.0)
+                .buttonStyle(PlainButtonStyle())
             }
             .clipped()
             .padding(.leading, 16)
             .padding(.trailing, 16)
         }
+        .padding(.vertical, 10)
+        .background(Color.white)
     }
     
     private func openDetailedView(post: Post) {
-        detailedForPost = post
-        showDetailedView = true
+        self.isPostActive = true
+    }
+
+    private func selectUserView() -> some View {
+        return post.user.uid == currentUser!.uid ? AnyView(AccountView()) : AnyView(UserView(profile: post.user))
     }
     
     func generateSnapshot(width: CGFloat, height: CGFloat) {

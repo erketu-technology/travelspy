@@ -14,6 +14,7 @@ struct UserProfile: Codable {
     var userName: String
     var gogoleUserId: String?
     var email: String
+    var avatar: String?
     var usersFollowing: [String] = []
     var usersFollowers: [String] = []
     var locationsFollowing: [String] = []

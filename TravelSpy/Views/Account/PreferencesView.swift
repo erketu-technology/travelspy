@@ -57,7 +57,7 @@ struct PreferencesView: View {
                 .listRowBackground(Color.clear)
             }
         }
-        .navigationTitle(userName)
+        .navigationTitle("Preferences")
     }
     
     func signOut() {

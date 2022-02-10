@@ -19,31 +19,6 @@ struct PostsView: View {
     @State private var firstTime: Bool = true
     @State private var didAppearTimeInterval: TimeInterval = 0
     
-    init() {
-        self.isShowPostCreation = false
-    }
-    //            HStack {
-    //                Spacer()
-    //                Text("Name")
-    //                    .padding(.leading, 30)
-    //                Spacer()
-    //                Menu {
-    //                    Button("Log Out", action: { sessionStore.signOut() } )
-    //                } label: {
-    //                    let username: String = self.sessionStore.profile?.userName ?? " "
-    //                    Text(String(username.first!.uppercased()))
-    //                        .frame(width: 20, height: 20, alignment: .center)
-    //                        .padding()
-    //                        .overlay(
-    //                            Circle()
-    //                                .stroke(Color.gray, lineWidth: 1)
-    //                                .padding(5)
-    //                        )
-    //                        .padding(.trailing, 10)
-    //                        .foregroundColor(Color.primary)
-    //                }
-    //            }
-    
     var body: some View {
         ZStack {
             VStack {
@@ -75,12 +50,8 @@ struct PostsView: View {
                         .listRowSeparator(.hidden)
                         .edgesIgnoringSafeArea(.horizontal)
                     }
-//                    .edgesIgnoringSafeArea(.top)
                     .refreshable { fetchNextPosts() }
                     .listStyle(GroupedListStyle())
-                    //                .onAppear(perform: {
-                    //                    UITableView.appearance().contentInset.top = -43
-                    //                })
                 }
             }
             .onAppear {
@@ -97,20 +68,12 @@ struct PostsView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationViewStyle(StackNavigationViewStyle())
         .navigationBarItems(trailing: HStack {
-            let username: String = self.sessionStore.profile?.userName ?? " "
             NavigationLink {
-                PreferencesView(profile: sessionStore.profile)
+                AccountView()
             } label: {
-                Text(String(username.first!.uppercased()))
-                    .frame(width: 15, height: 15, alignment: .center)
-                    .padding()
-                    .overlay(
-                        Circle()
-                            .stroke(Color.gray, lineWidth: 1)
-                            .padding(5)
-                    )
+                Image(systemName: "person.circle")
                     .foregroundColor(Color.primary)
-            }            
+            }
         })
     }
     

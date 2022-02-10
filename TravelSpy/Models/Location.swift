@@ -13,6 +13,7 @@ struct Location: Identifiable {
     var country: String = ""
     var latitude: Double
     var longitude: Double
+    var title: String?
     
     var countryAndCity: String {
         return [country, city].filter({ !$0.isEmpty }).joined(separator: ", ")

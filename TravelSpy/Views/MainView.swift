@@ -32,10 +32,9 @@ struct MainView: View {
                                     TabBarIconView(assignedPage: .explore, systemIconName: "magnifyingglass.circle")
                                     TabBarIconView(assignedPage: .list, systemIconName: "list.bullet.rectangle")
                                 }
-                                .frame(width: geometry.size.width - 20, height: 50)
+                                .frame(width: geometry.size.width, height: 50)
                                 .padding(.bottom, 0)
-                                .background(Color.secondary.opacity(0.9))
-                                .cornerRadius(15)
+                                .background(Color.gray.opacity(0.9))
                                 
                                 HStack {
                                     Button(action: {
@@ -59,9 +58,12 @@ struct MainView: View {
                                     TSImagePicker()
                                 }
                             }
+                            .padding(.bottom, 10)
                         }
+                        .edgesIgnoringSafeArea(.bottom)
                     }
                 }
+                .accentColor(.black)
             } else {
                 LoginView()
             }

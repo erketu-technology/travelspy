@@ -9,22 +9,24 @@ import SwiftUI
 import WaterfallGrid
 
 struct UserView: View {
-    
+    @EnvironmentObject var sessionStore: SessionStore    
+
     let profile: UserProfile
-    @StateObject var profileModel: ExternalUserPostsModel
+    @EnvironmentObject var userPostsModel: UserPostsModel
+    @StateObject var eUserPostsModel: ExternalUserPostsModel
     
     
     init(profile: UserProfile) {
         self.profile = profile
-        _profileModel = StateObject(wrappedValue: ExternalUserPostsModel(uid: profile.uid))
+        _eUserPostsModel = StateObject(wrappedValue: ExternalUserPostsModel(uid: profile.uid))
     }
     
     var body: some View {
         ScrollView(showsIndicators: true) {
             VStack(alignment: .leading) {
                 HStack {
-                    Image(systemName: "person")
-                        .resizable()
+                    Spacer()
+                    ImageLoadingView(url: profile.avatar)
                         .scaledToFill()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 60, height: 60)
@@ -38,7 +40,7 @@ struct UserView: View {
                 Divider()
                 
                 LazyVStack {
-                    WaterfallGrid(profileModel.posts) { post in
+                    WaterfallGrid(eUserPostsModel.posts) { post in
                         VStack {
                             if !post.uid.isEmpty {
                                 if post.imageUrl != nil {
@@ -68,7 +70,7 @@ struct UserView: View {
                     )
                     .padding(EdgeInsets(top: 16, leading: 5, bottom: 70, trailing: 1))
                     
-                    if profileModel.posts.count < profileModel.totalCount {
+                    if eUserPostsModel.posts.count < eUserPostsModel.totalCount {
                         ProgressView()
                             .frame(height: 40)
                             .onAppear {
@@ -81,30 +83,38 @@ struct UserView: View {
                 fetchPosts()
             }
             .padding([.vertical, .horizontal], 10)
-            .navigationTitle(profile.userName)
+            .navigationTitle("")
             .navigationBarItems(trailing: Button(action: {
                 followUser()
             }) {
-                Text("Follow")
+                Text(isFollowUser() ? "Unfollow" : "Follow")
             })
         }
     }
     
     private func fetchPosts() {
-        profileModel.fetchTotalCount()
+        eUserPostsModel.fetchTotalCount()
         Task {
-            await profileModel.fetchPosts()
+            await eUserPostsModel.fetchPosts()
         }
     }
     
     private func fetchPreviousPosts() {
         Task {
-            await profileModel.fetchPreviousPosts(limit: 10)
+            await eUserPostsModel.fetchPreviousPosts(limit: 10)
         }
     }
 
+    private func isFollowUser() -> Bool {
+        return sessionStore.profile!.usersFollowing.contains(profile.uid)
+    }
+
     private func followUser() {
-        
+        Task.init {
+            let action: SessionStore.FollowAction = isFollowUser() ? .unfollow : .follow
+            await sessionStore.followUser(profile, action: action)
+            userPostsModel.removeAll()
+        }
     }
 }
 

@@ -20,7 +20,7 @@ class SessionStore: NSObject, ObservableObject {
         case signedOut
     }
 
-    enum LocationAction {
+    enum FollowAction {
         case follow
         case unfollow
     }
@@ -87,10 +87,10 @@ class SessionStore: NSObject, ObservableObject {
     
     func fetchProfile(completion: @escaping (_ profile: UserProfile?, _ error: Error?) -> Void) {
         guard let user = Auth.auth().currentUser else { return }
-        
+
         self.profileRepository.fetchProfile(userId: user.uid) { (profile, error) in
             if let error = error {
-                print("Error while fetching the user profile: \(error)")
+                print("### Error while fetching the user profile: \(error)")
                 completion(nil, error)
                 return
             }
@@ -206,7 +206,36 @@ class SessionStore: NSObject, ObservableObject {
         }
     }
 
-    func followLocation(_ location: Location, action: LocationAction) async {
+    @MainActor
+    func changeAvatar(photo: Photo, completion: @escaping (UserProfile?, Error?) -> Void) {
+        guard let currentUser = Auth.auth().currentUser else { return }
+
+        let uploadMedia = FBUploadMedia.init(path: "images/\(currentUser.uid)/avatar", user: currentUser)
+
+        uploadMedia.upload(image: photo.cropped) { url, error in
+            Task {
+                if error != nil {
+                    completion(nil, error)
+                    return
+                }
+
+                guard var currentProfile = self.profile else { return }
+                currentProfile.avatar = url?.absoluteString
+                await self.profileRepository.updateProfile(profile: currentProfile)
+                self.profile = currentProfile
+                
+                completion(self.profile, error)
+            }
+        }
+        .observe(.success) { snapshot in
+            print("### success \(snapshot)")
+//            self.fetchProfile() { profile, error in
+//                completion(profile, error)
+//            }
+        }
+    }
+
+    func followLocation(_ location: Location, action: FollowAction) async {
         guard var userProfile = profile else { return }
 
         if action == .follow {
@@ -218,6 +247,19 @@ class SessionStore: NSObject, ObservableObject {
         }
         await profileRepository.updateProfile(profile: userProfile)
         profile = userProfile
-        print("### update profiile")
+    }
+
+    func followUser(_ userToFollow: UserProfile, action: FollowAction) async {
+        guard var currentUserProfile = profile else { return }
+
+        if action == .follow {
+            currentUserProfile.usersFollowing.appendIfNotContains(userToFollow.uid)
+        } else {
+            if let index = currentUserProfile.usersFollowing.firstIndex(of: userToFollow.uid) {
+                currentUserProfile.usersFollowing.remove(at: index)
+            }
+        }
+        await profileRepository.updateProfile(profile: currentUserProfile)
+        profile = currentUserProfile
     }
 }

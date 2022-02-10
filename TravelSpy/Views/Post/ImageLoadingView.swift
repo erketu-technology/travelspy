@@ -22,7 +22,7 @@ struct ImageLoadingView: View {
                 Image(uiImage: imageLoader.image!)
                     .resizable()
             } else if imageLoader.errorMessage != nil {
-                Text(imageLoader.errorMessage!)
+                Circle().stroke(Color.gray, lineWidth: 1)
             } else {
                 ProgressView()
                     .frame(height: imageSize)
