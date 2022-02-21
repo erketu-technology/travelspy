@@ -13,7 +13,7 @@ import Firebase
 import GoogleSignIn
 
 struct LoginView: View {
-    @AppStorage("login") private var login = false
+    @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var sessionStore: SessionStore
     
     @State var userName: String = ""
@@ -56,19 +56,20 @@ struct LoginView: View {
         NavigationView {
             ActivityIndicator(isShowing: $isLoading) {
                 ZStack {
+
+//                    VStack {
+//                        Image("mapLogoView")
+//                            .resizable()
+//                            .aspectRatio(contentMode: .fit)
+//                            .foregroundColor(Color.clear)
+//                            .background(Color.clear)
+//                        Spacer()
+//                    }
+//                    .padding()
+//                    .padding(.top, 40)
+
                     VStack {
-                        Image("mapLogoView")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(Color.clear)
-                            .background(Color.clear)
-                        Spacer()
-                    }
-                    .padding()
-                    .padding(.top, 40)
-                    
-                    VStack {
-                        Spacer()
+//                        Spacer()
                         VStack {
                             if showSignUpForm {
                                 TSTextField("Username", text: $userName)
@@ -164,6 +165,21 @@ struct LoginView: View {
                             dismissButton: .default(Text("Okay"))
                         )
                     })
+
+//                    VStack {
+//                        HStack {
+//                            Button {
+//                                presentationMode.wrappedValue.dismiss()
+//                            } label: {
+//                                Image(systemName: "xmark")
+//                                    .padding(.horizontal, 10)
+//                                    .foregroundColor(Color.black)
+//                            }
+//
+//                            Spacer()
+//                        }
+//                        Spacer()
+//                    }
                 }
                 .padding(.horizontal, 10)
                 .navigationTitle("")
@@ -186,6 +202,7 @@ struct LoginView: View {
             }
             //            self.isShowConfirmEmail = true
             self.showSignUpForm = false
+            presentationMode.wrappedValue.dismiss()
         }
     }
     
@@ -201,6 +218,7 @@ struct LoginView: View {
                 
                 return
             }
+            presentationMode.wrappedValue.dismiss()
         }
     }
     
@@ -212,6 +230,7 @@ struct LoginView: View {
                 print("Error when signing up: \(error)")
                 return
             }
+            presentationMode.wrappedValue.dismiss()
         }
     }
     

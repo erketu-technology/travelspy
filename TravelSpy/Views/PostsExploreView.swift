@@ -12,45 +12,47 @@ struct PostsExploreView: View {
     @StateObject var postsModel = PostsModel()
     @State var isTruncated = false
     @State private var showDetailedView = false
-    @State private var detailedForPost: Post?
     
     var body: some View {
         ScrollView(showsIndicators: true) {
             LazyVStack {
                 WaterfallGrid(postsModel.posts) { post in
-                    VStack {
-                        if !post.uid.isEmpty {
-                            if post.imageUrl != nil {
-                                ImageLoadingView(url: post.imageUrl!)
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(height: 80)
-                                    .clipped()
-                            }
-                            
-                            HStack() {
-                                VStack(alignment: .leading) {
-                                    Text(post.location.country)
-                                        .font(.system(size: 9))
-                                        .foregroundColor(.primary)
-                                    Text(post.location.city)
-                                        .font(.system(size: 9))
-                                        .foregroundColor(.secondary)
+                    ZStack {
+                        VStack {
+                            if !post.uid.isEmpty {
+                                if post.imageUrl != nil {
+                                    ImageLoadingView(url: post.imageUrl!)
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(height: 80)
+                                        .clipped()
                                 }
-                                Spacer()
+
+                                HStack() {
+                                    VStack(alignment: .leading) {
+                                        Text(post.location.country)
+                                            .font(.system(size: 9))
+                                            .foregroundColor(.primary)
+                                        Text(post.location.city)
+                                            .font(.system(size: 9))
+                                            .foregroundColor(.secondary)
+                                    }
+                                    Spacer()
+                                }
+                                .padding([.leading, .trailing, .bottom], 5)
                             }
-                            .padding([.leading, .trailing, .bottom], 5)
                         }
-                    }
-                    .cornerRadius(8)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.secondary.opacity(0.5))
-                    )
-                    .onTapGesture {
-                        openDetailedView(post: post)
-                    }
-                    .sheet(item: $detailedForPost) { item in
-                        DetailsView(post: item)
+                        .cornerRadius(8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.secondary.opacity(0.5))
+                        )
+                        .onTapGesture {
+                            openDetailedView(post: post)
+                        }
+
+                        NavigationLink(destination: DetailsView(post: post), isActive: $showDetailedView) {}
+                        .opacity(0.0)
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 .gridStyle(
@@ -91,7 +93,6 @@ struct PostsExploreView: View {
     }
     
     private func openDetailedView(post: Post) {
-        detailedForPost = post
         showDetailedView = true
     }
 }

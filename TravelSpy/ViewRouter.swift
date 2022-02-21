@@ -7,9 +7,10 @@
 
 
 import SwiftUI
+import Firebase
 
 class ViewRouter: ObservableObject {
-    @Published var currentPage: Page = .list
+    @Published var currentPage: Page = Auth.auth().currentUser != nil ? .list : .explore
 }
 
 

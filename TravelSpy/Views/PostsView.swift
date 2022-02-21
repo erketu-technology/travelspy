@@ -15,66 +15,86 @@ struct PostsView: View {
     
     @AppStorage("isShowPostCreation") public var isShowPostCreation = false
     
-    @State var profile: UserProfile?
-    @State private var firstTime: Bool = true
-    @State private var didAppearTimeInterval: TimeInterval = 0
+    @State var profile: UserProfile?    
     
     var body: some View {
-        ZStack {
-            VStack {
-                if userPostsModel.posts.isEmpty {
-                    ScrollView {
-                        VStack {
-                            LoadingPostView()
-                            LoadingPostView()
-                            LoadingPostView()
-                        }
-                    }
-                } else {
-                    List(userPostsModel.posts, id: \.id) { post in
-                        VStack (alignment: .leading) {
-                            if post.uid.isEmpty && userPostsModel.isFetching {
+        if isLoggedIn() {
+            ZStack {
+                VStack {
+                    if userPostsModel.posts.isEmpty {
+                        ScrollView {
+                            VStack {
                                 LoadingPostView()
-                            } else if !post.uid.isEmpty {
-                                PostRowView(post: post)
-                                    .onAppear {
-                                        if self.userPostsModel.isLastPost(post) {
-                                            self.fetchPreviousPosts()
-                                        }
-                                    }
+                                LoadingPostView()
+                                LoadingPostView()
                             }
                         }
-                        .padding(.bottom, 24)
-                        .listRowInsets(EdgeInsets())
-                        .listRowBackground(Color.clear)
-                        .listRowSeparator(.hidden)
-                        .edgesIgnoringSafeArea(.horizontal)
+                    } else {
+                        List(userPostsModel.posts, id: \.id) { post in
+                            VStack (alignment: .leading) {
+                                if post.uid.isEmpty && userPostsModel.isFetching {
+                                    LoadingPostView()
+                                } else if !post.uid.isEmpty {
+                                    PostRowView(post: post)
+                                        .onAppear {
+                                            if self.userPostsModel.isLastPost(post) {
+                                                self.fetchPreviousPosts()
+                                            }
+                                        }
+                                }
+                            }
+                            .padding(.bottom, 24)
+                            .listRowInsets(EdgeInsets())
+                            .listRowBackground(Color.clear)
+                            .listRowSeparator(.hidden)
+                            .edgesIgnoringSafeArea(.horizontal)
+                        }
+                        .refreshable { fetchNextPosts() }
+                        .listStyle(GroupedListStyle())
                     }
-                    .refreshable { fetchNextPosts() }
-                    .listStyle(GroupedListStyle())
+                }
+                .onAppear {
+                    URLCache.shared.memoryCapacity = 1024 * 1024 * 512
+                }
+                .onDisappear {
+                    userPostsModel.detachListener()
                 }
             }
             .onAppear {
-                URLCache.shared.memoryCapacity = 1024 * 1024 * 512
+                self.fetchData()
             }
-            .onDisappear {
-                userPostsModel.detachListener()
+            .navigationTitle("Name")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationViewStyle(StackNavigationViewStyle())
+            .navigationBarItems(trailing: HStack {
+                if isLoggedIn() {
+                    NavigationLink {
+                        AccountView()
+                    } label: {
+                        Image(systemName: "person.circle")
+                            .foregroundColor(Color.primary)
+                    }
+                } else {
+                    EmptyView()
+                }
+            })
+        } else {
+            VStack {
+                NavigationLink {
+                    LoginView()
+                } label: {
+                    VStack {
+                        Text("Please, log in to see the newsfeed.")
+                        Text("Log In")
+                            .foregroundColor(Color.blue)
+                    }
+                }
             }
         }
-        .onAppear {
-            self.fetchData()
-        }
-        .navigationTitle("Name")
-        .navigationBarTitleDisplayMode(.inline)
-        .navigationViewStyle(StackNavigationViewStyle())
-        .navigationBarItems(trailing: HStack {
-            NavigationLink {
-                AccountView()
-            } label: {
-                Image(systemName: "person.circle")
-                    .foregroundColor(Color.primary)
-            }
-        })
+    }
+
+    private func isLoggedIn() -> Bool {
+        return Auth.auth().currentUser != nil
     }
     
     private func fetchData() {

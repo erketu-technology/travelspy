@@ -87,6 +87,7 @@
 		5AD82693275962D100EF141E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD82692275962D100EF141E /* Photo.swift */; };
 		5ADCBDB1277250D700739A3D /* TravelSpy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C4F275048B90052D821 /* TravelSpy.xcdatamodeld */; };
 		5ADDEC3827AB465500A4C0B4 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADDEC3727AB465500A4C0B4 /* AccountView.swift */; };
+		5AFFF88927BC5FDA00950797 /* PostsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFF88827BC5FDA00950797 /* PostsListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +163,7 @@
 		5ABB574A2769542B00C867AA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5AD82692275962D100EF141E /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		5ADDEC3727AB465500A4C0B4 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		5AFFF88827BC5FDA00950797 /* PostsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,6 +328,7 @@
 		5A485B6C275131DA00A44243 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5AFFF88727BC5FA300950797 /* Posts */,
 				5A393C69277D22C800D7E1E4 /* Account */,
 				5AA57DCF277BB0BF00E90430 /* Tabs */,
 				5A07B8CA2773F12C000B56ED /* Post */,
@@ -399,6 +402,14 @@
 				5A886242276FC81F00443A87 /* TSImagePicker.swift */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		5AFFF88727BC5FA300950797 /* Posts */ = {
+			isa = PBXGroup;
+			children = (
+				5AFFF88827BC5FDA00950797 /* PostsListView.swift */,
+			);
+			path = Posts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -608,6 +619,7 @@
 				5A886243276FC81F00443A87 /* TSImagePicker.swift in Sources */,
 				5A2C7C47275048B80052D821 /* PostsView.swift in Sources */,
 				5A98275627761ACD00F938F0 /* PostRowView.swift in Sources */,
+				5AFFF88927BC5FDA00950797 /* PostsListView.swift in Sources */,
 				5A98274E2774DAAB00F938F0 /* TruncableTextView.swift in Sources */,
 				5A3D1399277E6527004F70C0 /* TSTextField.swift in Sources */,
 				5A6359A52792FAA000F52B2B /* UserPostsModel.swift in Sources */,

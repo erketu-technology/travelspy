@@ -6,16 +6,14 @@
 //
 
 import SwiftUI
-import WaterfallGrid
 
 struct UserView: View {
     @EnvironmentObject var sessionStore: SessionStore    
 
     let profile: UserProfile
     @EnvironmentObject var userPostsModel: UserPostsModel
-    @StateObject var eUserPostsModel: ExternalUserPostsModel
-    
-    
+    @StateObject var eUserPostsModel: ExternalUserPostsModel    
+
     init(profile: UserProfile) {
         self.profile = profile
         _eUserPostsModel = StateObject(wrappedValue: ExternalUserPostsModel(uid: profile.uid))
@@ -39,44 +37,8 @@ struct UserView: View {
                 
                 Divider()
                 
-                LazyVStack {
-                    WaterfallGrid(eUserPostsModel.posts) { post in
-                        VStack {
-                            if !post.uid.isEmpty {
-                                if post.imageUrl != nil {
-                                    ImageLoadingView(url: post.imageUrl!)
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(height: 80)
-                                        .clipped()
-                                }
-                            }
-                        }
-                        .cornerRadius(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.secondary.opacity(0.5))
-                        )
-                        //                        .onTapGesture {
-                        //                            openDetailedView(post: post)
-                        //                        }
-                        //                        .sheet(item: $detailedForPost) { item in
-                        //                            DetailsView(post: item)
-                        //                        }
-                    }
-                    .gridStyle(
-                        columns: 4,
-                        spacing: 5,
-                        animation: .easeInOut(duration: 0.5)
-                    )
-                    .padding(EdgeInsets(top: 16, leading: 5, bottom: 70, trailing: 1))
-                    
-                    if eUserPostsModel.posts.count < eUserPostsModel.totalCount {
-                        ProgressView()
-                            .frame(height: 40)
-                            .onAppear {
-                                fetchPreviousPosts()
-                            }
-                    }
+                PostsListView(posts: eUserPostsModel.posts, totalCount: eUserPostsModel.totalCount) {
+                    fetchPreviousPosts()
                 }
             }
             .onAppear {
@@ -84,13 +46,17 @@ struct UserView: View {
             }
             .padding([.vertical, .horizontal], 10)
             .navigationTitle("")
-            .navigationBarItems(trailing: Button(action: {
-                followUser()
-            }) {
-                Text(isFollowUser() ? "Unfollow" : "Follow")
+            .navigationBarItems(trailing: Group {
+                if sessionStore.isLoggedIn {
+                    Button(action: {
+                        followUser()
+                    }) {
+                        Text(isFollowUser() ? "Unfollow" : "Follow")
+                    }
+                } else { EmptyView() }
             })
         }
-    }
+    }    
     
     private func fetchPosts() {
         eUserPostsModel.fetchTotalCount()

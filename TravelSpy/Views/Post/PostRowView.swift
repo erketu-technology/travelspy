@@ -15,7 +15,6 @@ struct PostRowView: View {
     @EnvironmentObject var userPostsModel: UserPostsModel
     @EnvironmentObject var sessionStore: SessionStore
 
-    let currentUser = Auth.auth().currentUser
     var post: Post
     
     @State var isTruncated = false
@@ -27,80 +26,94 @@ struct PostRowView: View {
     
     var body: some View {
         VStack {
-            Button(action: {
-                self.isLinkActive = true
-            }) {
+            VStack {
                 ZStack {
-                    HStack {
-                        if let image = locationImage {
-                            Image(uiImage: image)
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .scaledToFill()
-                                .cornerRadius(20)
-                                .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                        } else {
-                            Circle().stroke(Color.gray, lineWidth: 1)
-                                .frame(width: 30, height: 30)
+                    VStack {
+                        if post.imageUrl != nil {
+                            ImageLoadingView(url: post.imageUrl!)
+                                .frame(height: 400)
+                                .frame(maxWidth: .infinity)
+//                                .scaledToFill()
+                                .clipped()
                         }
-                        Text(post.countryAndCity)
-                            .foregroundColor(Color.black)
-                            .font(.system(size: 12))
-                        Spacer()
                     }
-                    .padding(.leading, 16)
-                    .clipped()
-                    .onAppear {
-                        generateSnapshot(width: 300, height: 300)
+//                    .clipped()
+
+                    VStack {
+                        Button(action: {
+                            self.isLinkActive = true
+                        }) {
+                            VStack {
+                                HStack {
+                                    if let image = locationImage {
+                                        Image(uiImage: image)
+                                            .resizable()
+                                            .frame(width: 30, height: 30)
+//                                            .scaledToFill()
+                                            .cornerRadius(20)
+                                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                                    } else {
+                                        Circle().stroke(Color.gray, lineWidth: 1)
+                                            .frame(width: 30, height: 30)
+                                    }
+                                    Text(post.countryAndCity)
+                                        .foregroundColor(Color.white)
+                                        .font(.system(size: 12))
+                                    Spacer()
+                                }
+                                .padding(.leading, 16)
+                                .padding(.vertical, 5)
+                                .clipped()
+                                .onAppear {
+                                    generateSnapshot(width: 300, height: 300)
+                                }
+                                .background(Color.black.opacity(0.4))
+
+                                Spacer()
+                            }
+                        }
+                        NavigationLink(destination: MapPageView(location: post.location), isActive: $isLinkActive) {}
+                        .opacity(0.0)
+                        .buttonStyle(PlainButtonStyle())
+                        .buttonStyle(BorderlessButtonStyle())
+
+//                        Spacer()
                     }
-                    NavigationLink(destination: MapPageView(location: post.location), isActive: $isLinkActive) {}
-                    .opacity(0.0)
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(BorderlessButtonStyle())
                 }
             }
-            .buttonStyle(BorderlessButtonStyle())
 
-            HStack {
-                if post.imageUrl != nil {
-                    ImageLoadingView(url: post.imageUrl!)
-                        .frame(height: 400)
-                        .frame(maxWidth: .infinity)
-                        .scaledToFill()
-                        .clipped()
-                }
-            }
-            .clipped()
-
-            VStack (alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 4) {
                 Button(action: {
                     self.isUserLinkActive = true
                 }) {
-                    ZStack {
-                        HStack {
-                            ImageLoadingView(url: post.user.avatar)
-                                .scaledToFill()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 15, height: 15)
-                                .clipShape(Circle())
-                                .shadow(radius: 4)
-                                .foregroundColor(Color.black)//
-                            Text(post.user.userName)
-                                .foregroundColor(Color.black)
-                                .font(.caption)
-                                .bold()
-                            Spacer()
+                    HStack {
+                        ImageLoadingView(url: post.user.avatar)
+                            .scaledToFill()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 15, height: 15)
+                            .clipShape(Circle())
+                            .shadow(radius: 4)
+                            .foregroundColor(Color.black)
+                        Text(post.user.userName)
+                            .foregroundColor(Color.black)
+                            .font(.caption)
+                            .bold()
+                        
+                        Image(systemName: "circle.fill")
+                            .font(.system(size: 6))
+                            .foregroundColor(.gray)
 
-                            Text(post.createdAt.timeAgoSinceDate())
-                                .font(.caption)
-                                .foregroundColor(.gray)
-                                .clipped()
-                        }
-                        .padding(.vertical, 3)
-
-                        NavigationLink(destination: selectUserView(), isActive: $isUserLinkActive) {}
-                        .opacity(0.0)
-                        .buttonStyle(PlainButtonStyle())
+                        Text(post.createdAt.timeAgoSinceDate())
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .clipped()
                     }
+                    .padding(.vertical, 3)
+
+                    NavigationLink(destination: selectUserView(), isActive: $isUserLinkActive) {}
+                    .opacity(0.0)
+                    .buttonStyle(PlainButtonStyle())
                 }
                 .buttonStyle(BorderlessButtonStyle())
 
@@ -137,7 +150,7 @@ struct PostRowView: View {
             .padding(.leading, 16)
             .padding(.trailing, 16)
         }
-        .padding(.vertical, 10)
+        .padding(.bottom, 10)
         .background(Color.white)
     }
     
@@ -146,7 +159,9 @@ struct PostRowView: View {
     }
 
     private func selectUserView() -> some View {
-        return post.user.uid == currentUser!.uid ? AnyView(AccountView()) : AnyView(UserView(profile: post.user))
+        return (
+            post.user.uid == sessionStore.currentUser?.uid
+        ) ? AnyView(AccountView()) : AnyView(UserView(profile: post.user))
     }
     
     func generateSnapshot(width: CGFloat, height: CGFloat) {

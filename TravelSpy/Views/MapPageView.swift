@@ -6,10 +6,6 @@
 //
 
 import SwiftUI
-import Firebase
-import FirebaseFirestoreSwift
-import WaterfallGrid
-
 
 struct MapPageView: View {
     @EnvironmentObject var sessionStore: SessionStore
@@ -17,9 +13,6 @@ struct MapPageView: View {
     @EnvironmentObject var userPostsModel: UserPostsModel
     
     @StateObject var postsModel = PostsModel()
-    
-    @State private var showDetailedView = false
-    @State private var detailedForPost: Post?
     
     let location: Location
     
@@ -29,45 +22,9 @@ struct MapPageView: View {
             VStack {
                 MapView(location: location)
                     .frame(height: 300)
-                
-                LazyVStack {
-                    WaterfallGrid(postsModel.posts) { post in
-                        VStack {
-                            if !post.uid.isEmpty {
-                                if post.imageUrl != nil {
-                                    ImageLoadingView(url: post.imageUrl!)
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(height: 80)
-                                        .clipped()
-                                }
-                            }
-                        }
-                        .cornerRadius(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.secondary.opacity(0.5))
-                        )
-                        .onTapGesture {
-                            openDetailedView(post: post)
-                        }
-                        .sheet(item: $detailedForPost) { item in
-                            DetailsView(post: item)
-                        }
-                    }
-                    .gridStyle(
-                        columns: 4,
-                        spacing: 5,
-                        animation: .easeInOut(duration: 0.5)
-                    )
-                    .padding(EdgeInsets(top: 16, leading: 5, bottom: 70, trailing: 1))
-                    
-                    if postsModel.posts.count < postsModel.totalCount {
-                        ProgressView()
-                            .frame(height: 40)
-                            .onAppear {
-                                //                                fetchPreviousPosts()
-                            }
-                    }
+
+                PostsListView(posts: postsModel.posts, totalCount: postsModel.totalCount) {
+                    fetchPreviousPosts()
                 }
             }
         }
@@ -75,11 +32,23 @@ struct MapPageView: View {
             fetchPosts()
         }
         .navigationTitle(location.countryAndCity)
-        .navigationBarItems(trailing: Button(action: {
-            followLocation()
-        }) {
-            Text(isFollowLocation() ? "Unfollow" : "Follow")
-        })
+        .navigationBarItems(
+            trailing: Group {
+                if sessionStore.isLoggedIn {
+                    Button(action: {
+                        followLocation()
+                    }) {
+                        Text(isFollowLocation() ? "Unfollow" : "Follow")
+                    }
+                } else { EmptyView() }
+            }
+        )
+    }
+
+    private func fetchPreviousPosts() {
+        Task {
+            await postsModel.fetchPreviousPosts(limit: 10)
+        }
     }
 
     private func isFollowLocation() -> Bool {
@@ -95,11 +64,6 @@ struct MapPageView: View {
             let actionMessage = isFollowLocation() ? "follow" : "unfollow"
             self.viewAlertModel.setAlert(status: .success, title: "You have \(actionMessage) the location.")
         }
-    }
-    
-    private func openDetailedView(post: Post) {
-        detailedForPost = post
-        showDetailedView = true
     }
     
     private func fetchPosts() {

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WaterfallGrid
 
 struct AccountView: View {
     @EnvironmentObject var sessionStore: SessionStore
@@ -42,7 +41,7 @@ struct AccountView: View {
                     .opacity(0.0)
                     .buttonStyle(PlainButtonStyle())
 
-                    Text(sessionStore.profile!.userName)
+                    Text(sessionStore.profile?.userName ?? "")
                         .padding(.horizontal, 15)
 
                     Spacer()
@@ -50,45 +49,9 @@ struct AccountView: View {
 
                 Divider()
 
-                LazyVStack {
-                    WaterfallGrid(userPostsModel.posts) { post in
-                        VStack {
-                            if !post.uid.isEmpty {
-                                if post.imageUrl != nil {
-                                    ImageLoadingView(url: post.imageUrl!)
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(height: 80)
-                                        .clipped()
-                                }
-                            }
-                        }
-                        .cornerRadius(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.secondary.opacity(0.5))
-                        )
-//                                                .onTapGesture {
-//                                                    openDetailedView(post: post)
-//                                                }
-                        //                        .sheet(item: $detailedForPost) { item in
-                        //                            DetailsView(post: item)
-                        //                        }
-                    }
-                    .gridStyle(
-                        columns: 4,
-                        spacing: 5,
-                        animation: .easeInOut(duration: 0.5)
-                    )
-                    .padding(EdgeInsets(top: 16, leading: 5, bottom: 70, trailing: 1))
-
-                    if userPostsModel.posts.count < userPostsModel.totalCount {
-                        ProgressView()
-                            .frame(height: 40)
-                            .onAppear {
-                                fetchPreviousPosts()
-                            }
-                    }
-                }
+                PostsListView(posts: userPostsModel.posts, totalCount: userPostsModel.totalCount) {
+                    fetchPreviousPosts()
+                }                
             }
             .onAppear {
                 fetchPosts()

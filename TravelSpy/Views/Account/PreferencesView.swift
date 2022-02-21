@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CleanUI
 
 struct PreferencesView: View {
     @Environment(\.managedObjectContext) private var viewContext
@@ -62,7 +63,6 @@ struct PreferencesView: View {
     
     func signOut() {
         sessionStore.signOut()
-        sessionStore.state = .signedOut
     }
 }
 

@@ -24,9 +24,11 @@ class SessionStore: NSObject, ObservableObject {
         case follow
         case unfollow
     }
-    
+
+    @Published var currentUser = Auth.auth().currentUser
     @Published var state: SignInState = Auth.auth().currentUser != nil ? .signedIn : .signedOut
     @Published var profile: UserProfile?
+    @Published var isLoggedIn: Bool = Auth.auth().currentUser != nil
 
     private var profileRepository = UserProfileRepository()
 
@@ -161,6 +163,7 @@ class SessionStore: NSObject, ObservableObject {
         do {
             try Auth.auth().signOut()
             self.profile = nil
+            self.state = .signedOut
         }
         catch let signOutError as NSError {
             print("Error signing out: \(signOutError)")
