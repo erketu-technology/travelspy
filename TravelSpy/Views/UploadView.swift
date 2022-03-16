@@ -8,6 +8,7 @@
 import SwiftUI
 
 import CloudKit
+import GooglePlaces
 
 struct UploadView: View {
     @AppStorage("isShowPostCreation") public var isShowPostCreation = false
@@ -18,13 +19,14 @@ struct UploadView: View {
     @State private var postContent: String = ""
     @State private var placeholderText: String = "Add content. (min 100 characters)"
     @State private var showingLocationsSearch = false
-
+    
     @State private var locationTitle: String = ""
     @State private var locationItem: Location?
     
-    @ObservedObject var locationSearchService = LocationSearchService()
     @State private var progressValue: Double = 0.0
     @State private var isUploading = false
+    
+    @State private var address = ""
     
     let MIN_POST_CONTENT_SIZE = 100
     
@@ -40,7 +42,7 @@ struct UploadView: View {
                     .frame(width: 100, height: 100)
                     .cornerRadius(3.0)
                     .padding(.leading, 10)
-
+                
                 ZStack {
                     if postContent.isEmpty {
                         TextEditor(text: $placeholderText)
@@ -70,12 +72,12 @@ struct UploadView: View {
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-
+            
             Divider()
             TSTextField("Location title (optional)", text: $locationTitle)
                 .padding(.leading)
                 .padding(.top, 10)
-
+            
             Group {
                 Text(locationItem?.countryAndCity ?? "")
                     .padding(.leading)
@@ -88,43 +90,9 @@ struct UploadView: View {
                 Divider()
             }
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-            .onTapGesture {
-                showingLocationsSearch = true
-            }
+            .onTapGesture { showingLocationsSearch = true }
             .fullScreenCover(isPresented: $showingLocationsSearch, content: {
-                HStack {
-                    Button {
-                        showingLocationsSearch.toggle()
-                    } label: {
-                        Image(systemName: "arrow.backward")
-                            .resizable()
-                            .frame(width: 25, height: 20)
-                            .padding(.leading, 20)
-                            .onTapGesture {
-                                showingLocationsSearch.toggle()
-                            }
-                    }
-                    Spacer()
-                }
-                
-                SearchBar(text: $locationSearchService.searchQuery)
-                
-                List(locationSearchService.completions) { completion in
-                    VStack(alignment: .leading) {
-                        Text(completion.title)
-                        Text(completion.subtitle)
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
-                    }
-                    .onTapGesture(perform: {
-                        locationSearchService.getLocationObject(for: completion) { locItem in
-                            locationItem = locItem
-                            locationSearchService.searchQuery = ""
-                            locationSearchService.completions.removeAll()
-                            showingLocationsSearch = false
-                        }
-                    })
-                }.id(UUID())
+                PlacePicker() { locItem in locationItem = locItem }
             })
             
             Button(action: {

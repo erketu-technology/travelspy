@@ -45,18 +45,18 @@ struct TSImagePicker: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> YPImagePicker {
         var config = YPImagePickerConfiguration()
         
-        config.onlySquareImagesFromCamera = true
+        config.onlySquareImagesFromCamera = false //true
         config.screens = [.library, .photo]
         config.shouldSaveNewPicturesToAlbum = false
         config.startOnScreen = YPPickerScreen.library
         config.maxCameraZoomFactor = 2.0
         
 //        config.showsCrop = .rectangle(ratio: 1.0)
-        config.targetImageSize = .cappedTo(size: 600.0)
+        config.targetImageSize = .cappedTo(size: 1000.0)
 //        config.icons.capturePhotoImage =
-        
-        config.library.onlySquare = true
-        config.library.isSquareByDefault = true
+
+        config.library.onlySquare = false
+        config.library.isSquareByDefault = false
         config.library.mediaType = YPlibraryMediaType.photo
         config.library.defaultMultipleSelection = false
         config.library.maxNumberOfItems = 1

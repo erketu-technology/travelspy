@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import SwiftUIPager
 
 struct PostsView: View {
     @Environment(\.managedObjectContext) private var viewContext

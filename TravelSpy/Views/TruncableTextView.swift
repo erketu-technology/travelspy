@@ -17,7 +17,7 @@ struct TruncableTextView: View {
     var body: some View {
         text
             .lineLimit(lineLimit)
-            .readSize { size in
+            .tsReadSize { size in
                 truncatedSize = size
                 isTruncatedUpdate(truncatedSize != intrinsicSize)
             }
@@ -25,7 +25,7 @@ struct TruncableTextView: View {
                 text
                     .fixedSize(horizontal: false, vertical: true)
                     .hidden()
-                    .readSize { size in
+                    .tsReadSize  { size in
                         intrinsicSize = size
                         isTruncatedUpdate(truncatedSize != intrinsicSize)
                     }

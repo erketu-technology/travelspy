@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CleanUI
 
 struct PreferencesView: View {
     @Environment(\.managedObjectContext) private var viewContext

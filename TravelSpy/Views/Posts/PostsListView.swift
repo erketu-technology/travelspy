@@ -15,17 +15,15 @@ struct PostsListView: View {
 
     let fetchPreviousPosts: () -> ()
 
-    @State private var showDetailedView = false
-
     var body: some View {
         LazyVStack {
             WaterfallGrid(posts) { post in
-                ZStack {
+                NavigationLink(destination: DetailsView(post: post)) {
                     VStack {
                         if !post.uid.isEmpty {
                             if post.imageUrl != nil {
                                 ImageLoadingView(url: post.imageUrl!)
-                                    .aspectRatio(contentMode: .fill)
+                                    .scaledToFill()
                                     .frame(height: 80)
                                     .clipped()
                             }
@@ -36,17 +34,9 @@ struct PostsListView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.secondary.opacity(0.5))
                     )
-                    .onTapGesture {
-                        openDetailedView(post: post)
-                    }
-
-                    NavigationLink(destination: DetailsView(post: post), isActive: $showDetailedView) {}
-                    .opacity(0.0)
-                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .gridStyle(
-                columns: 4,
                 spacing: 5,
                 animation: .easeInOut(duration: 0.5)
             )
@@ -60,10 +50,6 @@ struct PostsListView: View {
                     }
             }
         }
-    }
-    
-    private func openDetailedView(post: Post) {
-        showDetailedView = true
     }
 }
 

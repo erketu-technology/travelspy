@@ -26,7 +26,7 @@ struct UserView: View {
                     Spacer()
                     ImageLoadingView(url: profile.avatar)
                         .scaledToFill()
-                        .aspectRatio(contentMode: .fill)
+//                        .aspectRatio(contentMode: .fill)
                         .frame(width: 60, height: 60)
                         .clipShape(Circle())
                         .shadow(radius: 4)

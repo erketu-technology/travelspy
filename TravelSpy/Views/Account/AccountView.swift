@@ -9,13 +9,9 @@ import SwiftUI
 
 struct AccountView: View {
     @EnvironmentObject var sessionStore: SessionStore
-    @StateObject var userPostsModel: CurrentUserPostsModel
+    @StateObject var userPostsModel: CurrentUserPostsModel = CurrentUserPostsModel()
 
     @State var isShowAccountImageCreation = false
-
-    init() {
-        _userPostsModel = StateObject(wrappedValue: CurrentUserPostsModel())
-    }
 
     var body: some View {
         ScrollView(showsIndicators: true) {
@@ -28,7 +24,7 @@ struct AccountView: View {
                     } label: {
                         ImageLoadingView(url: sessionStore.profile?.avatar)
                             .scaledToFill()
-                            .aspectRatio(contentMode: .fill)
+//                            .aspectRatio(contentMode: .fill)
                             .frame(width: 80, height: 80)
                             .clipShape(Circle())
                             .shadow(radius: 4)
@@ -51,7 +47,7 @@ struct AccountView: View {
 
                 PostsListView(posts: userPostsModel.posts, totalCount: userPostsModel.totalCount) {
                     fetchPreviousPosts()
-                }                
+                }
             }
             .onAppear {
                 fetchPosts()
@@ -76,10 +72,9 @@ struct AccountView: View {
     }
 
     private func fetchPosts() {
-        print("### fetchPosts")
         userPostsModel.fetchTotalCount()
         Task {
-            await userPostsModel.fetchPosts()
+            await userPostsModel.fetchPosts(limit: 30)
         }
     }
 }

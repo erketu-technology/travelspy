@@ -26,132 +26,141 @@ struct PostRowView: View {
     
     var body: some View {
         VStack {
-            VStack {
-                ZStack {
-                    VStack {
-                        if post.imageUrl != nil {
+            ZStack {
+                VStack {
+                    if post.imageUrl != nil {
+                        VStack(alignment: .leading) {
                             ImageLoadingView(url: post.imageUrl!)
-                                .frame(height: 400)
-                                .frame(maxWidth: .infinity)
-//                                .scaledToFill()
+                                .scaledToFit()
                                 .clipped()
+                                .onTapGesture {
+                                    self.isPostActive = true
+                                }
                         }
                     }
-//                    .clipped()
+                }
 
+                VStack {
                     VStack {
-                        Button(action: {
+                        HStack {
+                            if let image = locationImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .cornerRadius(20)
+                                    .overlay(Circle().stroke(Color.gray, lineWidth: 1))
+                            } else {
+                                Circle().stroke(Color.gray, lineWidth: 1)
+                                    .frame(width: 30, height: 30)
+                            }
+                            Text(post.countryAndCity)
+                                .foregroundColor(Color.white)
+                                .font(.system(size: 12))
+                            Spacer()
+                        }
+                        .padding(.leading, 16)
+                        .padding(.vertical, 5)
+                        .clipped()
+                        .onAppear {
+                            generateSnapshot(width: 300, height: 300)
+                        }
+                        .background(Color.black.opacity(0.4))
+                        .onTapGesture {
                             self.isLinkActive = true
+                        }
+
+                        NavigationLink(destination: MapPageView(location: post.location), isActive: $isLinkActive) { }
+                        .opacity(0.0)
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    Spacer()
+                }
+                .buttonStyle(BorderlessButtonStyle())
+                .clipped()
+
+                VStack {
+                    Spacer()
+
+                    VStack(spacing: 7) {
+                        Button(action: {
+                            self.isUserLinkActive = true
                         }) {
-                            VStack {
-                                HStack {
-                                    if let image = locationImage {
-                                        Image(uiImage: image)
-                                            .resizable()
-                                            .frame(width: 30, height: 30)
-//                                            .scaledToFill()
-                                            .cornerRadius(20)
-                                            .overlay(Circle().stroke(Color.gray, lineWidth: 1))
-                                    } else {
-                                        Circle().stroke(Color.gray, lineWidth: 1)
-                                            .frame(width: 30, height: 30)
-                                    }
-                                    Text(post.countryAndCity)
-                                        .foregroundColor(Color.white)
-                                        .font(.system(size: 12))
-                                    Spacer()
-                                }
-                                .padding(.leading, 16)
-                                .padding(.vertical, 5)
-                                .clipped()
-                                .onAppear {
-                                    generateSnapshot(width: 300, height: 300)
-                                }
-                                .background(Color.black.opacity(0.4))
+                            HStack {
+                                ImageLoadingView(url: post.user.avatar)
+                                    .scaledToFill()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 15, height: 15)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 4)
+                                    .foregroundColor(Color.black)
+                                Text(post.user.userName)
+                                    .font(.caption)
+                                    .bold()
+
+                                Image(systemName: "circle.fill")
+                                    .font(.system(size: 6))
+                                    .foregroundColor(.gray)
+
+                                Text(post.createdAt.timeAgoSinceDate())
+                                    .font(.caption)
+                                    .italic()
+                                    .clipped()
 
                                 Spacer()
                             }
+                            .padding(.top, 5)
+
+                            NavigationLink(destination: selectUserView(), isActive: $isUserLinkActive) {}
+                            .opacity(0.0)
+                            .buttonStyle(PlainButtonStyle())
                         }
-                        NavigationLink(destination: MapPageView(location: post.location), isActive: $isLinkActive) {}
-                        .opacity(0.0)
-                        .buttonStyle(PlainButtonStyle())
                         .buttonStyle(BorderlessButtonStyle())
+                        .padding(.leading, 16)
 
-//                        Spacer()
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
-                }
-            }
+                        ZStack {
+                            VStack {
+                                TruncableTextView(
+                                    text: Text(post.content),
+                                    lineLimit: 3
+                                ) { isTruncated = $0 }
+                                .font(.caption)
+                                .textSelection(.enabled)
+                                .onTapGesture { openDetailedView(post: post) }
+                                .padding(.horizontal, 7)
 
-            VStack(alignment: .leading, spacing: 4) {
-                Button(action: {
-                    self.isUserLinkActive = true
-                }) {
-                    HStack {
-                        ImageLoadingView(url: post.user.avatar)
-                            .scaledToFill()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 15, height: 15)
-                            .clipShape(Circle())
-                            .shadow(radius: 4)
-                            .foregroundColor(Color.black)
-                        Text(post.user.userName)
-                            .foregroundColor(Color.black)
-                            .font(.caption)
-                            .bold()
-                        
-                        Image(systemName: "circle.fill")
-                            .font(.system(size: 6))
-                            .foregroundColor(.gray)
+                                HStack {
+                                    Spacer()
+                                    if isTruncated {
+                                        Spacer()
 
-                        Text(post.createdAt.timeAgoSinceDate())
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                            .clipped()
-                    }
-                    .padding(.vertical, 3)
-
-                    NavigationLink(destination: selectUserView(), isActive: $isUserLinkActive) {}
-                    .opacity(0.0)
-                    .buttonStyle(PlainButtonStyle())
-                }
-                .buttonStyle(BorderlessButtonStyle())
-
-                TruncableTextView(
-                    text: Text(post.content),
-                    lineLimit: 4
-                ) {
-                    isTruncated = $0
-                }
-                .font(.caption)
-                .textSelection(.enabled)
-                .onTapGesture {
-                    openDetailedView(post: post)
-                }
-
-                HStack {
-                    Spacer()
-                    if isTruncated {
-                        Spacer()
-                        Button("read more") {
-                            openDetailedView(post: post)
+                                        Button {
+                                            openDetailedView(post: post)
+                                        } label: {
+                                            Text("read more")
+                                                .bold()
+                                        }
+                                        .clipped()
+                                        .font(.caption)
+                                        .buttonStyle(BorderlessButtonStyle())
+                                        .foregroundColor(.blue)
+                                    }
+                                }
+                                .padding([.trailing, .bottom], 5)
+                            }
+                            NavigationLink(destination: DetailsView(post: post), isActive: $isPostActive) {}
+                            .opacity(0.0)
+                            .buttonStyle(PlainButtonStyle())
                         }
-                        .clipped()
-                        .font(.caption)
-                        .buttonStyle(BorderlessButtonStyle())
-                        .foregroundColor(.blue)
                     }
+                    .background(Color.black.opacity(0.4))
+                    .foregroundColor(Color.white)
                 }
-                NavigationLink(destination: DetailsView(post: post), isActive: $isPostActive) {}
-                .opacity(0.0)
-                .buttonStyle(PlainButtonStyle())
+                .clipped()
             }
-            .clipped()
-            .padding(.leading, 16)
-            .padding(.trailing, 16)
         }
-        .padding(.bottom, 10)
         .background(Color.white)
+        .frame(width: UIScreen.main.bounds.width)
     }
     
     private func openDetailedView(post: Post) {

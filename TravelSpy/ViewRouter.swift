@@ -10,11 +10,11 @@ import SwiftUI
 import Firebase
 
 class ViewRouter: ObservableObject {
-    @Published var currentPage: Page = Auth.auth().currentUser != nil ? .list : .explore
+    @Published var currentPage: TSPage = Auth.auth().currentUser != nil ? .list : .explore
 }
 
 
-enum Page {
+enum TSPage {
     case explore
     case list
 }

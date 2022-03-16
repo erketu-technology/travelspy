@@ -38,7 +38,8 @@ enum PostsModelError: Error {
 }
 
 class PostsModel: ObservableObject {
-    @Published var posts = [Post]()
+//    @Published var posts: [Post] = []
+    @Published var posts: Array<Post> = Array()
     @Published var isFetching = false
     @Published var totalCount = 0
 

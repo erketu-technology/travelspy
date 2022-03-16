@@ -1,0 +1,36 @@
+PODS:
+  - Alamofire (4.9.1)
+  - GoogleMaps (6.0.1):
+    - GoogleMaps/Maps (= 6.0.1)
+  - GoogleMaps/Base (6.0.1)
+  - GoogleMaps/Maps (6.0.1):
+    - GoogleMaps/Base
+  - GooglePlaces (6.0.0)
+  - GooglePlacesAPI (1.1.4):
+    - Alamofire (~> 4)
+    - ObjectMapper (~> 3)
+  - ObjectMapper (3.5.3)
+
+DEPENDENCIES:
+  - GoogleMaps (= 6.0.1)
+  - GooglePlaces (= 6.0.0)
+  - GooglePlacesAPI (= 1.1.4)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Alamofire
+    - GoogleMaps
+    - GooglePlaces
+    - GooglePlacesAPI
+    - ObjectMapper
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  GoogleMaps: c213fc2334b7374144cede914da779b99be0ab74
+  GooglePlaces: c97d96ae68594acb64035c9ca9f26fbfc1d23af1
+  GooglePlacesAPI: 6184a463b58443f1bde3fab6ce725c1c8e540419
+  ObjectMapper: 97111c97e054a6ee25917662106689f0b4127b37
+
+PODFILE CHECKSUM: 41b264b96b3efd4af848352756be4dc570fe996a
+
+COCOAPODS: 1.11.2

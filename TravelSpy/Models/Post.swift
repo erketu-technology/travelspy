@@ -10,7 +10,11 @@ import SwiftUI
 import Firebase
 import FirebaseFirestoreSwift
 
-struct Post: Identifiable {
+struct Post: Identifiable, Equatable{
+    static func == (lhs: Post, rhs: Post) -> Bool {
+        return lhs.id == rhs.id
+    }
+
     enum PostState {
         case active
         case draft
@@ -44,7 +48,7 @@ struct Post: Identifiable {
             createdAt: Date(),
             updatedAt: Date(),
             images: [
-                ["croppedUrl": "https://firebasestorage.googleapis.com/v0/b/travelspy-57015.appspot.com/o/images%2Fed7nGsphhBby45pDzO4Sa3X3Odt1%2FD3BEB946-5B24-4A11-9A77-0527D7666D9B.png?alt=media&token=dd374220-33f8-4508-a0df-3c700c7a2fa5"]
+                ["croppedUrl": "https://firebasestorage.googleapis.com:443/v0/b/travelspy-57015.appspot.com/o/images%2Fed7nGsphhBby45pDzO4Sa3X3Odt1%2FAAFCA652-AA10-4BF8-B9A3-A72CB356A784.png?alt=media&token=41cf9716-9660-42b1-a63f-3015398777e0"]
             ],
             user: UserProfile(uid: "123", userName: "username", email: "example@com")
         )

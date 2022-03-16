@@ -7,11 +7,26 @@
 
 import SwiftUI
 import Firebase
+import GooglePlaces
+import GooglePlacesAPI
 
 // Appearance: light ony # in Info.plist
 
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+
+        GMSPlacesClient.provideAPIKey("AIzaSyAsFecW1SSVh-3c91LA60y9ZZA7Dh0w9zA")
+        GooglePlaces.provide(apiKey: "AIzaSyAsFecW1SSVh-3c91LA60y9ZZA7Dh0w9zA")
+
+        return true
+    }
+}
+
+
 @main
 struct TravelSpyApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     let persistenceController = PersistenceController.shared
     @StateObject var sessionStore = SessionStore.shared
     @StateObject var viewRouter = ViewRouter()
@@ -21,6 +36,7 @@ struct TravelSpyApp: App {
     
     init() {
         FirebaseApp.configure()
+        UserDefaults.standard.set(["en_US"], forKey: "AppleLanguages")
     }
     
     var body: some Scene {        
