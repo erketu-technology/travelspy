@@ -67,7 +67,7 @@ struct UserView: View {
     
     private func fetchPreviousPosts() {
         Task {
-            await eUserPostsModel.fetchPreviousPosts(limit: 10)
+            await eUserPostsModel.fetchPreviousPosts(limit: 30)
         }
     }
 

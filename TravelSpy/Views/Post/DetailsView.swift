@@ -54,7 +54,7 @@ struct DetailsView: View {
                                 .buttonStyle(BorderlessButtonStyle())
                                 .padding(.horizontal)
 
-                                NavigationLink(destination: UserView(profile: post.user), isActive: $isLinkActive) {}
+                                NavigationLink(destination: selectUserView(), isActive: $isLinkActive) {}
                                 .opacity(0.0)
                                 .buttonStyle(PlainButtonStyle())
                             }
@@ -86,6 +86,12 @@ struct DetailsView: View {
                 }
             }
         }
+    }
+
+    private func selectUserView() -> some View {
+        return (
+            post.user.uid == sessionStore.currentUser?.uid
+        ) ? AnyView(AccountView()) : AnyView(UserView(profile: post.user))
     }
 }
 
