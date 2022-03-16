@@ -114,7 +114,6 @@
 		5A0A22D5278E405B004C002E /* MapPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapPageView.swift; sourceTree = "<group>"; };
 		5A13C064277895EE00667461 /* LoadingPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingPostView.swift; sourceTree = "<group>"; };
 		5A1D58BA2750D7820008AF4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		5A1EA0B127E28E51005095BA /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		5A2C7C41275048B80052D821 /* TravelSpy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelSpy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A2C7C44275048B80052D821 /* TravelSpyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelSpyApp.swift; sourceTree = "<group>"; };
 		5A2C7C46275048B80052D821 /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
@@ -150,6 +149,7 @@
 		5A66642F27D952BD00E5953B /* PlacePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacePicker.swift; sourceTree = "<group>"; };
 		5A7C88E927AC72F6000857D5 /* AccountImageUpload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountImageUpload.swift; sourceTree = "<group>"; };
 		5A7C88EB27AC77A6000857D5 /* FBUploadMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FBUploadMedia.swift; sourceTree = "<group>"; };
+		5A82D86427E291C1005AB666 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		5A886242276FC81F00443A87 /* TSImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSImagePicker.swift; sourceTree = "<group>"; };
 		5A88C190277B623A00A2083B /* PostsExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsExploreView.swift; sourceTree = "<group>"; };
 		5A88CC6E2778F84A00EBCF39 /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
@@ -282,7 +282,7 @@
 				5A2C7C4A275048B90052D821 /* Preview Content */,
 				5A98274F2774DB5A00F938F0 /* Extensions.swift */,
 				5AA57DCB277B7CDD00E90430 /* ViewRouter.swift */,
-				5A1EA0B127E28E51005095BA /* Config.xcconfig */,
+				5A82D86427E291C1005AB666 /* Config.xcconfig */,
 			);
 			path = TravelSpy;
 			sourceTree = "<group>";
@@ -748,6 +748,7 @@
 /* Begin XCBuildConfiguration section */
 		5A2C7C68275048B90052D821 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5A82D86427E291C1005AB666 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -809,6 +810,7 @@
 		};
 		5A2C7C69275048B90052D821 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5A82D86427E291C1005AB666 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

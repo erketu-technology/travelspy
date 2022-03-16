@@ -15,8 +15,10 @@ import GooglePlacesAPI
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
 
-        GMSPlacesClient.provideAPIKey("AIzaSyAsFecW1SSVh-3c91LA60y9ZZA7Dh0w9zA")
-        GooglePlaces.provide(apiKey: "AIzaSyAsFecW1SSVh-3c91LA60y9ZZA7Dh0w9zA")
+        let googleMapAPIKey = (Bundle.main.infoDictionary?["GOOGLE_MAP_API_KEY"] as? String)!
+
+        GMSPlacesClient.provideAPIKey(googleMapAPIKey)
+        GooglePlaces.provide(apiKey: googleMapAPIKey)
 
         return true
     }
