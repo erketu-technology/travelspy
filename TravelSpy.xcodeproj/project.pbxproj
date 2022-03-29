@@ -89,6 +89,7 @@
 		5AD82693275962D100EF141E /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD82692275962D100EF141E /* Photo.swift */; };
 		5ADCBDB1277250D700739A3D /* TravelSpy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A2C7C4F275048B90052D821 /* TravelSpy.xcdatamodeld */; };
 		5ADDEC3827AB465500A4C0B4 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADDEC3727AB465500A4C0B4 /* AccountView.swift */; };
+		5AF070A827F39AE100EA1DB1 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF070A727F39AE100EA1DB1 /* AboutView.swift */; };
 		5AFFF88927BC5FDA00950797 /* PostsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFF88827BC5FDA00950797 /* PostsListView.swift */; };
 /* End PBXBuildFile section */
 
@@ -167,6 +168,7 @@
 		5ABB574A2769542B00C867AA /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		5AD82692275962D100EF141E /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		5ADDEC3727AB465500A4C0B4 /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		5AF070A727F39AE100EA1DB1 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
 		5AFFF88827BC5FDA00950797 /* PostsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsListView.swift; sourceTree = "<group>"; };
 		96C36C545EBADC5FA7D8F667 /* Pods-TravelSpy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelSpy.release.xcconfig"; path = "Target Support Files/Pods-TravelSpy/Pods-TravelSpy.release.xcconfig"; sourceTree = "<group>"; };
 		EC9CA017B35E5C5EBE6C4F2C /* Pods_TravelSpy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelSpy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -353,6 +355,7 @@
 				5A3D1394277E63F8004F70C0 /* ResetPasswordView.swift */,
 				5A0A22D5278E405B004C002E /* MapPageView.swift */,
 				5A35410327A0A92F00F73646 /* UserView.swift */,
+				5AF070A727F39AE100EA1DB1 /* AboutView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 				5A9827502774DB5A00F938F0 /* Extensions.swift in Sources */,
 				5ADCBDB1277250D700739A3D /* TravelSpy.xcdatamodeld in Sources */,
 				5A3D13A4278328E7004F70C0 /* AlertViewModel.swift in Sources */,
+				5AF070A827F39AE100EA1DB1 /* AboutView.swift in Sources */,
 				5A44A6D027680EA6004327E7 /* UserProfileRepository.swift in Sources */,
 				5A88CC6F2778F84A00EBCF39 /* PreferencesView.swift in Sources */,
 				5AA57DD1277BB0DA00E90430 /* TabBarIconView.swift in Sources */,
@@ -891,6 +895,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UIUserInterfaceStyle = light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -932,6 +937,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UIUserInterfaceStyle = light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

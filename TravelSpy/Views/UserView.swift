@@ -6,13 +6,15 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct UserView: View {
-    @EnvironmentObject var sessionStore: SessionStore    
+    @EnvironmentObject var sessionStore: SessionStore
+    @EnvironmentObject var userPostsModel: UserPostsModel
+    @StateObject var eUserPostsModel: ExternalUserPostsModel
 
     let profile: UserProfile
-    @EnvironmentObject var userPostsModel: UserPostsModel
-    @StateObject var eUserPostsModel: ExternalUserPostsModel    
+    let currentUser = Auth.auth().currentUser
 
     init(profile: UserProfile) {
         self.profile = profile
@@ -47,7 +49,7 @@ struct UserView: View {
             .padding([.vertical, .horizontal], 10)
             .navigationTitle("")
             .navigationBarItems(trailing: Group {
-                if sessionStore.isLoggedIn {
+                if currentUser != nil {
                     Button(action: {
                         followUser()
                     }) {

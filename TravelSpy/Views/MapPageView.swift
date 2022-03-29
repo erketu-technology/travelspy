@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct MapPageView: View {
     @EnvironmentObject var sessionStore: SessionStore
@@ -15,8 +16,8 @@ struct MapPageView: View {
     @StateObject var postsModel = PostsModel()
     
     let location: Location
-    
-    
+    let currentUser = Auth.auth().currentUser
+
     var body: some View {
         ScrollView(showsIndicators: true) {
             VStack {
@@ -34,7 +35,7 @@ struct MapPageView: View {
         .navigationTitle(location.countryAndCity)
         .navigationBarItems(
             trailing: Group {
-                if sessionStore.isLoggedIn {
+                if currentUser != nil {
                     Button(action: {
                         followLocation()
                     }) {

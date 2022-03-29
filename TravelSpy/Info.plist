@@ -2,10 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>GOOGLE_MAP_API_KEY</key>
-	<string>$(GOOGLE_MAP_API_KEY)</string>
-	<key>UIUserInterfaceStyle</key>
-	<string>light</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -13,10 +9,12 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.85870977844-asbs5b0v0tn6vsld6k1knqeo20bvadib</string>
+				<string>$(URL_SCHEMA_GOOGLE)</string>
 			</array>
 		</dict>
 	</array>
+	<key>GOOGLE_MAP_API_KEY</key>
+	<string>$(GOOGLE_MAP_API_KEY)</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

@@ -38,6 +38,12 @@ struct PreferencesView: View {
                 }
                 
                 Section {
+                    NavigationLink {
+                        AboutView()
+                    } label: {
+                        Text("About")
+                    }
+
                     Button {
                         showingLogOutAlert = true
                     } label: {
