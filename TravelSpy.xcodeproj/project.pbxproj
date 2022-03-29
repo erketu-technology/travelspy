@@ -81,7 +81,6 @@
 		5A98275827761C1500F938F0 /* ImageLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98275727761C1500F938F0 /* ImageLoadingView.swift */; };
 		5A98275A27761C3200F938F0 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A98275927761C3200F938F0 /* ImageLoader.swift */; };
 		5A99BC782757F96C00D3D51D /* UploadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A99BC772757F96C00D3D51D /* UploadView.swift */; };
-		5A99BC7A2758164700D3D51D /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A99BC792758164700D3D51D /* SearchBarView.swift */; };
 		5A99BC822758259F00D3D51D /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A99BC812758259F00D3D51D /* Location.swift */; };
 		5AA57DCC277B7CDD00E90430 /* ViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA57DCB277B7CDD00E90430 /* ViewRouter.swift */; };
 		5AA57DD1277BB0DA00E90430 /* TabBarIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA57DD0277BB0DA00E90430 /* TabBarIconView.swift */; };
@@ -161,7 +160,6 @@
 		5A98275727761C1500F938F0 /* ImageLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingView.swift; sourceTree = "<group>"; };
 		5A98275927761C3200F938F0 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		5A99BC772757F96C00D3D51D /* UploadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadView.swift; sourceTree = "<group>"; };
-		5A99BC792758164700D3D51D /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		5A99BC812758259F00D3D51D /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		5AA57DCB277B7CDD00E90430 /* ViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewRouter.swift; sourceTree = "<group>"; };
 		5AA57DD0277BB0DA00E90430 /* TabBarIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarIconView.swift; sourceTree = "<group>"; };
@@ -346,7 +344,6 @@
 				5A07B8CA2773F12C000B56ED /* Post */,
 				5A2C7C46275048B80052D821 /* PostsView.swift */,
 				5A99BC772757F96C00D3D51D /* UploadView.swift */,
-				5A99BC792758164700D3D51D /* SearchBarView.swift */,
 				5A5DD375275E8BBE00CF8EBD /* LoginView.swift */,
 				5ABB574A2769542B00C867AA /* MainView.swift */,
 				5A98274D2774DAAB00F938F0 /* TruncableTextView.swift */,
@@ -679,7 +676,6 @@
 				5AA57DD1277BB0DA00E90430 /* TabBarIconView.swift in Sources */,
 				5A99BC822758259F00D3D51D /* Location.swift in Sources */,
 				5A0A22D6278E405B004C002E /* MapPageView.swift in Sources */,
-				5A99BC7A2758164700D3D51D /* SearchBarView.swift in Sources */,
 				5A393C6C277D22EC00D7E1E4 /* ChangePasswordView.swift in Sources */,
 				5A44A6CD27650DFD004327E7 /* Post.swift in Sources */,
 				5A88C191277B623A00A2083B /* PostsExploreView.swift in Sources */,

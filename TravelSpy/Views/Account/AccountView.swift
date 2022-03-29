@@ -24,7 +24,6 @@ struct AccountView: View {
                     } label: {
                         ImageLoadingView(url: sessionStore.profile?.avatar)
                             .scaledToFill()
-//                            .aspectRatio(contentMode: .fill)
                             .frame(width: 80, height: 80)
                             .clipShape(Circle())
                             .shadow(radius: 4)
