@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  TravelSpy
+//
+//  Created by AlexK on 17/03/2022.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+GOOGLE_MAP_API_KEY = <google_map_api_key>
+URL_SCHEMA_GOOGLE = <url_schema_google>

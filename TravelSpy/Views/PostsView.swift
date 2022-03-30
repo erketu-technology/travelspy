@@ -64,7 +64,7 @@ struct PostsView: View {
             .onAppear {
                 self.fetchData()
             }
-            .navigationTitle("Name")
+            .navigationTitle("TravelSpy")
             .navigationBarTitleDisplayMode(.inline)
             .navigationViewStyle(StackNavigationViewStyle())
             .navigationBarItems(trailing: HStack {
@@ -125,7 +125,6 @@ struct PostsView: View {
             await userPostsModel.fetchPreviousPosts()
         }
     }
-    
 }
 
 struct PostsView_Previews: PreviewProvider {
